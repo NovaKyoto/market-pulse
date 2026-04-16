@@ -4,20 +4,17 @@ let _stripe: Stripe | null = null;
 
 export function getStripe() {
   if (!_stripe) {
-    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key) {
+      throw new Error("STRIPE_SECRET_KEY is not set");
+    }
+    _stripe = new Stripe(key, {
       apiVersion: "2026-03-25.dahlia",
+      timeout: 8000,
     });
   }
   return _stripe;
 }
-
-// Re-export as `stripe` for convenience
-export const stripe = new Proxy({} as Stripe, {
-  get(_, prop) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (getStripe() as any)[prop];
-  },
-});
 
 export async function createCheckoutSession(
   customerId: string,
