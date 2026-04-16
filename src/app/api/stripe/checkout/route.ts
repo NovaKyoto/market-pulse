@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createCustomer, createCheckoutSession } from "@/lib/stripe";
 
-const APP_URL = "https://market-pulse-five-ruby.vercel.app";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://marketpulse.now";
 
 export async function POST(request: Request) {
   try {

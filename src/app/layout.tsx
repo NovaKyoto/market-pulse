@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://market-pulse-five-ruby.vercel.app";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now";
 
 export const metadata: Metadata = {
   title: {
