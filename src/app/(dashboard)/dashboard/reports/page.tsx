@@ -27,6 +27,10 @@ import {
   Clock,
   DollarSign,
   BarChart3,
+  Share2,
+  Copy,
+  Check,
+  MessageSquare,
 } from "lucide-react";
 
 interface Report {
@@ -57,6 +61,10 @@ export default function ReportsPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [socialLoading, setSocialLoading] = useState<string | null>(null);
+  const [socialPost, setSocialPost] = useState<{ reportId: string; platform: string; text: string } | null>(null);
+  const [postCopied, setPostCopied] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -87,6 +95,38 @@ export default function ReportsPage() {
     } finally {
       setGenerating(false);
     }
+  }
+
+  function copyShareLink(reportId: string) {
+    const url = `${window.location.origin}/report/${reportId}`;
+    navigator.clipboard.writeText(url);
+    setCopiedId(reportId);
+    setTimeout(() => setCopiedId(null), 2000);
+  }
+
+  async function generateSocialPost(reportId: string, platform: string) {
+    setSocialLoading(`${reportId}-${platform}`);
+    try {
+      const res = await fetch("/api/social-post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reportId, platform }),
+      });
+      if (!res.ok) throw new Error("Failed to generate post");
+      const data = await res.json();
+      setSocialPost({ reportId, platform, text: data.post });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSocialLoading(null);
+    }
+  }
+
+  function copySocialPost() {
+    if (!socialPost) return;
+    navigator.clipboard.writeText(socialPost.text);
+    setPostCopied(true);
+    setTimeout(() => setPostCopied(false), 2000);
   }
 
   function formatCurrency(val: number) {
@@ -251,6 +291,65 @@ export default function ReportsPage() {
                         </div>
                       </div>
                     )}
+
+                    {/* Share & Social */}
+                    <div className="px-4 py-3 border-t bg-muted/20">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="gap-1.5"
+                          onClick={(e) => { e.stopPropagation(); copyShareLink(report.id); }}
+                        >
+                          {copiedId === report.id ? (
+                            <><Check className="h-3.5 w-3.5 text-green-600" />Copied!</>
+                          ) : (
+                            <><Share2 className="h-3.5 w-3.5" />Share Link</>
+                          )}
+                        </Button>
+                        <Separator orientation="vertical" className="h-6" />
+                        <span className="text-xs text-muted-foreground">Generate post:</span>
+                        {([
+                          { platform: "instagram", label: "Instagram" },
+                          { platform: "facebook", label: "Facebook" },
+                          { platform: "linkedin", label: "LinkedIn" },
+                          { platform: "twitter", label: "X" },
+                        ] as const).map(({ platform, label }) => (
+                          <Button
+                            key={platform}
+                            variant="ghost"
+                            size="sm"
+                            className="gap-1.5 h-8 px-2.5"
+                            disabled={socialLoading === `${report.id}-${platform}`}
+                            onClick={(e) => { e.stopPropagation(); generateSocialPost(report.id, platform); }}
+                          >
+                            {socialLoading === `${report.id}-${platform}` ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <MessageSquare className="h-3.5 w-3.5" />
+                            )}
+                            {label}
+                          </Button>
+                        ))}
+                      </div>
+
+                      {/* Social Post Result */}
+                      {socialPost && socialPost.reportId === report.id && (
+                        <div className="mt-3 rounded-lg border bg-background p-3">
+                          <div className="flex items-center justify-between mb-2">
+                            <Badge variant="secondary" className="text-xs capitalize">{socialPost.platform}</Badge>
+                            <Button variant="ghost" size="sm" className="gap-1 h-7" onClick={copySocialPost}>
+                              {postCopied ? (
+                                <><Check className="h-3 w-3 text-green-600" />Copied</>
+                              ) : (
+                                <><Copy className="h-3 w-3" />Copy</>
+                              )}
+                            </Button>
+                          </div>
+                          <p className="text-sm whitespace-pre-wrap leading-relaxed">{socialPost.text}</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </Card>
