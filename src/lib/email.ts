@@ -75,14 +75,25 @@ export async function sendReportEmail(params: SendReportEmailParams) {
         }
       </td>
     </tr>
+    <!-- Disclaimer -->
+    <tr>
+      <td style="padding:16px 24px 0; background:#f9fafb; border-top:1px solid #e5e7eb;">
+        <p style="color:#b0b0b0; font-size:10px; line-height:1.5; margin:0;">
+          This report was generated using AI and third-party data sources. It is not a real estate appraisal, CMA, or professional valuation. Data is deemed reliable but not guaranteed. Verify all information independently.
+        </p>
+      </td>
+    </tr>
     <!-- Footer -->
     <tr>
-      <td style="padding:24px; background:#f9fafb; border-top:1px solid #e5e7eb; text-align:center;">
+      <td style="padding:12px 24px 24px; background:#f9fafb; text-align:center;">
         <p style="color:#9ca3af; font-size:12px; margin:0;">
           Sent by ${agentName} at ${businessName} | Market data for ${zipCode}
         </p>
         <p style="color:#9ca3af; font-size:11px; margin:8px 0 0;">
-          Powered by MarketPulse
+          Powered by MarketPulse &bull; <a href="${process.env.NEXT_PUBLIC_APP_URL}/legal/terms" style="color:#9ca3af;">Terms</a> &bull; <a href="${process.env.NEXT_PUBLIC_APP_URL}/legal/privacy" style="color:#9ca3af;">Privacy</a>
+        </p>
+        <p style="color:#b0b0b0; font-size:10px; margin:8px 0 0;">
+          To unsubscribe, reply to this email with &quot;UNSUBSCRIBE&quot;
         </p>
       </td>
     </tr>

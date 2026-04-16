@@ -343,6 +343,15 @@ export default function LandingPage() {
               Automated AI market reports for real estate agents
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground">
+              <Link href="/legal/terms" className="hover:text-foreground transition-colors">
+                Terms
+              </Link>
+              <Link href="/legal/privacy" className="hover:text-foreground transition-colors">
+                Privacy
+              </Link>
+              <Link href="/legal/cookies" className="hover:text-foreground transition-colors">
+                Cookies
+              </Link>
               <Link href="/sign-in" className="hover:text-foreground transition-colors">
                 Sign In
               </Link>
@@ -351,6 +360,10 @@ export default function LandingPage() {
               </Link>
             </div>
           </div>
+          <p className="text-center text-xs text-muted-foreground mt-6">
+            &copy; {new Date().getFullYear()} MarketPulse. All rights reserved. AI-generated reports
+            are not appraisals. Data deemed reliable but not guaranteed.
+          </p>
         </div>
       </footer>
     </div>

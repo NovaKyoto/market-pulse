@@ -153,6 +153,25 @@ export default async function PublicReportPage(props: {
 
         {/* Footer */}
         <Separator />
+        {/* Disclaimers */}
+        <div className="rounded-lg border bg-muted/30 p-4 text-xs text-muted-foreground space-y-2">
+          <p>
+            <strong>AI Disclosure:</strong> This report was generated using artificial intelligence
+            (Anthropic Claude). AI-generated content may contain errors or inaccuracies. This report
+            is not a real estate appraisal, broker price opinion, or comparative market analysis
+            (CMA). Verify all information independently before making decisions.
+          </p>
+          <p>
+            <strong>Data Sources:</strong> Market data sourced from third-party providers including
+            Redfin and RentCast. Data is deemed reliable but not guaranteed accurate or complete. Data
+            may be delayed or subject to revision.
+          </p>
+          <p>
+            MarketPulse is a technology provider, not a licensed real estate brokerage or appraisal
+            firm. Use of this report does not create a fiduciary or agent-client relationship.
+          </p>
+        </div>
+
         <div className="text-center py-4">
           <div className="flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground">
             <Zap className="h-4 w-4" />
@@ -161,6 +180,10 @@ export default async function PublicReportPage(props: {
           <p className="text-xs text-muted-foreground mt-1">
             AI-powered market reports for real estate professionals
           </p>
+          <div className="flex items-center justify-center gap-3 mt-2 text-xs text-muted-foreground">
+            <a href="/legal/terms" className="hover:text-foreground underline">Terms</a>
+            <a href="/legal/privacy" className="hover:text-foreground underline">Privacy</a>
+          </div>
         </div>
       </div>
     </div>
