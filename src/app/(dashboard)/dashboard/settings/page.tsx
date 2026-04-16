@@ -199,7 +199,9 @@ export default function SettingsPage() {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ plan: "monthly" }),
                       });
-                      const data = await res.json();
+                      const text = await res.text();
+                      if (!text) throw new Error("Empty response from server — check Stripe env vars on Vercel");
+                      const data = JSON.parse(text);
                       if (!res.ok) throw new Error(data.error || "Failed to start checkout");
                       if (data.url) window.location.href = data.url;
                     } catch (err) {
@@ -226,7 +228,9 @@ export default function SettingsPage() {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ plan: "annual" }),
                       });
-                      const data = await res.json();
+                      const text = await res.text();
+                      if (!text) throw new Error("Empty response from server — check Stripe env vars on Vercel");
+                      const data = JSON.parse(text);
                       if (!res.ok) throw new Error(data.error || "Failed to start checkout");
                       if (data.url) window.location.href = data.url;
                     } catch (err) {
