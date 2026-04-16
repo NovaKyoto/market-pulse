@@ -19,7 +19,7 @@ interface ResendWebhookPayload {
     to: string[];
     subject: string;
     headers?: { name: string; value: string }[];
-    tags?: { name: string; value: string }[];
+    tags?: Record<string, string> | { name: string; value: string }[];
   };
 }
 
@@ -42,11 +42,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: true, skipped: type });
     }
 
-    // Extract our custom headers/tags for user_id and report_id
-    const tags = data.tags ?? [];
-    const userId = tags.find((t) => t.name === "user_id")?.value;
-    const reportId = tags.find((t) => t.name === "report_id")?.value;
-    const recipientName = tags.find((t) => t.name === "recipient_name")?.value;
+    // Extract our custom tags for user_id and report_id
+    // Resend sends tags as an object { key: value }, not an array
+    const rawTags = data.tags ?? {};
+    let userId: string | undefined;
+    let reportId: string | undefined;
+    let recipientName: string | undefined;
+
+    if (Array.isArray(rawTags)) {
+      userId = rawTags.find((t) => t.name === "user_id")?.value;
+      reportId = rawTags.find((t) => t.name === "report_id")?.value;
+      recipientName = rawTags.find((t) => t.name === "recipient_name")?.value;
+    } else {
+      userId = rawTags.user_id;
+      reportId = rawTags.report_id;
+      recipientName = rawTags.recipient_name;
+    }
 
     if (!userId) {
       return NextResponse.json({ ok: true, skipped: "no_user_id" });
