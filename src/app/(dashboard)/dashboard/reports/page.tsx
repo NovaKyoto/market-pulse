@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -65,6 +66,8 @@ export default function ReportsPage() {
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
   const [socialPost, setSocialPost] = useState<{ reportId: string; platform: string; text: string } | null>(null);
   const [postCopied, setPostCopied] = useState(false);
+  const [customZip, setCustomZip] = useState("");
+  const [sendToRecipients, setSendToRecipients] = useState(true);
   const supabase = createClient();
 
   useEffect(() => {
@@ -81,15 +84,23 @@ export default function ReportsPage() {
     setLoading(false);
   }
 
-  async function generateReport() {
+  async function generateReport(zipCode?: string) {
     setGenerating(true);
     try {
-      const res = await fetch("/api/generate-report", { method: "POST" });
+      const res = await fetch("/api/generate-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...(zipCode ? { zipCode } : {}),
+          sendToRecipients,
+        }),
+      });
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.error || "Failed to generate");
       }
       await loadReports();
+      setCustomZip("");
     } catch (err) {
       console.error(err);
     } finally {
@@ -139,27 +150,70 @@ export default function ReportsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Reports</h1>
-          <p className="mt-1 text-muted-foreground">
-            Generate AI-powered market reports for your zip codes
-          </p>
-        </div>
-        <Button onClick={generateReport} disabled={generating} className="gap-2">
-          {generating ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Generating...
-            </>
-          ) : (
-            <>
-              <Zap className="h-4 w-4" />
-              Generate Report
-            </>
-          )}
-        </Button>
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Reports</h1>
+        <p className="mt-1 text-muted-foreground">
+          Generate AI-powered market reports for any location
+        </p>
       </div>
+
+      {/* Location Picker */}
+      <Card>
+        <CardContent className="p-5">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-1">
+                <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
+                  ZIP Code
+                </label>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Enter any US ZIP code (e.g. 77007, 90210, 33101)"
+                    value={customZip}
+                    onChange={(e) => setCustomZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
+                    className="pl-9"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && customZip.length === 5 && !generating) {
+                        generateReport(customZip);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="flex items-end gap-2">
+                <Button
+                  onClick={() => generateReport(customZip || undefined)}
+                  disabled={generating || (customZip.length > 0 && customZip.length < 5)}
+                  className="gap-2 h-9"
+                >
+                  {generating ? (
+                    <><Loader2 className="h-4 w-4 animate-spin" />Generating...</>
+                  ) : (
+                    <><Zap className="h-4 w-4" />{customZip ? "Generate for this ZIP" : "Generate All Saved"}</>
+                  )}
+                </Button>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={sendToRecipients}
+                  onChange={(e) => setSendToRecipients(e.target.checked)}
+                  className="rounded border-input"
+                />
+                <span className="text-xs text-muted-foreground">Send to recipients after generating</span>
+              </label>
+              {!customZip && (
+                <span className="text-xs text-muted-foreground">
+                  Leave ZIP empty to generate reports for all your saved locations
+                </span>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {generating && (
         <Card className="border-primary/20 bg-primary/5">
@@ -168,9 +222,9 @@ export default function ReportsPage() {
               <Loader2 className="h-5 w-5 animate-spin text-primary" />
             </div>
             <div>
-              <p className="font-medium">Generating your market report...</p>
+              <p className="font-medium">Generating your market report{customZip ? ` for ${customZip}` : ""}...</p>
               <p className="text-sm text-muted-foreground">
-                Fetching market data and writing AI insights. This takes about 15-30 seconds.
+                Fetching real market data and writing AI insights. This takes about 15-30 seconds.
               </p>
             </div>
           </CardContent>

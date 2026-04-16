@@ -273,37 +273,72 @@ export default function LandingPage() {
             One plan. Everything included. Cancel anytime.
           </p>
 
-          <Card className="mx-auto mt-12 max-w-md border-2 border-primary shadow-xl">
-            <CardContent className="p-8">
-              <Badge className="mb-4">Most Popular</Badge>
-              <div className="flex items-baseline justify-center gap-1">
-                <span className="text-6xl font-extrabold">$49</span>
-                <span className="text-xl text-muted-foreground">/mo</span>
+          <div className="mx-auto mt-12 grid gap-6 max-w-2xl md:grid-cols-2">
+            {/* Monthly */}
+            <Card className="border-2 shadow-lg">
+              <CardContent className="p-8">
+                <Badge variant="secondary" className="mb-4">Monthly</Badge>
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="text-5xl font-extrabold">$49</span>
+                  <span className="text-lg text-muted-foreground">/mo</span>
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  14-day free trial &middot; cancel anytime
+                </p>
+                <ul className="mt-6 space-y-3 text-left">
+                  {pricingFeatures.map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-sm">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                        <Check className="h-3 w-3 text-primary" />
+                      </div>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/sign-up" className="mt-6 block">
+                  <Button className="w-full h-11 text-base" variant="outline" size="lg">
+                    Start Free Trial
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            {/* Annual */}
+            <Card className="border-2 border-primary shadow-xl relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                <Badge className="px-3 py-1 shadow-lg">Save 20%</Badge>
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">
-                14-day free trial &middot; cancel anytime
-              </p>
-              <ul className="mt-8 space-y-3 text-left">
-                {pricingFeatures.map((f) => (
-                  <li key={f} className="flex items-center gap-3 text-sm">
-                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Check className="h-3 w-3 text-primary" />
-                    </div>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/sign-up" className="mt-8 block">
-                <Button className="w-full h-12 text-base" size="lg">
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-              <p className="mt-3 text-xs text-muted-foreground">
-                No credit card required to start
-              </p>
-            </CardContent>
-          </Card>
+              <CardContent className="p-8">
+                <Badge variant="secondary" className="mb-4">Annual</Badge>
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="text-5xl font-extrabold">$39</span>
+                  <span className="text-lg text-muted-foreground">/mo</span>
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  $470/year &middot; billed annually
+                </p>
+                <ul className="mt-6 space-y-3 text-left">
+                  {pricingFeatures.map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-sm">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                        <Check className="h-3 w-3 text-primary" />
+                      </div>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/sign-up" className="mt-6 block">
+                  <Button className="w-full h-11 text-base" size="lg">
+                    Start Free Trial
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            No credit card required to start &middot; Cancel anytime
+          </p>
         </div>
       </section>
 

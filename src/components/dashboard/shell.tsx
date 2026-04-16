@@ -15,6 +15,7 @@ import {
   X,
   ChevronRight,
   ArrowLeftRight,
+  Flame,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/reports", label: "Reports", icon: FileText },
   { href: "/dashboard/compare", label: "Compare", icon: ArrowLeftRight },
+  { href: "/dashboard/engagement", label: "Engagement", icon: Flame },
   { href: "/dashboard/recipients", label: "Recipients", icon: Users },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];

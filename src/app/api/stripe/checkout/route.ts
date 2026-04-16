@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { stripe, createCustomer, createCheckoutSession } from "@/lib/stripe";
 
-export async function POST() {
+export async function POST(request: Request) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -10,6 +10,13 @@ export async function POST() {
 
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  let body: { plan?: string } = {};
+  try {
+    body = await request.json();
+  } catch {
+    // default to monthly
   }
 
   const { data: profile } = await supabase
@@ -29,7 +36,12 @@ export async function POST() {
       .eq("id", user.id);
   }
 
-  const priceId = process.env.STRIPE_PRICE_ID;
+  // Use annual price if requested, fall back to monthly
+  const priceId =
+    body.plan === "annual"
+      ? process.env.STRIPE_ANNUAL_PRICE_ID ?? process.env.STRIPE_PRICE_ID
+      : process.env.STRIPE_PRICE_ID;
+
   if (!priceId) {
     return NextResponse.json({ error: "Price not configured" }, { status: 500 });
   }

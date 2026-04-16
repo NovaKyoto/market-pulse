@@ -4,7 +4,7 @@ import { fetchMarketData } from "@/lib/market-data";
 import { generateReportInsights } from "@/lib/ai-writer";
 import { sendReportEmail } from "@/lib/email";
 
-export async function POST() {
+export async function POST(request: Request) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -20,16 +20,35 @@ export async function POST() {
     .eq("id", user.id)
     .single();
 
-  if (!profile || !profile.zip_codes?.length) {
+  if (!profile) {
+    return NextResponse.json({ error: "Profile not found" }, { status: 400 });
+  }
+
+  // Accept optional zipCode from request body; fall back to profile zip_codes
+  let body: { zipCode?: string; sendToRecipients?: boolean } = {};
+  try {
+    body = await request.json();
+  } catch {
+    // empty body is fine — use profile defaults
+  }
+
+  const zipCodes = body.zipCode
+    ? [body.zipCode]
+    : profile.zip_codes?.length
+    ? profile.zip_codes
+    : [];
+
+  if (zipCodes.length === 0) {
     return NextResponse.json(
-      { error: "No zip codes configured" },
+      { error: "No zip code provided and none configured in your profile" },
       { status: 400 }
     );
   }
 
+  const shouldSend = body.sendToRecipients !== false;
   const results = [];
 
-  for (const zipCode of profile.zip_codes) {
+  for (const zipCode of zipCodes) {
     // 1. Fetch market data
     const marketData = await fetchMarketData(zipCode);
 
@@ -55,14 +74,16 @@ export async function POST() {
       .select()
       .single();
 
-    // 4. Send to all recipients
-    const { data: recipients } = await supabase
-      .from("recipients")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("active", true);
+    // 4. Send to all recipients (if requested)
+    const { data: recipients } = shouldSend
+      ? await supabase
+          .from("recipients")
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("active", true)
+      : { data: [] };
 
-    if (recipients && recipients.length > 0) {
+    if (shouldSend && recipients && recipients.length > 0) {
       await Promise.all(
         recipients.map((r) =>
           sendReportEmail({
@@ -75,6 +96,8 @@ export async function POST() {
             reportSummary: summary,
             reportInsights: insights,
             zipCode,
+            userId: user.id,
+            reportId: report?.id,
           })
         )
       );

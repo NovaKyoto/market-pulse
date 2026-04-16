@@ -15,6 +15,8 @@ interface SendReportEmailParams {
   reportInsights: string;
   zipCode: string;
   pdfUrl?: string;
+  userId?: string;
+  reportId?: string;
 }
 
 export async function sendReportEmail(params: SendReportEmailParams) {
@@ -29,6 +31,8 @@ export async function sendReportEmail(params: SendReportEmailParams) {
     reportInsights,
     zipCode,
     pdfUrl,
+    userId,
+    reportId,
   } = params;
 
   const greeting = recipientName ? `Hi ${recipientName}` : "Hi there";
@@ -101,10 +105,17 @@ export async function sendReportEmail(params: SendReportEmailParams) {
 </body>
 </html>`;
 
+  const tags = [
+    ...(userId ? [{ name: "user_id", value: userId }] : []),
+    ...(reportId ? [{ name: "report_id", value: reportId }] : []),
+    ...(recipientName ? [{ name: "recipient_name", value: recipientName }] : []),
+  ];
+
   return getResend().emails.send({
     from: process.env.RESEND_FROM_EMAIL ?? "reports@marketpulse.ai",
     to,
     subject: `${reportTitle} | ${businessName}`,
     html,
+    tags,
   });
 }
