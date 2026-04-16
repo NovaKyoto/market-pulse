@@ -161,7 +161,7 @@ export default function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            {profile.stripe_customer_id ? (
+            {profile.subscription_status === "active" || profile.subscription_status === "trialing" ? (
               <Button
                 type="button"
                 variant="outline"
@@ -369,7 +369,7 @@ export default function SettingsPage() {
             {profile.referral_code ? (
               <div className="flex items-center gap-2">
                 <code className="flex-1 rounded-md border bg-muted px-3 py-2 text-sm font-mono">
-                  {typeof window !== "undefined" ? window.location.origin : ""}/sign-up?ref={profile.referral_code}
+                  {process.env.NEXT_PUBLIC_APP_URL ?? ""}/sign-up?ref={profile.referral_code}
                 </code>
                 <Button
                   type="button"
@@ -377,7 +377,7 @@ export default function SettingsPage() {
                   size="sm"
                   className="gap-1.5 shrink-0"
                   onClick={() => {
-                    navigator.clipboard.writeText(`${window.location.origin}/sign-up?ref=${profile.referral_code}`);
+                    navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_APP_URL ?? window.location.origin}/sign-up?ref=${profile.referral_code}`);
                     setRefCopied(true);
                     setTimeout(() => setRefCopied(false), 2000);
                   }}
