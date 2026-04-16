@@ -17,6 +17,7 @@ export default function SettingsPage() {
   const [message, setMessage] = useState("");
   const [refCopied, setRefCopied] = useState(false);
   const [billingLoading, setBillingLoading] = useState(false);
+  const [billingError, setBillingError] = useState("");
   const [fubKey, setFubKey] = useState("");
   const [fubConnecting, setFubConnecting] = useState(false);
   const [fubSyncing, setFubSyncing] = useState(false);
@@ -174,8 +175,8 @@ export default function SettingsPage() {
                     if (!res.ok) throw new Error(data.error || "Failed to open billing portal");
                     if (data.url) window.location.href = data.url;
                   } catch (err) {
-                    setMessage(err instanceof Error ? err.message : "Could not open billing portal");
-                    setTimeout(() => setMessage(""), 4000);
+                    setBillingError(err instanceof Error ? err.message : "Could not open billing portal");
+                    setTimeout(() => setBillingError(""), 5000);
                   } finally {
                     setBillingLoading(false);
                   }
@@ -202,7 +203,7 @@ export default function SettingsPage() {
                       if (!res.ok) throw new Error(data.error || "Failed to start checkout");
                       if (data.url) window.location.href = data.url;
                     } catch (err) {
-                      setMessage(err instanceof Error ? err.message : "Could not start checkout");
+                      setBillingError(err instanceof Error ? err.message : "Could not start checkout");
                       setTimeout(() => setMessage(""), 4000);
                     } finally {
                       setBillingLoading(false);
@@ -229,8 +230,8 @@ export default function SettingsPage() {
                       if (!res.ok) throw new Error(data.error || "Failed to start checkout");
                       if (data.url) window.location.href = data.url;
                     } catch (err) {
-                      setMessage(err instanceof Error ? err.message : "Could not start checkout");
-                      setTimeout(() => setMessage(""), 4000);
+                      setBillingError(err instanceof Error ? err.message : "Could not start checkout");
+                      setTimeout(() => setBillingError(""), 5000);
                     } finally {
                       setBillingLoading(false);
                     }
@@ -240,6 +241,9 @@ export default function SettingsPage() {
                   <Badge variant="secondary" className="ml-1 text-xs">Save 20%</Badge>
                 </Button>
               </div>
+            )}
+            {billingError && (
+              <p className="text-sm text-red-500">{billingError}</p>
             )}
           </CardContent>
         </Card>
