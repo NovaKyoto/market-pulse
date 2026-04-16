@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   LayoutDashboard,
   FileText,
@@ -11,7 +12,10 @@ import {
   Settings,
   LogOut,
   Zap,
+  Menu,
+  X,
 } from "lucide-react";
+import { useState } from "react";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -28,6 +32,7 @@ export function DashboardShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   async function handleSignOut() {
     const supabase = createClient();
@@ -35,44 +40,99 @@ export function DashboardShell({
     window.location.href = "/";
   }
 
+  const sidebar = (
+    <>
+      <div className="flex h-16 items-center gap-2.5 px-5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+          <Zap className="h-4 w-4 text-primary-foreground" />
+        </div>
+        <span className="font-bold text-lg">MarketPulse</span>
+      </div>
+      <Separator />
+      <nav className="flex-1 space-y-1 px-3 py-4">
+        {navItems.map((item) => {
+          const active =
+            item.href === "/dashboard"
+              ? pathname === "/dashboard"
+              : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
+                active
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              <item.icon className="h-4 w-4" />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+      <Separator />
+      <div className="p-4">
+        <div className="mb-3">
+          <p className="text-sm font-medium truncate">{user.name || "Agent"}</p>
+          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-full justify-start text-muted-foreground hover:text-foreground"
+          onClick={handleSignOut}
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          Sign out
+        </Button>
+      </div>
+    </>
+  );
+
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar */}
+    <div className="flex min-h-screen bg-muted/30">
+      {/* Desktop Sidebar */}
       <aside className="hidden w-64 flex-col border-r bg-card md:flex">
-        <div className="flex h-14 items-center gap-2 border-b px-4">
-          <Zap className="h-5 w-5 text-primary" />
-          <span className="font-bold text-lg">MarketPulse</span>
-        </div>
-        <nav className="flex-1 space-y-1 px-3 py-4">
-          {navItems.map((item) => {
-            const active = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
-              >
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-        <div className="border-t p-4">
-          <div className="mb-2 truncate text-sm font-medium">{user.name || user.email}</div>
-          <Button variant="ghost" size="sm" className="w-full justify-start" onClick={handleSignOut}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Sign out
-          </Button>
-        </div>
+        {sidebar}
       </aside>
-      {/* Main */}
+
+      {/* Mobile Header */}
+      <div className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between border-b bg-card px-4 md:hidden">
+        <div className="flex items-center gap-2">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
+            <Zap className="h-3.5 w-3.5 text-primary-foreground" />
+          </div>
+          <span className="font-bold">MarketPulse</span>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setMobileOpen(!mobileOpen)}
+        >
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </Button>
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setMobileOpen(false)}
+          />
+          <aside className="absolute left-0 top-0 bottom-0 w-64 flex flex-col bg-card shadow-xl">
+            {sidebar}
+          </aside>
+        </div>
+      )}
+
+      {/* Main Content */}
       <main className="flex-1 overflow-auto">
-        <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">{children}</div>
+        <div className="mx-auto max-w-5xl px-4 py-8 pt-20 md:pt-8 sm:px-6 lg:px-8">
+          {children}
+        </div>
       </main>
     </div>
   );
