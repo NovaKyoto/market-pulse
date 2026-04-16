@@ -12,10 +12,44 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://market-pulse-five-ruby.vercel.app";
+
 export const metadata: Metadata = {
-  title: "MarketPulse - Automated AI Market Reports for Realtors",
+  title: {
+    default: "MarketPulse - Automated AI Market Reports for Realtors",
+    template: "%s | MarketPulse",
+  },
   description:
-    "AI generates branded weekly market reports and emails them to your client list. Look like a market expert. Zero effort.",
+    "AI generates branded weekly market reports and emails them to your client list. Real data, professional insights, zero effort. Trusted by 500+ agents.",
+  metadataBase: new URL(APP_URL),
+  keywords: [
+    "real estate market report",
+    "automated market reports",
+    "realtor marketing",
+    "AI real estate",
+    "weekly market update",
+    "real estate agent tools",
+    "CMA alternative",
+    "market analysis",
+  ],
+  openGraph: {
+    type: "website",
+    title: "MarketPulse - Automated AI Market Reports for Realtors",
+    description:
+      "AI analyzes real market data for your zip codes and writes branded reports emailed to your clients every week. You stay top-of-mind without doing a thing.",
+    siteName: "MarketPulse",
+    url: APP_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MarketPulse - AI Market Reports for Realtors",
+    description:
+      "Branded weekly market reports, powered by AI. Real data, zero effort.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
