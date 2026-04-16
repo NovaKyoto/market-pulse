@@ -180,6 +180,12 @@ export default async function PublicReportPage(props: {
           <p className="text-xs text-muted-foreground mt-1">
             AI-powered market reports for real estate professionals
           </p>
+          <a
+            href={`/sign-up${profile?.referral_code ? `?ref=${profile.referral_code}` : ""}`}
+            className="inline-block mt-3 text-xs text-primary hover:underline font-medium"
+          >
+            Want branded reports like this for your clients? Try MarketPulse free &rarr;
+          </a>
           <div className="flex items-center justify-center gap-3 mt-2 text-xs text-muted-foreground">
             <a href="/legal/terms" className="hover:text-foreground underline">Terms</a>
             <a href="/legal/privacy" className="hover:text-foreground underline">Privacy</a>

@@ -10,6 +10,9 @@ export interface Profile {
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   subscription_status: string;
+  ai_tone: string;
+  referral_code: string | null;
+  referred_by: string | null;
   created_at: string;
   updated_at: string;
 }

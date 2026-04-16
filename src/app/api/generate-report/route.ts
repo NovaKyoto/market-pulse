@@ -56,7 +56,8 @@ export async function POST(request: Request) {
     const { title, summary, insights } = await generateReportInsights(
       marketData,
       profile.full_name ?? "Your Agent",
-      profile.business_name ?? "MarketPulse"
+      profile.business_name ?? "MarketPulse",
+      profile.ai_tone ?? "professional"
     );
 
     // 3. Save report to database

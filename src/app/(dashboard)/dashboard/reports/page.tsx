@@ -32,6 +32,7 @@ import {
   Copy,
   Check,
   MessageSquare,
+  Download,
 } from "lucide-react";
 
 interface Report {
@@ -360,6 +361,14 @@ export default function ReportsPage() {
                           ) : (
                             <><Share2 className="h-3.5 w-3.5" />Share Link</>
                           )}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="gap-1.5"
+                          onClick={(e) => { e.stopPropagation(); window.open(`/api/report-pdf?id=${report.id}`, "_blank"); }}
+                        >
+                          <Download className="h-3.5 w-3.5" />PDF
                         </Button>
                         <Separator orientation="vertical" className="h-6" />
                         <span className="text-xs text-muted-foreground">Generate post:</span>

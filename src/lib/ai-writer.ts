@@ -9,7 +9,8 @@ function getClient() {
 export async function generateReportInsights(
   marketData: MarketData,
   agentName: string,
-  businessName: string
+  businessName: string,
+  aiTone: string = "professional"
 ): Promise<{ title: string; summary: string; insights: string }> {
   // Determine market conditions
   const marketType =
@@ -78,7 +79,13 @@ Requirements:
    - A brief forward-looking statement about the next 30-60 days
 
 Style rules:
-- Warm and authoritative, like a trusted advisor
+${aiTone === "conversational" ? `- Casual, friendly, and approachable — like texting a friend who happens to be a real estate expert
+- Use contractions, short sentences, and relatable analogies
+- It's okay to be a little playful or use humor` : aiTone === "luxury" ? `- Sophisticated, polished, and elegant — like a private wealth advisor
+- Use refined language, emphasize exclusivity and investment value
+- Speak to discerning buyers and high-net-worth homeowners` : `- Warm and authoritative, like a trusted advisor
+- Confident and data-driven, balancing expertise with accessibility
+- Sound knowledgeable but not stuffy`}
 - NO jargon (no "basis points", "absorption rate", etc.)
 - NO bullet points — flowing paragraphs only
 - Reference specific numbers from the data naturally

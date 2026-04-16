@@ -7,12 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Copy, Check, Gift } from "lucide-react";
 import type { Profile } from "@/types";
 
 export default function SettingsPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [refCopied, setRefCopied] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -44,6 +47,7 @@ export default function SettingsPage() {
         full_name: profile.full_name,
         business_name: profile.business_name,
         brand_color: profile.brand_color,
+        ai_tone: profile.ai_tone ?? "professional",
       })
       .eq("id", profile.id);
 
@@ -111,6 +115,36 @@ export default function SettingsPage() {
 
         <Card>
           <CardHeader>
+            <CardTitle>AI Writing Style</CardTitle>
+            <CardDescription>Choose how your market reports sound</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {([
+                { value: "professional", label: "Professional", desc: "Warm and authoritative, like a trusted advisor" },
+                { value: "conversational", label: "Conversational", desc: "Casual and friendly, like texting a knowledgeable friend" },
+                { value: "luxury", label: "Luxury", desc: "Sophisticated and polished, like a private wealth advisor" },
+              ] as const).map((tone) => (
+                <button
+                  key={tone.value}
+                  type="button"
+                  onClick={() => setProfile({ ...profile!, ai_tone: tone.value } as Profile)}
+                  className={`rounded-lg border-2 p-4 text-left transition-all ${
+                    (profile?.ai_tone ?? "professional") === tone.value
+                      ? "border-primary bg-primary/5"
+                      : "border-muted hover:border-muted-foreground/30"
+                  }`}
+                >
+                  <p className="font-semibold text-sm">{tone.label}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{tone.desc}</p>
+                </button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle>Subscription</CardTitle>
             <CardDescription>
               {profile.subscription_status === "active"
@@ -130,6 +164,44 @@ export default function SettingsPage() {
             >
               Manage Billing
             </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Gift className="h-5 w-5" />
+              Referral Program
+            </CardTitle>
+            <CardDescription>
+              Share your referral link with other agents. When they subscribe, you both get 1 free month!
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {profile.referral_code ? (
+              <div className="flex items-center gap-2">
+                <code className="flex-1 rounded-md border bg-muted px-3 py-2 text-sm font-mono">
+                  {typeof window !== "undefined" ? window.location.origin : ""}/sign-up?ref={profile.referral_code}
+                </code>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5 shrink-0"
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${window.location.origin}/sign-up?ref=${profile.referral_code}`);
+                    setRefCopied(true);
+                    setTimeout(() => setRefCopied(false), 2000);
+                  }}
+                >
+                  {refCopied ? <><Check className="h-3.5 w-3.5 text-green-600" />Copied</> : <><Copy className="h-3.5 w-3.5" />Copy</>}
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Your referral code will be generated automatically. Save your settings to activate it.
+              </p>
+            )}
           </CardContent>
         </Card>
 
