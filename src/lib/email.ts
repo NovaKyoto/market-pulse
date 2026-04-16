@@ -111,8 +111,13 @@ export async function sendReportEmail(params: SendReportEmailParams) {
     ...(recipientName ? [{ name: "recipient_name", value: recipientName }] : []),
   ];
 
+  const fromEmail = process.env.RESEND_FROM_EMAIL ?? "reports@mail.marketpulse.now";
+  // Use friendly "Business Name <email>" format for better deliverability & trust
+  const fromHeader = `${businessName} <${fromEmail}>`;
+
   return getResend().emails.send({
-    from: process.env.RESEND_FROM_EMAIL ?? "reports@marketpulse.ai",
+    from: fromHeader,
+    replyTo: undefined,
     to,
     subject: `${reportTitle} | ${businessName}`,
     html,
