@@ -144,11 +144,31 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold mt-8 mb-3">10. International Users</h2>
+            <h2 className="text-lg font-semibold mt-8 mb-3">10. International Users and GDPR</h2>
             <p>
               The Service is hosted in the United States. If you access the Service from outside the
-              U.S., your information may be transferred to and processed in the United States. By
-              using the Service, you consent to this transfer.
+              U.S., your information may be transferred to and processed in the United States.
+            </p>
+            <p className="mt-2">
+              <strong>European Economic Area (EEA), United Kingdom, and Switzerland:</strong> If you
+              are located in these regions, you have additional rights under the General Data
+              Protection Regulation (GDPR) and equivalent local laws:
+            </p>
+            <ul className="list-disc pl-5 mt-2 space-y-1">
+              <li><strong>Legal Basis for Processing</strong> &mdash; We process your data based on: (a) your consent, (b) performance of a contract (providing the Service), (c) compliance with legal obligations, and (d) our legitimate interests (improving the Service, fraud prevention)</li>
+              <li><strong>Right to Restrict Processing</strong> &mdash; Request that we limit how we use your data</li>
+              <li><strong>Right to Object</strong> &mdash; Object to processing based on our legitimate interests</li>
+              <li><strong>Right to Lodge a Complaint</strong> &mdash; You may file a complaint with your local data protection authority (e.g., the ICO in the UK, CNIL in France, BfDI in Germany)</li>
+              <li><strong>Data Transfers</strong> &mdash; Data transferred outside the EEA/UK relies on Standard Contractual Clauses (SCCs) as approved by the European Commission</li>
+            </ul>
+            <p className="mt-2">
+              <strong>Canada:</strong> Your rights under PIPEDA are respected. You may withdraw
+              consent to data processing at any time by contacting us.
+            </p>
+            <p className="mt-2">
+              <strong>Australia:</strong> We comply with the Australian Privacy Principles (APPs)
+              under the Privacy Act 1988. You may access and correct your personal information by
+              contacting us.
             </p>
           </section>
 

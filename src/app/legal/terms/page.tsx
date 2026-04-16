@@ -180,18 +180,24 @@ export default function TermsPage() {
             <h2 className="text-lg font-semibold mt-8 mb-3">13. Dispute Resolution</h2>
             <p>
               Any dispute arising from these Terms shall be resolved through binding arbitration in
-              accordance with the American Arbitration Association rules. The arbitration may be
-              conducted remotely or in a mutually agreed-upon location within the United States. You
-              agree to waive any right to a jury trial or participation in a class action lawsuit.
+              accordance with the rules of the International Chamber of Commerce (ICC) or, for
+              U.S.-based users, the American Arbitration Association (AAA). Arbitration may be
+              conducted remotely or in a mutually agreed-upon location. You agree to waive any right
+              to a jury trial or participation in a class action lawsuit to the extent permitted by
+              applicable law.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold mt-8 mb-3">14. Governing Law</h2>
             <p>
-              These Terms are governed by the federal laws of the United States of America and, where
-              applicable, the laws of the state in which the user resides, without regard to conflict
-              of law provisions.
+              These Terms are governed by the federal laws of the United States of America. For users
+              located outside the United States, these Terms shall be interpreted in accordance with
+              U.S. federal law, except where superseded by mandatory local consumer protection laws
+              in your jurisdiction (including, but not limited to, the EU General Data Protection
+              Regulation, UK Data Protection Act 2018, and applicable consumer rights directives).
+              Nothing in these Terms limits your statutory rights under the laws of your country of
+              residence.
             </p>
           </section>
 
