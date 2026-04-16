@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createCustomer, createCheckoutSession } from "@/lib/stripe";
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://market-pulse-five-ruby.vercel.app";
+
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
@@ -50,8 +52,8 @@ export async function POST(request: Request) {
     const session = await createCheckoutSession(
       customerId,
       priceId,
-      `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success`,
-      `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=cancelled`
+      `${APP_URL}/dashboard?checkout=success`,
+      `${APP_URL}/dashboard?checkout=cancelled`
     );
 
     return NextResponse.json({ url: session.url });
