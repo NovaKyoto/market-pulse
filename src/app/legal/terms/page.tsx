@@ -180,16 +180,17 @@ export default function TermsPage() {
             <h2 className="text-lg font-semibold mt-8 mb-3">13. Dispute Resolution</h2>
             <p>
               Any dispute arising from these Terms shall be resolved through binding arbitration in
-              accordance with the American Arbitration Association rules, conducted in Harris County,
-              Texas. You agree to waive any right to a jury trial or participation in a class action
-              lawsuit.
+              accordance with the American Arbitration Association rules. The arbitration may be
+              conducted remotely or in a mutually agreed-upon location within the United States. You
+              agree to waive any right to a jury trial or participation in a class action lawsuit.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold mt-8 mb-3">14. Governing Law</h2>
             <p>
-              These Terms are governed by the laws of the State of Texas, without regard to conflict
+              These Terms are governed by the federal laws of the United States of America and, where
+              applicable, the laws of the state in which the user resides, without regard to conflict
               of law provisions.
             </p>
           </section>
