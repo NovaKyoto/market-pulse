@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, Gift, Link2, Unlink, RefreshCw } from "lucide-react";
+import { Copy, Check, Gift, Link2, Unlink, RefreshCw, CreditCard, Loader2 } from "lucide-react";
 import type { Profile } from "@/types";
 
 export default function SettingsPage() {
@@ -16,6 +16,7 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [refCopied, setRefCopied] = useState(false);
+  const [billingLoading, setBillingLoading] = useState(false);
   const [fubKey, setFubKey] = useState("");
   const [fubConnecting, setFubConnecting] = useState(false);
   const [fubSyncing, setFubSyncing] = useState(false);
@@ -153,21 +154,93 @@ export default function SettingsPage() {
             <CardDescription>
               {profile.subscription_status === "active"
                 ? "Your subscription is active"
-                : "You are on a free trial"}
+                : profile.subscription_status === "trialing"
+                ? "You are on a free trial"
+                : "Subscribe to unlock weekly reports and email delivery"}
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={async () => {
-                const res = await fetch("/api/stripe/portal", { method: "POST" });
-                const { url } = await res.json();
-                if (url) window.location.href = url;
-              }}
-            >
-              Manage Billing
-            </Button>
+          <CardContent className="space-y-3">
+            {profile.stripe_customer_id ? (
+              <Button
+                type="button"
+                variant="outline"
+                className="gap-2"
+                disabled={billingLoading}
+                onClick={async () => {
+                  setBillingLoading(true);
+                  try {
+                    const res = await fetch("/api/stripe/portal", { method: "POST" });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || "Failed to open billing portal");
+                    if (data.url) window.location.href = data.url;
+                  } catch (err) {
+                    setMessage(err instanceof Error ? err.message : "Could not open billing portal");
+                    setTimeout(() => setMessage(""), 4000);
+                  } finally {
+                    setBillingLoading(false);
+                  }
+                }}
+              >
+                {billingLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CreditCard className="h-4 w-4" />}
+                Manage Billing
+              </Button>
+            ) : (
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  className="gap-2"
+                  disabled={billingLoading}
+                  onClick={async () => {
+                    setBillingLoading(true);
+                    try {
+                      const res = await fetch("/api/stripe/checkout", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ plan: "monthly" }),
+                      });
+                      const data = await res.json();
+                      if (!res.ok) throw new Error(data.error || "Failed to start checkout");
+                      if (data.url) window.location.href = data.url;
+                    } catch (err) {
+                      setMessage(err instanceof Error ? err.message : "Could not start checkout");
+                      setTimeout(() => setMessage(""), 4000);
+                    } finally {
+                      setBillingLoading(false);
+                    }
+                  }}
+                >
+                  {billingLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CreditCard className="h-4 w-4" />}
+                  Subscribe — $49/mo
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="gap-2"
+                  disabled={billingLoading}
+                  onClick={async () => {
+                    setBillingLoading(true);
+                    try {
+                      const res = await fetch("/api/stripe/checkout", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ plan: "annual" }),
+                      });
+                      const data = await res.json();
+                      if (!res.ok) throw new Error(data.error || "Failed to start checkout");
+                      if (data.url) window.location.href = data.url;
+                    } catch (err) {
+                      setMessage(err instanceof Error ? err.message : "Could not start checkout");
+                      setTimeout(() => setMessage(""), 4000);
+                    } finally {
+                      setBillingLoading(false);
+                    }
+                  }}
+                >
+                  Annual — $39/mo
+                  <Badge variant="secondary" className="ml-1 text-xs">Save 20%</Badge>
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 

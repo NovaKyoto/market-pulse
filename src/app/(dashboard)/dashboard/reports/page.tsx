@@ -34,6 +34,7 @@ import {
   MessageSquare,
   Download,
   Image,
+  Search,
 } from "lucide-react";
 
 interface Report {
@@ -70,6 +71,7 @@ export default function ReportsPage() {
   const [postCopied, setPostCopied] = useState(false);
   const [customZip, setCustomZip] = useState("");
   const [sendToRecipients, setSendToRecipients] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const supabase = createClient();
 
   useEffect(() => {
@@ -250,9 +252,35 @@ export default function ReportsPage() {
             </p>
           </CardContent>
         </Card>
-      ) : (
+      ) : (() => {
+        const q = searchQuery.toLowerCase();
+        const filtered = q
+          ? reports.filter(
+              (r) =>
+                r.title.toLowerCase().includes(q) ||
+                r.zip_code.includes(q) ||
+                r.market_data?.city?.toLowerCase().includes(q) ||
+                r.market_data?.state?.toLowerCase().includes(q)
+            )
+          : reports;
+        return (
         <div className="space-y-4">
-          {reports.map((report) => {
+          {reports.length > 3 && (
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by title, ZIP, city, or state..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          )}
+          {filtered.length === 0 ? (
+            <p className="text-center text-sm text-muted-foreground py-8">
+              No reports match &quot;{searchQuery}&quot;
+            </p>
+          ) : filtered.map((report) => {
             const expanded = expandedId === report.id;
             const md = report.market_data;
 
@@ -428,7 +456,8 @@ export default function ReportsPage() {
             );
           })}
         </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
