@@ -21,9 +21,7 @@ export default async function DashboardLayout({
     .single();
 
   // Redirect to onboarding if not complete
-  const path =
-    typeof window === "undefined" ? "" : window.location.pathname;
-  if (profile && !profile.onboarding_complete && !path.includes("onboarding")) {
+  if (profile && !profile.onboarding_complete) {
     redirect("/onboarding");
   }
 
