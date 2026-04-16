@@ -13,6 +13,7 @@ export interface Profile {
   ai_tone: string;
   referral_code: string | null;
   referred_by: string | null;
+  fub_api_key: string | null;
   created_at: string;
   updated_at: string;
 }

@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { fetchMarketData } from "@/lib/market-data";
 import { generateReportInsights } from "@/lib/ai-writer";
 import { sendReportEmail } from "@/lib/email";
+import { pushReportToFub } from "@/lib/follow-up-boss";
 
 export async function POST(request: Request) {
   const supabase = await createClient();
@@ -109,6 +110,16 @@ export async function POST(request: Request) {
           .from("reports")
           .update({ status: "sent", sent_at: new Date().toISOString() })
           .eq("id", report.id);
+      }
+
+      // Push notes to Follow Up Boss (non-blocking)
+      if (profile.fub_api_key && report) {
+        const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? ""}/report/${report.id}`;
+        Promise.all(
+          recipients.map((r) =>
+            pushReportToFub(profile.fub_api_key!, r.email, title, reportUrl)
+          )
+        ).catch(() => {});
       }
     }
 

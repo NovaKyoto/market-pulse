@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, Gift } from "lucide-react";
+import { Copy, Check, Gift, Link2, Unlink, RefreshCw } from "lucide-react";
 import type { Profile } from "@/types";
 
 export default function SettingsPage() {
@@ -16,6 +16,10 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [refCopied, setRefCopied] = useState(false);
+  const [fubKey, setFubKey] = useState("");
+  const [fubConnecting, setFubConnecting] = useState(false);
+  const [fubSyncing, setFubSyncing] = useState(false);
+  const [fubMessage, setFubMessage] = useState("");
   const supabase = createClient();
 
   useEffect(() => {
@@ -164,6 +168,113 @@ export default function SettingsPage() {
             >
               Manage Billing
             </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Link2 className="h-5 w-5" />
+              Follow Up Boss Integration
+            </CardTitle>
+            <CardDescription>
+              Connect your CRM to auto-sync contacts and log report activity
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {profile.fub_api_key ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Badge className="bg-green-100 text-green-700 hover:bg-green-100">Connected</Badge>
+                  <span className="text-sm text-muted-foreground">
+                    Report sends will be logged as notes in FUB
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="gap-1.5"
+                    disabled={fubSyncing}
+                    onClick={async () => {
+                      setFubSyncing(true);
+                      setFubMessage("");
+                      try {
+                        const res = await fetch("/api/fub/sync", { method: "POST" });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.error);
+                        setFubMessage(`Synced ${data.imported} contacts${data.skipped ? `, ${data.skipped} skipped` : ""}`);
+                      } catch (err) {
+                        setFubMessage(err instanceof Error ? err.message : "Sync failed");
+                      } finally {
+                        setFubSyncing(false);
+                        setTimeout(() => setFubMessage(""), 5000);
+                      }
+                    }}
+                  >
+                    {fubSyncing ? <><RefreshCw className="h-3.5 w-3.5 animate-spin" />Syncing...</> : <><RefreshCw className="h-3.5 w-3.5" />Sync Contacts</>}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="gap-1.5 text-destructive"
+                    onClick={async () => {
+                      await fetch("/api/fub/connect", { method: "DELETE" });
+                      setProfile({ ...profile!, fub_api_key: null } as Profile);
+                    }}
+                  >
+                    <Unlink className="h-3.5 w-3.5" />Disconnect
+                  </Button>
+                </div>
+                {fubMessage && <p className="text-sm text-muted-foreground">{fubMessage}</p>}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  Enter your Follow Up Boss API key to connect. Find it in FUB under Admin &gt; API.
+                </p>
+                <div className="flex gap-2">
+                  <Input
+                    type="password"
+                    placeholder="fub_xxxxxxxxxxxxxxxxxx"
+                    value={fubKey}
+                    onChange={(e) => setFubKey(e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    className="gap-1.5 shrink-0"
+                    disabled={fubConnecting || fubKey.length < 10}
+                    onClick={async () => {
+                      setFubConnecting(true);
+                      setFubMessage("");
+                      try {
+                        const res = await fetch("/api/fub/connect", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ apiKey: fubKey }),
+                        });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.error);
+                        setProfile({ ...profile!, fub_api_key: fubKey } as Profile);
+                        setFubKey("");
+                      } catch (err) {
+                        setFubMessage(err instanceof Error ? err.message : "Connection failed");
+                        setTimeout(() => setFubMessage(""), 5000);
+                      } finally {
+                        setFubConnecting(false);
+                      }
+                    }}
+                  >
+                    {fubConnecting ? "Verifying..." : <><Link2 className="h-3.5 w-3.5" />Connect</>}
+                  </Button>
+                </div>
+                {fubMessage && <p className="text-sm text-red-500">{fubMessage}</p>}
+              </div>
+            )}
           </CardContent>
         </Card>
 

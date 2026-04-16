@@ -33,6 +33,7 @@ import {
   Check,
   MessageSquare,
   Download,
+  Image,
 } from "lucide-react";
 
 interface Report {
@@ -369,6 +370,14 @@ export default function ReportsPage() {
                           onClick={(e) => { e.stopPropagation(); window.open(`/api/report-pdf?id=${report.id}`, "_blank"); }}
                         >
                           <Download className="h-3.5 w-3.5" />PDF
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="gap-1.5"
+                          onClick={(e) => { e.stopPropagation(); window.open(`/api/social-image?id=${report.id}&platform=instagram`, "_blank"); }}
+                        >
+                          <Image className="h-3.5 w-3.5" />Social Image
                         </Button>
                         <Separator orientation="vertical" className="h-6" />
                         <span className="text-xs text-muted-foreground">Generate post:</span>
