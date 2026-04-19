@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { CITIES } from "@/lib/cities";
 
-const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now";
+// Trim any whitespace/newlines that may be in the env var value
+const BASE = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -16,7 +17,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/legal/cookies`, lastModified: now, changeFrequency: "monthly", priority: 0.2 },
   ];
 
-  // Add every city page — these are the high-value SEO landing pages
   const cityPages: MetadataRoute.Sitemap = CITIES.map((city) => ({
     url: `${BASE}/market/${city.slug}`,
     lastModified: now,

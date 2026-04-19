@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, MapPin, Zap } from "lucide-react";
 import { CITIES } from "@/lib/cities";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now";
+const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
 export const metadata: Metadata = {
   title: "Live Housing Market Reports for 50+ US Cities",

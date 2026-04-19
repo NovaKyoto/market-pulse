@@ -22,7 +22,7 @@ import {
 import { CITIES, getCityBySlug, formatCityTitle } from "@/lib/cities";
 import { fetchMarketData, formatCurrency, formatPercent } from "@/lib/market-data";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now";
+const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
 // Pre-render all city pages at build time (ISR with revalidation)
 export async function generateStaticParams() {
