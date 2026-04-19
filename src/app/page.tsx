@@ -381,6 +381,9 @@ export default function LandingPage() {
               <Link href="/market" className="hover:text-foreground transition-colors">
                 Markets
               </Link>
+              <Link href="/blog" className="hover:text-foreground transition-colors">
+                Blog
+              </Link>
               <Link href="/legal/terms" className="hover:text-foreground transition-colors">
                 Terms
               </Link>
