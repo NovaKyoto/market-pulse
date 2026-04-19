@@ -378,6 +378,9 @@ export default function LandingPage() {
               Automated AI market reports for real estate agents
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground">
+              <Link href="/market" className="hover:text-foreground transition-colors">
+                Markets
+              </Link>
               <Link href="/legal/terms" className="hover:text-foreground transition-colors">
                 Terms
               </Link>
