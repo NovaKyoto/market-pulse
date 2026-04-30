@@ -3,8 +3,22 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, MapPin, Zap, Database, Sparkles, Search } from "lucide-react";
-import { CITIES } from "@/lib/cities";
+import {
+  ArrowRight,
+  MapPin,
+  Zap,
+  Database,
+  Sparkles,
+  Search,
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  Flame,
+  Snowflake,
+  Scale,
+} from "lucide-react";
+import { CITIES, type City } from "@/lib/cities";
+import { fetchMarketData, formatCurrency } from "@/lib/market-data";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
@@ -44,10 +58,26 @@ const FEATURED_SLUGS = [
   "dallas-tx",
 ];
 
-export default function MarketIndexPage() {
+// Revalidate the page (and its fetched data) every 24 hours
+export const revalidate = 86400;
+
+interface FeaturedCity {
+  city: City;
+  data: Awaited<ReturnType<typeof fetchMarketData>>;
+}
+
+export default async function MarketIndexPage() {
   const byState = groupByState();
-  const featured = FEATURED_SLUGS.map((s) => CITIES.find((c) => c.slug === s)).filter(
-    (c): c is (typeof CITIES)[number] => Boolean(c)
+  const featuredCities = FEATURED_SLUGS.map((s) => CITIES.find((c) => c.slug === s)).filter(
+    (c): c is City => Boolean(c)
+  );
+
+  // Fetch live market data for all featured cities in parallel
+  const featured: FeaturedCity[] = await Promise.all(
+    featuredCities.map(async (city) => ({
+      city,
+      data: await fetchMarketData(city.zipCode),
+    }))
   );
 
   return (
@@ -143,32 +173,142 @@ export default function MarketIndexPage() {
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
                 Featured markets
               </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Live data · Updated daily · Click to see the full report
+              </p>
             </div>
+            <Link
+              href="/market"
+              className="hidden sm:inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline"
+            >
+              View all {CITIES.length}
+              <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {featured.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/market/${c.slug}`}
-                className="group relative overflow-hidden rounded-xl border bg-background p-5 hover:border-primary/50 hover:shadow-lg transition-all"
-              >
-                <div className="absolute top-0 right-0 h-24 w-24 bg-gradient-to-br from-blue-500/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative">
-                  <Badge variant="secondary" className="mb-3 text-xs">
-                    <MapPin className="mr-1 h-2.5 w-2.5" />
-                    {c.stateCode}
-                  </Badge>
-                  <p className="font-bold text-lg group-hover:text-primary transition-colors">
-                    {c.name}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">{c.state}</p>
-                  <div className="mt-4 flex items-center gap-1 text-xs font-medium text-primary">
-                    View market
-                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {featured.map(({ city, data }) => {
+              const priceUp = (data.price_change_pct ?? 0) >= 0;
+              const isSellersMarket = (data.inventory_months ?? 6) < 4;
+              const isBuyersMarket = (data.inventory_months ?? 6) > 6;
+              const sentimentLabel = isSellersMarket
+                ? "Seller's"
+                : isBuyersMarket
+                ? "Buyer's"
+                : "Balanced";
+              const SentimentIcon = isSellersMarket
+                ? Flame
+                : isBuyersMarket
+                ? Snowflake
+                : Scale;
+              const sentimentGradient = isSellersMarket
+                ? "from-rose-500/15 via-orange-500/10 to-transparent"
+                : isBuyersMarket
+                ? "from-emerald-500/15 via-teal-500/10 to-transparent"
+                : "from-amber-500/15 via-orange-500/10 to-transparent";
+              const sentimentBadge = isSellersMarket
+                ? "bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30"
+                : isBuyersMarket
+                ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30"
+                : "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30";
+
+              return (
+                <Link
+                  key={city.slug}
+                  href={`/market/${city.slug}`}
+                  className="group relative overflow-hidden rounded-2xl border bg-background hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10"
+                >
+                  {/* Gradient accent layer (sentiment-based) */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${sentimentGradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
+                  />
+                  {/* Decorative blob */}
+                  <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  <div className="relative p-5">
+                    {/* Top row: city + sentiment */}
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <MapPin className="h-3 w-3" />
+                        {city.stateCode}
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className={`gap-1 text-[10px] uppercase tracking-wider px-2 ${sentimentBadge}`}
+                      >
+                        <SentimentIcon className="h-2.5 w-2.5" />
+                        {sentimentLabel}
+                      </Badge>
+                    </div>
+
+                    {/* City name */}
+                    <h3 className="font-bold text-xl tracking-tight group-hover:text-primary transition-colors leading-tight">
+                      {city.name}
+                    </h3>
+
+                    {/* Median Price - the hero stat */}
+                    <div className="mt-4">
+                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
+                        Median Price
+                      </p>
+                      <p className="text-2xl font-extrabold font-mono tracking-tighter mt-1">
+                        {formatCurrency(data.median_price)}
+                      </p>
+                      <div
+                        className={`mt-1 inline-flex items-center gap-0.5 text-xs font-medium ${
+                          priceUp ? "text-emerald-600" : "text-red-500"
+                        }`}
+                      >
+                        {priceUp ? (
+                          <TrendingUp className="h-3 w-3" />
+                        ) : (
+                          <TrendingDown className="h-3 w-3" />
+                        )}
+                        {data.price_change_pct > 0 ? "+" : ""}
+                        {data.price_change_pct.toFixed(1)}% YoY
+                      </div>
+                    </div>
+
+                    {/* Secondary stats row */}
+                    <div className="mt-4 pt-3 border-t flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        <span className="font-mono font-semibold text-foreground">
+                          {data.avg_days_on_market}
+                        </span>
+                        <span>days</span>
+                      </div>
+                      <div className="text-muted-foreground">
+                        <span className="font-mono font-semibold text-foreground">
+                          {data.active_listings}
+                        </span>
+                        <span className="ml-1">listings</span>
+                      </div>
+                    </div>
+
+                    {/* CTA */}
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                        View full report
+                      </span>
+                      <div className="ml-auto flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                        <ArrowRight className="h-3.5 w-3.5 text-primary group-hover:text-white transition-colors" />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Mobile-only "view all" link */}
+          <div className="mt-6 text-center sm:hidden">
+            <Link
+              href="/market"
+              className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline"
+            >
+              View all {CITIES.length} markets
+              <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
         </div>
       </section>
