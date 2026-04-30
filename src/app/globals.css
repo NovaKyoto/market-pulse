@@ -158,6 +158,22 @@
   background: rgba(20, 20, 30, 0.4);
 }
 
+/* City artwork animations — used in /market featured cards */
+@keyframes sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes flicker {
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  50% { transform: scaleY(0.9); opacity: 0.85; }
+}
+
 /* Premium glassmorphism cards */
 .glass-card {
   background: oklch(1 0 0 / 60%);

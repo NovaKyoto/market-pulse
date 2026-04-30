@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { CITIES, type City } from "@/lib/cities";
 import { fetchMarketData, formatCurrency } from "@/lib/market-data";
+import { CityArtwork } from "@/components/markets/city-artwork";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
@@ -217,12 +218,16 @@ export default async function MarketIndexPage() {
                   href={`/market/${city.slug}`}
                   className="group relative overflow-hidden rounded-2xl border bg-background hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10"
                 >
-                  {/* Gradient accent layer (sentiment-based) */}
+                  {/* City-specific SVG artwork (palms, skylines, cactus, etc.) */}
+                  <CityArtwork slug={city.slug} />
+
+                  {/* Sentiment gradient overlay (always visible for legibility) */}
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${sentimentGradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
+                    className={`absolute inset-0 bg-gradient-to-br ${sentimentGradient} opacity-90 group-hover:opacity-75 transition-opacity duration-300`}
                   />
-                  {/* Decorative blob */}
-                  <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  {/* White-to-transparent gradient at top for text legibility */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background/70" />
 
                   <div className="relative p-5">
                     {/* Top row: city + sentiment */}
