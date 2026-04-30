@@ -158,7 +158,7 @@ export default async function CityMarketPage(props: {
     : "from-amber-500 to-orange-600";
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen marketing-bg">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reportLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
@@ -191,12 +191,7 @@ export default async function CityMarketPage(props: {
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden border-b">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-20 -right-20 h-[500px] w-[500px] rounded-full bg-blue-500/15 blur-[120px]" />
-          <div className="absolute top-40 -left-20 h-[400px] w-[400px] rounded-full bg-indigo-500/10 blur-[120px]" />
-        </div>
-
+      <section className="relative border-b">
         <div className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
           {/* Breadcrumb */}
           <div className="mb-6 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
@@ -212,9 +207,9 @@ export default async function CityMarketPage(props: {
               <Sparkles className="h-3 w-3" />
               {marketLabel} · Updated {monthYear}
             </Badge>
-            <h1 className="text-4xl font-extrabold tracking-tighter sm:text-6xl lg:text-7xl leading-[0.95]">
+            <h1 className="text-4xl font-extrabold tracking-tighter sm:text-6xl lg:text-7xl leading-[1.05]">
               {city.name}
-              <span className="block mt-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent">
+              <span className="block mt-2 pb-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent">
                 Housing Market
               </span>
             </h1>
@@ -364,7 +359,7 @@ export default async function CityMarketPage(props: {
       </section>
 
       {/* Market Analysis */}
-      <section className="border-t bg-muted/30 py-16">
+      <section className="border-t marketing-muted py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-primary font-semibold mb-3">
             <Sparkles className="h-3.5 w-3.5" />
@@ -467,7 +462,7 @@ export default async function CityMarketPage(props: {
       </section>
 
       {/* FAQ */}
-      <section className="border-t bg-muted/30 py-16">
+      <section className="border-t marketing-muted py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter text-center mb-3">
             Common questions about {city.name}
@@ -550,7 +545,7 @@ export default async function CityMarketPage(props: {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-background py-12 mt-auto">
+      <footer className="border-t bg-white/80 backdrop-blur-md py-12 mt-auto">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid gap-8 md:grid-cols-4">
             <div>

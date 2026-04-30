@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Check, Zap, Users, Calendar, Gift, Sparkles, Clock } from "lucide-react";
+import { ArrowRight, Check, Zap, Users, Gift, Sparkles, Clock, Star, Quote } from "lucide-react";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function FoundingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen marketing-bg">
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -57,12 +57,12 @@ export default function FoundingPage() {
               Limited — 5 Spots Total
             </Badge>
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-              Become a<span className="block mt-1 bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Founding Member</span>
+              Become a<span className="block mt-1 pb-2 bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Founding Member</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
               The first 5 agents get <strong className="text-foreground">90 days free</strong>, then{" "}
               <strong className="text-foreground">$24.50/mo for life</strong> (half price, forever).
-              In exchange, I ask for a 15-minute feedback call and a testimonial if you love it.
+              In exchange, I ask for a 15-minute survey, a testimonial, and a star rating once you&apos;ve used it.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link href="/sign-up">
@@ -126,8 +126,8 @@ export default function FoundingPage() {
                 </div>
                 <h3 className="font-bold text-lg mb-2">Direct Input</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Your feedback shapes the product. I&apos;ll personally onboard you, answer every
-                  question, and build features you ask for.
+                  Your feedback shapes the product. I read every survey response personally and
+                  build the features you actually ask for.
                 </p>
               </CardContent>
             </Card>
@@ -136,7 +136,7 @@ export default function FoundingPage() {
       </section>
 
       {/* What You Commit */}
-      <section className="border-t bg-muted/30 py-16">
+      <section className="border-t marketing-muted py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="text-3xl font-bold tracking-tight text-center mb-6">
             What I ask in return
@@ -149,37 +149,36 @@ export default function FoundingPage() {
               <div className="space-y-5">
                 <div className="flex gap-4">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <Calendar className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold">One 15-minute call in your first 2 weeks</p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      I&apos;ll walk you through setup, import your client list with you, and send
-                      your first report live on the call. Zero friction.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
                     <Sparkles className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-semibold">Honest feedback</p>
+                    <p className="font-semibold">A 15-minute survey after using it</p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      When something&apos;s confusing or broken, tell me. I&apos;ll fix it or build
-                      what you actually need.
+                      Once you&apos;ve sent a few reports, fill out a short survey about your experience —
+                      what worked, what didn&apos;t, what you wish it did. No call required. Done at your own pace.
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <Users className="h-4 w-4 text-primary" />
+                    <Star className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-semibold">A testimonial if you love it</p>
+                    <p className="font-semibold">A star rating</p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Only if. If it doesn&apos;t work for you, no hard feelings — just tell me why
-                      so I can make it better.
+                      Rate MarketPulse out of 5 stars. Helps future agents decide if it&apos;s right for them.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                    <Quote className="h-4 w-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-semibold">A short testimonial (only if you love it)</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      One or two sentences about why MarketPulse worked for you. If it didn&apos;t, no
+                      hard feelings — just include that in the survey so I can make it better.
                     </p>
                   </div>
                 </div>
@@ -236,8 +235,8 @@ export default function FoundingPage() {
               </div>
               <h2 className="text-3xl font-bold tracking-tight">Lock in your rate forever</h2>
               <p className="mt-3 text-muted-foreground max-w-lg mx-auto">
-                Start your 90-day free trial now. No credit card required. I&apos;ll reach out
-                personally to schedule your 15-minute onboarding call.
+                Start your 90-day free trial now. No credit card required. After you&apos;ve used
+                MarketPulse, I&apos;ll send you a quick survey link.
               </p>
               <div className="mt-8">
                 <Link href="/sign-up">

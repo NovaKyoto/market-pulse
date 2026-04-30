@@ -5,10 +5,11 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { ArrowLeft, Zap } from "lucide-react";
 
 function SignInForm() {
   const [email, setEmail] = useState("");
@@ -75,18 +76,34 @@ function SignInForm() {
 
 export default function SignInPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">MarketPulse</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Suspense fallback={<div className="h-48 animate-pulse" />}>
-            <SignInForm />
-          </Suspense>
-        </CardContent>
-      </Card>
+    <div className="flex min-h-screen flex-col marketing-bg px-4 py-8">
+      <div className="mx-auto w-full max-w-sm">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to MarketPulse
+        </Link>
+      </div>
+      <div className="flex flex-1 items-center justify-center">
+        <Card className="w-full max-w-sm shadow-lg">
+          <CardHeader className="text-center">
+            <Link href="/" className="inline-flex items-center justify-center gap-2 mb-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-500/20">
+                <Zap className="h-4 w-4 text-white" />
+              </div>
+              <span className="text-xl font-bold">MarketPulse</span>
+            </Link>
+            <CardDescription>Sign in to your account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Suspense fallback={<div className="h-48 animate-pulse" />}>
+              <SignInForm />
+            </Suspense>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -9,6 +9,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { ArrowLeft, Zap } from "lucide-react";
+
+function AuthShell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex min-h-screen flex-col marketing-bg px-4 py-8">
+      <div className="mx-auto w-full max-w-sm">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to MarketPulse
+        </Link>
+      </div>
+      <div className="flex flex-1 items-center justify-center">{children}</div>
+    </div>
+  );
+}
 
 function SignUpForm() {
   const searchParams = useSearchParams();
@@ -48,24 +66,35 @@ function SignUpForm() {
 
   if (success) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
-        <Card className="w-full max-w-sm">
+      <AuthShell>
+        <Card className="w-full max-w-sm shadow-lg">
           <CardHeader className="text-center">
+            <Link href="/" className="inline-flex items-center justify-center gap-2 mb-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-500/20">
+                <Zap className="h-4 w-4 text-white" />
+              </div>
+              <span className="text-xl font-bold">MarketPulse</span>
+            </Link>
             <CardTitle className="text-2xl font-bold">Check your email</CardTitle>
             <CardDescription>
               We sent a confirmation link to {email}. Click it to activate your account.
             </CardDescription>
           </CardHeader>
         </Card>
-      </div>
+      </AuthShell>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
-      <Card className="w-full max-w-sm">
+    <AuthShell>
+      <Card className="w-full max-w-sm shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">MarketPulse</CardTitle>
+          <Link href="/" className="inline-flex items-center justify-center gap-2 mb-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-500/20">
+              <Zap className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-xl font-bold">MarketPulse</span>
+          </Link>
           <CardDescription>Start your 14-day free trial</CardDescription>
         </CardHeader>
         <CardContent>
@@ -134,7 +163,7 @@ function SignUpForm() {
           </form>
         </CardContent>
       </Card>
-    </div>
+    </AuthShell>
   );
 }
 

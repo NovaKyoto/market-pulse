@@ -73,7 +73,7 @@ const faqs = [
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen marketing-bg">
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -103,22 +103,16 @@ export default function LandingPage() {
       </header>
 
       {/* Hero + Live Preview */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-blue-500/20 blur-[120px]" />
-          <div className="absolute top-40 -left-40 h-[400px] w-[400px] rounded-full bg-indigo-500/15 blur-[120px]" />
-          <div className="absolute bottom-0 left-1/3 h-[300px] w-[300px] rounded-full bg-purple-500/10 blur-[120px]" />
-        </div>
-
+      <section className="relative">
         <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
           <div className="mx-auto max-w-3xl text-center">
             <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm gap-1.5 bg-background/80 backdrop-blur border shadow-sm">
               <Sparkles className="h-3.5 w-3.5 text-amber-500" />
               <span>Now in launch — Founding 5 program open</span>
             </Badge>
-            <h1 className="text-5xl font-extrabold tracking-tighter sm:text-6xl lg:text-7xl leading-[0.95]">
+            <h1 className="text-5xl font-extrabold tracking-tighter sm:text-6xl lg:text-7xl leading-[1.05]">
               Stay top-of-mind
-              <span className="block mt-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent">
+              <span className="block mt-2 pb-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent">
                 without the busywork
               </span>
             </h1>
@@ -161,7 +155,7 @@ export default function LandingPage() {
       </section>
 
       {/* Data source / trust bar */}
-      <section className="border-y bg-muted/30 py-8">
+      <section className="border-y marketing-muted py-8">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground mb-5">
             Powered by trusted data sources
@@ -232,7 +226,7 @@ export default function LandingPage() {
       </section>
 
       {/* Bento feature grid */}
-      <section className="border-t bg-muted/30 py-20 sm:py-24">
+      <section className="border-t marketing-muted py-20 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="text-center mb-14">
             <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
@@ -389,7 +383,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section className="border-t bg-muted/30 py-20 sm:py-24">
+      <section className="border-t marketing-muted py-20 sm:py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
@@ -548,7 +542,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-background py-12">
+      <footer className="border-t bg-white/80 backdrop-blur-md py-12">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid gap-8 md:grid-cols-4">
             <div>

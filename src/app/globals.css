@@ -129,6 +129,35 @@
   }
 }
 
+/* Aurora marketing background — soft gradient page backdrop with white content */
+.marketing-bg {
+  background-color: #fafbff;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 15% 0%, rgba(59, 130, 246, 0.10), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 85% 20%, rgba(99, 102, 241, 0.10), transparent 60%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(139, 92, 246, 0.07), transparent 60%);
+  background-attachment: fixed;
+}
+
+.dark .marketing-bg {
+  background-color: oklch(0.11 0.02 261);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 15% 0%, rgba(59, 130, 246, 0.18), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 85% 20%, rgba(99, 102, 241, 0.18), transparent 60%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(139, 92, 246, 0.12), transparent 60%);
+}
+
+/* When marketing-bg is on the page, sections that were "muted" should be slightly transparent */
+.marketing-bg .marketing-muted {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dark .marketing-bg .marketing-muted {
+  background: rgba(20, 20, 30, 0.4);
+}
+
 /* Premium glassmorphism cards */
 .glass-card {
   background: oklch(1 0 0 / 60%);
