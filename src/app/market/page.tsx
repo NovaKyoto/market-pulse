@@ -21,6 +21,7 @@ import {
 import { CITIES, type City } from "@/lib/cities";
 import { fetchMarketData, formatCurrency } from "@/lib/market-data";
 import { CityArtwork } from "@/components/markets/city-artwork";
+import { LUXURY_MARKETS } from "@/lib/luxury-markets";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
@@ -334,108 +335,131 @@ export default async function MarketIndexPage() {
         </div>
       </section>
 
-      {/* MARKETS BY STATE */}
-      <section id="all-markets" className="border-t marketing-muted py-20 scroll-mt-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      {/* LUXURY MARKETS — demo showcase for high-end agents */}
+      <section className="relative overflow-hidden border-t py-20">
+        {/* Dark luxury background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-zinc-950" />
+        {/* Gold accent gradients */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-amber-500/15 blur-[120px]" />
+          <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-yellow-500/10 blur-[120px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mb-12 text-center">
-            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
-              Browse All Markets
+            <p className="text-xs uppercase tracking-[0.25em] text-amber-400 font-bold mb-3 inline-flex items-center gap-2">
+              <Sparkles className="h-3 w-3" />
+              Demo Feature
             </p>
-            <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
-              MARKETS BY STATE
+            <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl bg-gradient-to-br from-amber-200 via-amber-400 to-yellow-600 bg-clip-text text-transparent pb-2">
+              LUXURY MARKETS
             </h2>
-            <p className="mt-3 text-muted-foreground">
-              <span className="font-mono font-bold text-foreground">{CITIES.length}</span> cities across{" "}
-              <span className="font-mono font-bold text-foreground">{byState.length}</span> states · click any to view its full report
+            <p className="mt-3 text-slate-300 max-w-2xl mx-auto">
+              MarketPulse handles million-dollar ZIPs as easily as starter homes. Try any
+              luxury market — your branded report renders the same beautiful way.
             </p>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {byState.map(([state, cities], idx) => {
-              // Cycle through 6 accent palettes so neighboring cards differ
-              const palettes = [
-                { gradient: "from-blue-500 to-indigo-600", soft: "from-blue-500/10", chip: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30 hover:bg-blue-500/20", text: "text-blue-600 dark:text-blue-400" },
-                { gradient: "from-emerald-500 to-teal-600", soft: "from-emerald-500/10", chip: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/20", text: "text-emerald-600 dark:text-emerald-400" },
-                { gradient: "from-amber-500 to-orange-600", soft: "from-amber-500/10", chip: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30 hover:bg-amber-500/20", text: "text-amber-600 dark:text-amber-400" },
-                { gradient: "from-purple-500 to-pink-600", soft: "from-purple-500/10", chip: "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30 hover:bg-purple-500/20", text: "text-purple-600 dark:text-purple-400" },
-                { gradient: "from-rose-500 to-red-600", soft: "from-rose-500/10", chip: "bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30 hover:bg-rose-500/20", text: "text-rose-600 dark:text-rose-400" },
-                { gradient: "from-cyan-500 to-blue-600", soft: "from-cyan-500/10", chip: "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border-cyan-500/30 hover:bg-cyan-500/20", text: "text-cyan-600 dark:text-cyan-400" },
-              ];
-              const palette = palettes[idx % palettes.length];
-              const stateCode = cities[0]?.stateCode ?? "";
-              // Pick the first featured city in this state, or fall back to first city
-              const featuredCity =
-                cities.find((c) => FEATURED_SLUGS.includes(c.slug)) ?? cities[0];
-              const otherCities = cities.filter((c) => c.slug !== featuredCity?.slug);
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {LUXURY_MARKETS.map((m) => (
+              <div
+                key={m.zipCode}
+                className="group relative overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-br from-slate-900/80 to-slate-950/80 backdrop-blur-sm p-6 hover:border-amber-400/50 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/20"
+              >
+                {/* Subtle gold shimmer on hover */}
+                <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-amber-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-              return (
-                <Card
-                  key={state}
-                  className="group relative overflow-hidden hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10"
-                >
-                  {/* Decorative gradient blob top-right */}
-                  <div className={`absolute -top-16 -right-16 h-40 w-40 rounded-full bg-gradient-to-br ${palette.soft} to-transparent blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                  {/* Big watermark state code in background */}
-                  <div className={`absolute -bottom-8 -right-4 font-black text-[140px] leading-none tracking-tighter ${palette.text} opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-500 select-none pointer-events-none font-mono`}>
-                    {stateCode}
+                <div className="relative">
+                  {/* ZIP code as overline */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="font-mono text-xs font-bold text-amber-400/80 tracking-widest">
+                      {m.zipCode}
+                    </div>
+                    <div className="text-[10px] uppercase tracking-widest font-bold text-slate-500">
+                      {m.region}
+                    </div>
                   </div>
 
-                  <CardContent className="relative p-6">
-                    {/* Header: BIG state badge + name */}
-                    <div className="flex items-start justify-between mb-5">
-                      <div className="flex items-center gap-3">
-                        <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${palette.gradient} shadow-lg font-black text-white text-lg tracking-tight ring-4 ring-white/20`}>
-                          {stateCode}
-                        </div>
-                        <div>
-                          <h3 className="font-black text-lg leading-tight tracking-tight">
-                            {state.toUpperCase()}
-                          </h3>
-                          <p className="text-xs text-muted-foreground font-medium">
-                            <span className="font-mono font-bold text-foreground">{cities.length}</span>
-                            {" "}{cities.length === 1 ? "market tracked" : "markets tracked"}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                  {/* City name — hero */}
+                  <h3 className="text-2xl font-extrabold tracking-tight text-white leading-tight mb-1">
+                    {m.city}
+                  </h3>
+                  <p className="text-xs text-slate-400 italic mb-4">{m.vibe}</p>
 
-                    {/* Featured city — hero */}
-                    {featuredCity && (
+                  {/* Median price — gold pill */}
+                  <div className="inline-flex items-baseline gap-1 px-3 py-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-yellow-600/10 border border-amber-500/30">
+                    <span className="text-[9px] uppercase tracking-widest font-bold text-amber-400">
+                      Median
+                    </span>
+                    <span className="text-2xl font-black font-mono tracking-tighter text-amber-200 ml-1">
+                      {formatCurrency(m.estimatedMedian)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link href="/sign-up">
+              <Button
+                size="lg"
+                className="gap-2 px-8 h-12 text-base bg-gradient-to-br from-amber-400 to-yellow-600 hover:from-amber-300 hover:to-yellow-500 text-slate-950 font-bold border-0 shadow-xl shadow-amber-500/30"
+              >
+                Start Your Free Trial
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <p className="mt-3 text-xs text-slate-400">
+              Generate a branded luxury market report in under 30 seconds
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* BROWSE BY STATE — compact directory */}
+      <section id="all-markets" className="border-t marketing-muted py-16 scroll-mt-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mb-8 text-center">
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-2">
+              Full Directory
+            </p>
+            <h2 className="text-3xl font-extrabold tracking-tighter sm:text-4xl">
+              BROWSE BY STATE
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              <span className="font-mono font-bold text-foreground">{CITIES.length}</span> cities across{" "}
+              <span className="font-mono font-bold text-foreground">{byState.length}</span> states
+            </p>
+          </div>
+
+          {/* Compact two-column accordion-style directory */}
+          <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+            {byState.map(([state, cities]) => {
+              const stateCode = cities[0]?.stateCode ?? "";
+              return (
+                <div key={state} className="border-b border-border/50 pb-3">
+                  <div className="flex items-baseline justify-between mb-2">
+                    <h3 className="font-black text-sm tracking-wide flex items-center gap-2">
+                      <span className="font-mono text-primary">{stateCode}</span>
+                      <span>{state.toUpperCase()}</span>
+                    </h3>
+                    <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
+                      <span className="font-mono">{cities.length}</span>
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1">
+                    {cities.map((c) => (
                       <Link
-                        href={`/market/${featuredCity.slug}`}
-                        className={`relative block rounded-xl border-2 p-3 mb-3 overflow-hidden transition-all hover:shadow-md ${palette.chip}`}
+                        key={c.slug}
+                        href={`/market/${c.slug}`}
+                        className="text-xs text-muted-foreground hover:text-primary hover:underline transition-colors font-medium"
                       >
-                        <div className="relative flex items-center justify-between gap-2">
-                          <div className="min-w-0 flex-1">
-                            <p className="text-[9px] uppercase tracking-widest font-bold opacity-70">
-                              Top Market
-                            </p>
-                            <p className="font-extrabold text-base tracking-tight truncate">
-                              {featuredCity.name}
-                            </p>
-                          </div>
-                          <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" />
-                        </div>
+                        {c.name}
                       </Link>
-                    )}
-
-                    {/* Other cities as smaller chips */}
-                    {otherCities.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {otherCities.map((c) => (
-                          <Link
-                            key={c.slug}
-                            href={`/market/${c.slug}`}
-                            className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold transition-all hover:scale-105 hover:shadow-sm ${palette.chip}`}
-                          >
-                            {c.name}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                    ))}
+                  </div>
+                </div>
               );
             })}
           </div>
