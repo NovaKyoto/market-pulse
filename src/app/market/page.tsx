@@ -230,37 +230,41 @@ export default async function MarketIndexPage() {
                   <div className="absolute top-0 left-0 right-0 h-[42%] bg-gradient-to-b from-background via-background/92 via-50% to-transparent pointer-events-none" />
 
                   <div className="relative p-5">
-                    {/* Top row: city + sentiment */}
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    {/* Top row: state + sentiment badge */}
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-foreground/10 backdrop-blur-sm text-xs font-bold text-foreground">
                         <MapPin className="h-3 w-3" />
                         {city.stateCode}
                       </div>
                       <Badge
-                        variant="outline"
-                        className={`gap-1 text-[10px] uppercase tracking-wider px-2 ${sentimentBadge}`}
+                        className={`gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 font-bold border-2 shadow-sm ${sentimentBadge}`}
                       >
                         <SentimentIcon className="h-2.5 w-2.5" />
                         {sentimentLabel}
                       </Badge>
                     </div>
 
-                    {/* City name */}
-                    <h3 className="font-bold text-xl tracking-tight group-hover:text-primary transition-colors leading-tight">
+                    {/* City name — bold, prominent */}
+                    <h3 className="font-extrabold text-2xl tracking-tighter group-hover:text-primary transition-colors leading-[1.05] drop-shadow-sm">
                       {city.name}
                     </h3>
 
-                    {/* Median Price - the hero stat */}
-                    <div className="mt-4">
-                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
+                    {/* Median Price — THE HERO STAT */}
+                    <div className="mt-3">
+                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
                         Median Price
                       </p>
-                      <p className="text-2xl font-extrabold font-mono tracking-tighter mt-1">
-                        {formatCurrency(data.median_price)}
-                      </p>
+                      <div className="flex items-baseline gap-2 mt-0.5">
+                        <p className="text-3xl font-black font-mono tracking-tighter text-foreground drop-shadow-sm">
+                          {formatCurrency(data.median_price)}
+                        </p>
+                      </div>
+                      {/* YoY change as a solid colored pill */}
                       <div
-                        className={`mt-1 inline-flex items-center gap-0.5 text-xs font-medium ${
-                          priceUp ? "text-emerald-600" : "text-red-500"
+                        className={`mt-2 inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-bold border shadow-sm ${
+                          priceUp
+                            ? "bg-emerald-500 text-white border-emerald-600"
+                            : "bg-rose-500 text-white border-rose-600"
                         }`}
                       >
                         {priceUp ? (
@@ -276,24 +280,36 @@ export default async function MarketIndexPage() {
                     {/* Spacer to let artwork breathe */}
                     <div className="h-20 sm:h-24" />
 
-                    {/* Bottom stats row + CTA — frosted glass over artwork */}
-                    <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 pt-3 bg-background/85 backdrop-blur-sm border-t">
-                      <div className="flex items-center justify-between text-xs">
-                        <div className="flex items-center gap-1 text-muted-foreground">
-                          <Clock className="h-3 w-3" />
-                          <span className="font-mono font-semibold text-foreground">
+                    {/* Bottom stats bar — solid glass with colored value pills */}
+                    <div className="absolute bottom-0 left-0 right-0 px-4 pb-3 pt-3 bg-background/95 backdrop-blur-md border-t border-foreground/10 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+                      <div className="flex items-center justify-between gap-2">
+                        {/* Days on Market */}
+                        <div className="flex flex-col items-center flex-1">
+                          <div className="flex items-center gap-1 text-[9px] uppercase tracking-wider text-muted-foreground font-bold">
+                            <Clock className="h-2.5 w-2.5" />
+                            Days
+                          </div>
+                          <div className="font-mono font-black text-base text-foreground">
                             {data.avg_days_on_market}
-                          </span>
-                          <span>days</span>
+                          </div>
                         </div>
-                        <div className="text-muted-foreground">
-                          <span className="font-mono font-semibold text-foreground">
+
+                        {/* Divider */}
+                        <div className="h-8 w-px bg-foreground/15" />
+
+                        {/* Active Listings */}
+                        <div className="flex flex-col items-center flex-1">
+                          <div className="text-[9px] uppercase tracking-wider text-muted-foreground font-bold">
+                            Listings
+                          </div>
+                          <div className="font-mono font-black text-base text-foreground">
                             {data.active_listings}
-                          </span>
-                          <span className="ml-1">listings</span>
+                          </div>
                         </div>
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                          <ArrowRight className="h-3.5 w-3.5 text-primary group-hover:text-white transition-colors" />
+
+                        {/* CTA arrow */}
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-blue-600 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 shadow-md">
+                          <ArrowRight className="h-4 w-4 text-white" />
                         </div>
                       </div>
                     </div>
