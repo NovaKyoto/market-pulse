@@ -139,116 +139,53 @@ export default function TeamsPage() {
       {/* Hero */}
       <section className="relative border-b">
         <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-          <div className="grid gap-12 md:grid-cols-2 items-center">
-            <div>
-              <Badge variant="secondary" className="mb-4 px-3 py-1.5 gap-1.5 bg-background/80 backdrop-blur border shadow-sm">
-                <Building2 className="h-3.5 w-3.5 text-primary" />
-                For Brokerages &amp; Teams
-              </Badge>
-              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl lg:text-6xl leading-[1.05]">
-                Every agent gets a
-                <span className="block mt-2 pb-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent">
-                  branded marketing engine
-                </span>
-              </h1>
-              <p className="mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed">
-                MarketPulse Teams gives every agent in your brokerage automated, co-branded
-                weekly market reports — under one subscription, with one dashboard.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Badge className="gap-1.5 bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 hover:bg-amber-500/10">
-                  <Sparkles className="h-3 w-3" />
-                  Coming soon — waitlist open
-                </Badge>
-                <span className="text-sm text-muted-foreground">
-                  Founding brokerages get lifetime pricing
-                </span>
-              </div>
-              <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                <a href="#waitlist">
-                  <Button size="lg" className="gap-2 px-8 h-12 text-base shadow-lg w-full sm:w-auto">
-                    Join the waitlist
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </a>
-                <Link href="/sign-up">
-                  <Button size="lg" variant="outline" className="gap-2 h-12 w-full sm:w-auto">
-                    Try solo plan first
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            {/* Visual: stacked cards showing brokerage logo + multiple agents */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-purple-500/10 blur-3xl" />
-              <div className="relative space-y-3">
-                {/* Brokerage card on top */}
-                <Card className="shadow-2xl border-2 border-primary/30">
-                  <CardContent className="p-5">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg">
-                        <Building2 className="h-5 w-5 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-bold text-sm">Smith Realty Group</p>
-                        <p className="text-xs text-muted-foreground">42 agents · 1,847 clients</p>
-                      </div>
-                      <Badge variant="secondary" className="text-xs">Admin</Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Agent cards below — slightly offset */}
-                {[
-                  { name: "Sarah Chen", clients: 87, hot: 4, color: "from-emerald-500 to-teal-600" },
-                  { name: "Marcus Johnson", clients: 124, hot: 7, color: "from-purple-500 to-pink-600" },
-                  { name: "Lisa Park", clients: 56, hot: 2, color: "from-amber-500 to-orange-600" },
-                ].map((agent, i) => (
-                  <Card
-                    key={agent.name}
-                    className="shadow-lg ml-6"
-                    style={{ marginLeft: `${(i + 1) * 8}px` }}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className={`flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br ${agent.color} text-xs font-bold text-white`}>
-                          {agent.name.split(" ").map((n) => n[0]).join("")}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-sm truncate">{agent.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            <span className="font-mono">{agent.clients}</span> clients ·{" "}
-                            <span className="text-amber-600 font-medium">{agent.hot} hot leads</span>
-                          </p>
-                        </div>
-                        <TrendingUp className="h-4 w-4 text-emerald-500" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ROI CALCULATOR — top-of-page hook so brokers see value immediately */}
-      <section className="border-y marketing-muted py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="text-center mb-10">
-            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
-              Interactive Calculator
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
-              SEE THE MATH FOR YOUR BROKERAGE
-            </h2>
-            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-              Adjust the sliders to match your brokerage. See how much extra revenue
-              MarketPulse generates and how much you save versus solo plans.
+          {/* Compact centered hero text */}
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <Badge variant="secondary" className="mb-4 px-3 py-1.5 gap-1.5 bg-background/80 backdrop-blur border shadow-sm">
+              <Building2 className="h-3.5 w-3.5 text-primary" />
+              For Brokerages &amp; Teams
+            </Badge>
+            <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl lg:text-6xl leading-[1.05]">
+              See Your Brokerage&apos;s
+              <span className="block mt-2 pb-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent">
+                ROI in 30 Seconds
+              </span>
+            </h1>
+            <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground leading-relaxed">
+              MarketPulse Teams gives every agent in your brokerage co-branded weekly market
+              reports — under one subscription. <strong className="text-foreground">Adjust the sliders below</strong>{" "}
+              to see your numbers.
             </p>
           </div>
+
+          {/* THE CALCULATOR — front and center as the hero */}
           <TeamsRoiCalculator />
+
+          {/* Below-calculator info bar */}
+          <div className="mt-10 flex flex-col items-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Badge className="gap-1.5 bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 hover:bg-amber-500/10">
+                <Sparkles className="h-3 w-3" />
+                Coming Soon — Waitlist Open
+              </Badge>
+              <span className="text-sm text-muted-foreground">
+                Founding brokerages get <strong className="text-foreground">lifetime pricing</strong>
+              </span>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a href="#waitlist">
+                <Button size="lg" className="gap-2 px-8 h-12 text-base shadow-lg w-full sm:w-auto">
+                  Join the Waitlist
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </a>
+              <Link href="/sign-up">
+                <Button size="lg" variant="outline" className="gap-2 h-12 w-full sm:w-auto">
+                  Try Solo Plan First
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
