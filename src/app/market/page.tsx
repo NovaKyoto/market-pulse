@@ -16,6 +16,7 @@ import {
   Flame,
   Snowflake,
   Scale,
+  DollarSign,
 } from "lucide-react";
 import { CITIES, type City } from "@/lib/cities";
 import { fetchMarketData, formatCurrency } from "@/lib/market-data";
@@ -249,19 +250,20 @@ export default async function MarketIndexPage() {
                       {city.name}
                     </h3>
 
-                    {/* Median Price — THE HERO STAT */}
+                    {/* Median Price — THE HERO STAT (prominent gradient pill) */}
                     <div className="mt-3">
-                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
+                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1.5">
                         Median Price
                       </p>
-                      <div className="flex items-baseline gap-2 mt-0.5">
-                        <p className="text-3xl font-black font-mono tracking-tighter text-foreground drop-shadow-sm">
-                          {formatCurrency(data.median_price)}
+                      <div className="inline-flex items-baseline gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-shadow">
+                        <DollarSign className="h-4 w-4 text-white/90 self-center" />
+                        <p className="text-2xl sm:text-3xl font-black font-mono tracking-tighter text-white leading-none">
+                          {formatCurrency(data.median_price).replace("$", "")}
                         </p>
                       </div>
                       {/* YoY change as a solid colored pill */}
                       <div
-                        className={`mt-2 inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-bold border shadow-sm ${
+                        className={`ml-2 inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-bold border shadow-sm align-middle ${
                           priceUp
                             ? "bg-emerald-500 text-white border-emerald-600"
                             : "bg-rose-500 text-white border-rose-600"
@@ -273,7 +275,7 @@ export default async function MarketIndexPage() {
                           <TrendingDown className="h-3 w-3" />
                         )}
                         {data.price_change_pct > 0 ? "+" : ""}
-                        {data.price_change_pct.toFixed(1)}% YoY
+                        {data.price_change_pct.toFixed(1)}%
                       </div>
                     </div>
 
