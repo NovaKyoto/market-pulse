@@ -12,8 +12,10 @@ interface CityArtworkProps {
   className?: string;
 }
 
+// Anchored to the bottom 60% of the card with stronger opacity so the
+// artwork actually shows through. Data sits in the top 40%.
 const SHARED_CLASS =
-  "absolute inset-0 w-full h-full opacity-30 transition-all duration-700 group-hover:opacity-50 group-hover:scale-110";
+  "absolute -bottom-2 left-0 right-0 h-[65%] w-full opacity-90 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105 origin-bottom";
 
 export function CityArtwork({ slug, className = "" }: CityArtworkProps) {
   const fullClass = `${SHARED_CLASS} ${className}`;

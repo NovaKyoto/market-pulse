@@ -225,19 +225,30 @@ function generateEstimatedData(
     if (!region.city) region = { city: "Dallas", state: "TX" };
   }
 
-  // Add some variation based on the specific zip
-  const zipSeed = parseInt(zipCode) || 0;
-  const variation = ((zipSeed % 100) - 50) / 100; // -0.5 to +0.5
-  const priceVariation = 1 + variation * 0.3;
+  // Multi-dimensional variation based on different parts of the ZIP
+  // so each city looks distinctly different from its neighbors
+  const zipSeed = parseInt(zipCode) || 12345;
+  const v1 = ((zipSeed % 100) - 50) / 100; // -0.5 to +0.5  (price)
+  const v2 = ((zipSeed % 73) - 36) / 36; // -1 to +1        (DOM)
+  const v3 = ((zipSeed % 47) - 23) / 23; // -1 to +1        (listings)
+  const v4 = ((zipSeed % 31) - 15) / 15; // -1 to +1        (inventory)
+  const v5 = ((zipSeed % 19) - 9) / 9; // -1 to +1          (price change)
+
+  const priceVariation = 1 + v1 * 0.35;
 
   return {
     median_price: Math.round(basePrice * priceVariation),
-    price_change_pct: Math.round((2.5 + variation * 8) * 10) / 10,
-    avg_days_on_market: Math.round(25 + variation * 20),
-    active_listings: Math.round(120 + variation * 100),
-    sold_last_30: Math.round(45 + variation * 30),
+    // YoY change: range -6% to +9% for realistic mix of up/down markets
+    price_change_pct: Math.round((1.5 + v5 * 7.5) * 10) / 10,
+    // Days on market: 12 to 65 days (wider spread)
+    avg_days_on_market: Math.max(8, Math.round(28 + v2 * 22)),
+    // Active listings: 45 to 280
+    active_listings: Math.max(30, Math.round(150 + v3 * 130)),
+    // Sold in 30d: 15 to 95
+    sold_last_30: Math.max(12, Math.round(50 + v3 * 40)),
     price_per_sqft: Math.round(basePpsf * priceVariation),
-    inventory_months: Math.round((2.8 + variation * 2) * 10) / 10,
+    // Months of inventory: 1.2 to 7.5 (covers seller's, balanced, buyer's)
+    inventory_months: Math.max(0.8, Math.round((3.5 + v4 * 3.2) * 10) / 10),
     median_rent: Math.round(basePrice * 0.005),
     zip_code: zipCode,
     city: region.city,

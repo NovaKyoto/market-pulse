@@ -218,16 +218,16 @@ export default async function MarketIndexPage() {
                   href={`/market/${city.slug}`}
                   className="group relative overflow-hidden rounded-2xl border bg-background hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10"
                 >
+                  {/* Sentiment gradient on bottom half — sets the mood color */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${sentimentGradient} opacity-100`}
+                  />
+
                   {/* City-specific SVG artwork (palms, skylines, cactus, etc.) */}
                   <CityArtwork slug={city.slug} />
 
-                  {/* Sentiment gradient overlay (always visible for legibility) */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${sentimentGradient} opacity-90 group-hover:opacity-75 transition-opacity duration-300`}
-                  />
-
-                  {/* White-to-transparent gradient at top for text legibility */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background/70" />
+                  {/* Top white panel for data legibility — sharp cutoff to let artwork breathe */}
+                  <div className="absolute top-0 left-0 right-0 h-[55%] bg-gradient-to-b from-background via-background/95 to-transparent" />
 
                   <div className="relative p-5">
                     {/* Top row: city + sentiment */}
@@ -273,30 +273,28 @@ export default async function MarketIndexPage() {
                       </div>
                     </div>
 
-                    {/* Secondary stats row */}
-                    <div className="mt-4 pt-3 border-t flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        <span className="font-mono font-semibold text-foreground">
-                          {data.avg_days_on_market}
-                        </span>
-                        <span>days</span>
-                      </div>
-                      <div className="text-muted-foreground">
-                        <span className="font-mono font-semibold text-foreground">
-                          {data.active_listings}
-                        </span>
-                        <span className="ml-1">listings</span>
-                      </div>
-                    </div>
+                    {/* Spacer to let artwork breathe */}
+                    <div className="h-20 sm:h-24" />
 
-                    {/* CTA */}
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                        View full report
-                      </span>
-                      <div className="ml-auto flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                        <ArrowRight className="h-3.5 w-3.5 text-primary group-hover:text-white transition-colors" />
+                    {/* Bottom stats row + CTA — frosted glass over artwork */}
+                    <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 pt-3 bg-background/85 backdrop-blur-sm border-t">
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-1 text-muted-foreground">
+                          <Clock className="h-3 w-3" />
+                          <span className="font-mono font-semibold text-foreground">
+                            {data.avg_days_on_market}
+                          </span>
+                          <span>days</span>
+                        </div>
+                        <div className="text-muted-foreground">
+                          <span className="font-mono font-semibold text-foreground">
+                            {data.active_listings}
+                          </span>
+                          <span className="ml-1">listings</span>
+                        </div>
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                          <ArrowRight className="h-3.5 w-3.5 text-primary group-hover:text-white transition-colors" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -335,34 +333,61 @@ export default async function MarketIndexPage() {
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {byState.map(([state, cities]) => (
-              <Card key={state} className="hover:border-primary/30 transition-colors">
-                <CardContent className="p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-bold text-sm uppercase tracking-wide">
-                      {state}
-                    </h3>
-                    <Badge variant="secondary" className="text-xs">
-                      {cities.length}
-                    </Badge>
-                  </div>
-                  <div className="space-y-1">
-                    {cities.map((c) => (
-                      <Link
-                        key={c.slug}
-                        href={`/market/${c.slug}`}
-                        className="group flex items-center justify-between text-sm py-1.5 px-2 -mx-2 rounded-md hover:bg-primary/5 transition-colors"
-                      >
-                        <span className="text-foreground/80 group-hover:text-primary transition-colors">
+            {byState.map(([state, cities], idx) => {
+              // Cycle through 6 accent palettes so neighboring cards differ
+              const palettes = [
+                { gradient: "from-blue-500 to-indigo-600", soft: "from-blue-500/10 to-transparent", text: "text-blue-700 dark:text-blue-300", chip: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30" },
+                { gradient: "from-emerald-500 to-teal-600", soft: "from-emerald-500/10 to-transparent", text: "text-emerald-700 dark:text-emerald-300", chip: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30" },
+                { gradient: "from-amber-500 to-orange-600", soft: "from-amber-500/10 to-transparent", text: "text-amber-700 dark:text-amber-300", chip: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30" },
+                { gradient: "from-purple-500 to-pink-600", soft: "from-purple-500/10 to-transparent", text: "text-purple-700 dark:text-purple-300", chip: "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30" },
+                { gradient: "from-rose-500 to-red-600", soft: "from-rose-500/10 to-transparent", text: "text-rose-700 dark:text-rose-300", chip: "bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30" },
+                { gradient: "from-cyan-500 to-blue-600", soft: "from-cyan-500/10 to-transparent", text: "text-cyan-700 dark:text-cyan-300", chip: "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border-cyan-500/30" },
+              ];
+              const palette = palettes[idx % palettes.length];
+              const stateCode = cities[0]?.stateCode ?? "";
+
+              return (
+                <Card
+                  key={state}
+                  className="group relative overflow-hidden hover:border-primary/40 transition-all hover:-translate-y-0.5 hover:shadow-xl"
+                >
+                  {/* Soft accent in top corner */}
+                  <div className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br ${palette.soft} blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+                  <CardContent className="relative p-5">
+                    {/* Header: State badge + count */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${palette.gradient} shadow-md font-bold text-white text-sm`}>
+                          {stateCode}
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-base leading-tight">{state}</h3>
+                          <p className="text-xs text-muted-foreground">
+                            <span className="font-mono font-semibold">{cities.length}</span>
+                            {" "}{cities.length === 1 ? "market" : "markets"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* City chips */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {cities.map((c) => (
+                        <Link
+                          key={c.slug}
+                          href={`/market/${c.slug}`}
+                          className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium transition-all hover:scale-105 hover:shadow-sm ${palette.chip} hover:border-current`}
+                        >
+                          <MapPin className="h-2.5 w-2.5" />
                           {c.name}
-                        </span>
-                        <ArrowRight className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Link>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                        </Link>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
