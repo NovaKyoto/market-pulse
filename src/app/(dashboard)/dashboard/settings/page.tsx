@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Copy, Check, Gift, Link2, Unlink, RefreshCw, CreditCard, Loader2 } from "lucide-react";
 import type { Profile } from "@/types";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 export default function SettingsPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -65,12 +66,12 @@ export default function SettingsPage() {
   if (!profile) return null;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground">Manage your profile and branding</p>
-      </div>
-
+    <div>
+      <PageHeader
+        breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Settings" }]}
+        title="Settings"
+        description="Manage your profile, branding, billing, and integrations"
+      />
       <form onSubmit={handleSave} className="space-y-6">
         <Card>
           <CardHeader>

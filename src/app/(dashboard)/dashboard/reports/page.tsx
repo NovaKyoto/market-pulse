@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { PageHeader } from "@/components/dashboard/page-header";
+import { EmptyState } from "@/components/dashboard/empty-state";
 import {
   Loader2,
   Zap,
@@ -153,13 +155,13 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Reports</h1>
-        <p className="mt-1 text-muted-foreground">
-          Generate AI-powered market reports for any location
-        </p>
-      </div>
+    <div>
+      <PageHeader
+        breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Reports" }]}
+        title="Reports"
+        description="Generate AI-powered market reports for any US ZIP code"
+      />
+      <div className="space-y-6">
 
       {/* Location Picker */}
       <Card>
@@ -241,15 +243,12 @@ export default function ReportsPage() {
         </div>
       ) : reports.length === 0 ? (
         <Card>
-          <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted mb-4">
-              <FileText className="h-7 w-7 text-muted-foreground" />
-            </div>
-            <h3 className="text-lg font-semibold">No reports yet</h3>
-            <p className="mt-1 text-sm text-muted-foreground max-w-md">
-              Click &quot;Generate Report&quot; to create your first AI-powered market
-              analysis. It uses real data for your configured zip codes.
-            </p>
+          <CardContent>
+            <EmptyState
+              icon={FileText}
+              title="No reports yet"
+              description="Generate your first AI-powered market report. Use the input above to enter any US ZIP code."
+            />
           </CardContent>
         </Card>
       ) : (() => {
@@ -458,6 +457,7 @@ export default function ReportsPage() {
         </div>
         );
       })()}
+      </div>
     </div>
   );
 }

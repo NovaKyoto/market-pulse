@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, BookOpen, Clock, Zap } from "lucide-react";
+import { ArrowRight, BookOpen, Clock, Zap, Sparkles, Calendar } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/blog-posts";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
@@ -17,52 +17,74 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "MarketPulse Blog — Real Estate Marketing & Retention",
-    description:
-      "Practical guides and research for real estate agents.",
+    description: "Practical guides and research for real estate agents.",
     url: `${APP_URL}/blog`,
     type: "website",
   },
+};
+
+const categoryColors: Record<string, string> = {
+  Comparison: "from-blue-500 to-indigo-600",
+  Research: "from-emerald-500 to-teal-600",
+  "How-to": "from-amber-500 to-orange-600",
+  Guide: "from-purple-500 to-pink-600",
 };
 
 export default function BlogIndexPage() {
   const posts = [...BLOG_POSTS].sort(
     (a, b) => new Date(b.datePublished).getTime() - new Date(a.datePublished).getTime()
   );
+  const [featured, ...rest] = posts;
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Nav */}
-      <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <Zap className="h-4 w-4 text-primary-foreground" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-500/20">
+              <Zap className="h-4 w-4 text-white" />
             </div>
             MarketPulse
           </Link>
+          <div className="hidden sm:flex items-center gap-1 text-sm">
+            <Link href="/market" className="px-3 py-2 text-muted-foreground hover:text-foreground">Markets</Link>
+            <Link href="/blog" className="px-3 py-2 text-foreground font-medium">Blog</Link>
+            <Link href="/founding" className="px-3 py-2 text-amber-600 hover:text-amber-700 font-medium">Founding 5 →</Link>
+          </div>
           <div className="flex items-center gap-2">
             <Link href="/sign-in">
               <Button variant="ghost" size="sm">Sign In</Button>
             </Link>
             <Link href="/sign-up">
-              <Button size="sm" className="gap-1">Start Free Trial<ArrowRight className="h-3 w-3" /></Button>
+              <Button size="sm" className="gap-1 shadow-sm">
+                Start Free Trial
+                <ArrowRight className="h-3 w-3" />
+              </Button>
             </Link>
           </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="border-b">
-        <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:py-20">
+      <section className="relative overflow-hidden border-b">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-20 -right-20 h-[500px] w-[500px] rounded-full bg-blue-500/15 blur-[120px]" />
+          <div className="absolute top-40 -left-20 h-[400px] w-[400px] rounded-full bg-indigo-500/10 blur-[120px]" />
+        </div>
+        <div className="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-20">
           <div className="text-center">
-            <Badge variant="secondary" className="mb-4 px-3 py-1">
-              <BookOpen className="mr-1 h-3 w-3" />
-              MarketPulse Blog
+            <Badge variant="secondary" className="mb-4 px-3 py-1.5 gap-1.5 bg-background/80 backdrop-blur border shadow-sm">
+              <BookOpen className="h-3.5 w-3.5 text-primary" />
+              MarketPulse Journal
             </Badge>
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Real estate marketing that actually works
+            <h1 className="text-5xl font-extrabold tracking-tighter sm:text-6xl lg:text-7xl leading-[0.95]">
+              Real estate marketing
+              <span className="block mt-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent">
+                that actually works
+              </span>
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
               Practical guides, research, and honest comparisons for agents who want to keep past
               clients and grow through referrals — not chase cold leads.
             </p>
@@ -70,59 +92,136 @@ export default function BlogIndexPage() {
         </div>
       </section>
 
-      {/* Post list */}
-      <section className="py-12 sm:py-16">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <div className="space-y-6">
-            {posts.map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
-                <Card className="hover:border-primary/50 transition-colors">
-                  <CardContent className="p-6 sm:p-8">
-                    <div className="flex items-center gap-3 mb-3 text-xs">
-                      <Badge variant="secondary">{post.category}</Badge>
-                      <span className="flex items-center gap-1 text-muted-foreground">
+      {/* Featured post */}
+      {featured && (
+        <section className="py-12 sm:py-16">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-5">
+              Featured
+            </p>
+            <Link href={`/blog/${featured.slug}`} className="group block">
+              <Card className="overflow-hidden hover:border-primary/50 transition-colors">
+                <div className="grid md:grid-cols-2 items-stretch">
+                  {/* Visual */}
+                  <div className={`relative overflow-hidden bg-gradient-to-br ${categoryColors[featured.category] ?? "from-blue-500 to-indigo-600"} p-8 sm:p-10 min-h-[280px] flex flex-col justify-end`}>
+                    <div className="absolute top-0 right-0 h-40 w-40 bg-white/10 rounded-full blur-3xl" />
+                    <div className="absolute bottom-0 left-0 h-40 w-40 bg-white/5 rounded-full blur-3xl" />
+                    <div className="relative">
+                      <Badge className="mb-3 bg-white/20 hover:bg-white/20 text-white border-white/30 backdrop-blur">
+                        <Sparkles className="mr-1 h-3 w-3" />
+                        {featured.category}
+                      </Badge>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tighter leading-tight">
+                        {featured.title}
+                      </h2>
+                    </div>
+                  </div>
+                  {/* Body */}
+                  <CardContent className="p-6 sm:p-8 flex flex-col justify-center">
+                    <div className="flex items-center gap-3 mb-3 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
-                        {post.readTime} min read
+                        {featured.readTime} min read
                       </span>
-                      <span className="text-muted-foreground">
-                        {new Date(post.datePublished).toLocaleDateString("en-US", {
-                          month: "long",
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {new Date(featured.datePublished).toLocaleDateString("en-US", {
+                          month: "short",
                           day: "numeric",
                           year: "numeric",
                         })}
                       </span>
                     </div>
-                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h2>
-                    <p className="mt-2 text-muted-foreground leading-relaxed">{post.excerpt}</p>
-                    <div className="mt-4 text-sm font-medium text-primary inline-flex items-center gap-1">
+                    <p className="text-base text-muted-foreground leading-relaxed">
+                      {featured.excerpt}
+                    </p>
+                    <div className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary">
                       Read article
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                     </div>
                   </CardContent>
-                </Card>
-              </Link>
-            ))}
+                </div>
+              </Card>
+            </Link>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* Other posts grid */}
+      {rest.length > 0 && (
+        <section className="border-t py-12 sm:py-16">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-5">
+              All articles
+            </p>
+            <div className="grid gap-5 md:grid-cols-2">
+              {rest.map((post) => {
+                const accent = categoryColors[post.category] ?? "from-blue-500 to-indigo-600";
+                return (
+                  <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
+                    <Card className="h-full overflow-hidden hover:border-primary/50 transition-colors">
+                      <div className={`h-2 bg-gradient-to-r ${accent}`} />
+                      <CardContent className="p-6">
+                        <div className="flex items-center gap-3 mb-3 text-xs">
+                          <Badge variant="secondary">{post.category}</Badge>
+                          <span className="flex items-center gap-1 text-muted-foreground">
+                            <Clock className="h-3 w-3" />
+                            {post.readTime} min read
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-bold tracking-tight group-hover:text-primary transition-colors leading-snug">
+                          {post.title}
+                        </h3>
+                        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{post.excerpt}</p>
+                        <div className="mt-4 flex items-center justify-between text-xs">
+                          <span className="text-muted-foreground">
+                            {new Date(post.datePublished).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                          </span>
+                          <span className="inline-flex items-center gap-1 font-medium text-primary">
+                            Read
+                            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA */}
-      <section className="border-t bg-muted/30 py-16">
-        <div className="mx-auto max-w-3xl px-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">
-            Stop writing newsletters. Start keeping clients.
+      <section className="relative overflow-hidden py-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800" />
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/4 h-80 w-80 rounded-full bg-white/10 blur-[100px]" />
+          <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-white/5 blur-[100px]" />
+        </div>
+        <div className="relative mx-auto max-w-3xl px-4 text-center text-white">
+          <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
+            Stop writing newsletters.
+            <span className="block mt-2">Start keeping clients.</span>
           </h2>
-          <p className="mt-3 text-muted-foreground">
-            MarketPulse sends branded market reports to your entire client list on autopilot.
-            Your branding, your colors, real market data — zero ongoing work.
+          <p className="mt-6 text-white/80 max-w-xl mx-auto text-lg">
+            14-day free trial. No credit card required. Send your first branded report
+            in under 5 minutes.
           </p>
-          <div className="mt-8">
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link href="/sign-up">
-              <Button size="lg" className="gap-2 h-12 px-8 text-base">
-                Start 14-Day Free Trial
+              <Button size="lg" variant="secondary" className="gap-2 h-12 px-8 text-base shadow-xl">
+                Start Free Trial
                 <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/founding">
+              <Button size="lg" variant="outline" className="gap-2 h-12 text-base bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white">
+                See Founding 5 Offer
               </Button>
             </Link>
           </div>
@@ -130,21 +229,46 @@ export default function BlogIndexPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t py-10 mt-auto">
+      <footer className="border-t bg-background py-12 mt-auto">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
-                <Zap className="h-3.5 w-3.5 text-primary-foreground" />
-              </div>
-              MarketPulse
-            </Link>
-            <div className="flex gap-4 text-sm text-muted-foreground">
-              <Link href="/market" className="hover:text-foreground">Markets</Link>
-              <Link href="/blog" className="hover:text-foreground">Blog</Link>
-              <Link href="/legal/terms" className="hover:text-foreground">Terms</Link>
-              <Link href="/legal/privacy" className="hover:text-foreground">Privacy</Link>
+          <div className="grid gap-8 md:grid-cols-4">
+            <div>
+              <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600">
+                  <Zap className="h-4 w-4 text-white" />
+                </div>
+                MarketPulse
+              </Link>
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                Automated AI market reports for real estate agents.
+              </p>
             </div>
+            <div>
+              <p className="font-semibold text-sm mb-3">Product</p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/sign-up" className="hover:text-foreground">Start Free Trial</Link></li>
+                <li><Link href="/founding" className="hover:text-foreground">Founding 5</Link></li>
+                <li><Link href="/sign-in" className="hover:text-foreground">Sign In</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-sm mb-3">Resources</p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/market" className="hover:text-foreground">Market Reports</Link></li>
+                <li><Link href="/blog" className="hover:text-foreground">Blog</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-sm mb-3">Legal</p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/legal/terms" className="hover:text-foreground">Terms</Link></li>
+                <li><Link href="/legal/privacy" className="hover:text-foreground">Privacy</Link></li>
+                <li><Link href="/legal/cookies" className="hover:text-foreground">Cookies</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-10 pt-6 border-t flex flex-col md:flex-row justify-between gap-3 text-xs text-muted-foreground">
+            <p>&copy; {new Date().getFullYear()} MarketPulse. All rights reserved.</p>
           </div>
         </div>
       </footer>

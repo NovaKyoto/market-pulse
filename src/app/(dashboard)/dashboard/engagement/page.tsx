@@ -14,6 +14,9 @@ import {
   AlertCircle,
   User,
 } from "lucide-react";
+import { PageHeader } from "@/components/dashboard/page-header";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { EmptyState } from "@/components/dashboard/empty-state";
 
 interface EmailEvent {
   id: string;
@@ -98,56 +101,19 @@ export default function EngagementPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Engagement</h1>
-        <p className="mt-1 text-muted-foreground">
-          Track who opens your reports and identify your hottest leads
-        </p>
-      </div>
-
+    <div>
+      <PageHeader
+        breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Engagement" }]}
+        title="Engagement"
+        description="Track who opens your reports and identify your hottest leads"
+      />
+      <div className="space-y-6">
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Delivered</CardTitle>
-            <Mail className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">{totalDelivered}</div>
-            <p className="text-xs text-muted-foreground mt-1">emails sent successfully</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Opens</CardTitle>
-            <Eye className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">{totalOpens}</div>
-            <p className="text-xs text-muted-foreground mt-1">{openRate}% open rate</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Clicks</CardTitle>
-            <MousePointerClick className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">{totalClicks}</div>
-            <p className="text-xs text-muted-foreground mt-1">link clicks</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Hot Leads</CardTitle>
-            <Flame className="h-4 w-4 text-orange-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-orange-500">{hotLeads.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">3+ opens or clicked a link</p>
-          </CardContent>
-        </Card>
+        <StatCard label="Delivered" value={totalDelivered} description="emails sent successfully" icon={Mail} accent="blue" />
+        <StatCard label="Opens" value={totalOpens} description={`${openRate}% open rate`} icon={Eye} accent="emerald" />
+        <StatCard label="Clicks" value={totalClicks} description="link clicks" icon={MousePointerClick} accent="purple" />
+        <StatCard label="Hot Leads" value={hotLeads.length} description="3+ opens or clicked a link" icon={Flame} accent="amber" />
       </div>
 
       {/* Hot Leads */}
@@ -195,15 +161,11 @@ export default function EngagementPage() {
         </CardHeader>
         <CardContent>
           {leads.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted mb-4">
-                <Mail className="h-6 w-6 text-muted-foreground" />
-              </div>
-              <p className="font-medium">No engagement data yet</p>
-              <p className="text-sm text-muted-foreground mt-1 max-w-xs">
-                Send your first report to start tracking opens and clicks. Hot leads will appear here automatically.
-              </p>
-            </div>
+            <EmptyState
+              icon={Mail}
+              title="No engagement data yet"
+              description="Send your first report to start tracking opens and clicks. Hot leads will appear here automatically."
+            />
           ) : (
             <div className="space-y-2">
               {leads.map((lead) => (
@@ -238,6 +200,7 @@ export default function EngagementPage() {
           )}
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

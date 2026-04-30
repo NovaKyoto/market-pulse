@@ -17,6 +17,7 @@ import {
   TrendingUp,
   TrendingDown,
 } from "lucide-react";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 interface MarketData {
   zip_code: string;
@@ -86,14 +87,13 @@ export default function ComparePage() {
     : [];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Compare Markets</h1>
-        <p className="mt-1 text-muted-foreground">
-          Compare two zip codes side-by-side with AI-powered analysis
-        </p>
-      </div>
-
+    <div>
+      <PageHeader
+        breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Compare" }]}
+        title="Compare Markets"
+        description="Compare two ZIP codes side-by-side with AI-powered analysis"
+      />
+      <div className="space-y-6">
       {/* Input */}
       <Card>
         <CardContent className="p-6">
@@ -205,16 +205,17 @@ export default function ComparePage() {
       {!result && !loading && (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted mb-4">
-              <ArrowLeftRight className="h-7 w-7 text-muted-foreground" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-purple-500/10 mb-4 ring-1 ring-border">
+              <ArrowLeftRight className="h-7 w-7 text-primary" />
             </div>
             <h3 className="text-lg font-semibold">Compare any two markets</h3>
             <p className="mt-1 text-sm text-muted-foreground max-w-md">
-              Enter two zip codes above to see a head-to-head comparison with real market data and AI-powered analysis.
+              Enter two ZIP codes above to see a head-to-head comparison with real market data and AI-powered analysis.
             </p>
           </CardContent>
         </Card>
       )}
+      </div>
     </div>
   );
 }

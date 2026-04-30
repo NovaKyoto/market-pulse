@@ -7,8 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, Upload, FileSpreadsheet } from "lucide-react";
+import { Plus, Trash2, Upload, FileSpreadsheet, Users, Mail } from "lucide-react";
 import type { Recipient } from "@/types";
+import { PageHeader } from "@/components/dashboard/page-header";
+import { EmptyState } from "@/components/dashboard/empty-state";
 
 export default function RecipientsPage() {
   const [recipients, setRecipients] = useState<Recipient[]>([]);
@@ -116,14 +118,13 @@ export default function RecipientsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Recipients</h1>
-        <p className="text-muted-foreground">
-          Manage who receives your weekly market reports
-        </p>
-      </div>
-
+    <div>
+      <PageHeader
+        breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Recipients" }]}
+        title="Recipients"
+        description={`${recipients.length} ${recipients.length === 1 ? "client" : "clients"} receiving your reports`}
+      />
+      <div className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>Add Recipient</CardTitle>
@@ -191,35 +192,59 @@ export default function RecipientsPage() {
         </CardContent>
       </Card>
 
-      <div className="space-y-2">
-        {recipients.length === 0 && (
-          <p className="text-center text-sm text-muted-foreground py-8">
-            No recipients yet. Add your clients above.
-          </p>
-        )}
-        {recipients.map((r) => (
-          <div
-            key={r.id}
-            className="flex items-center justify-between rounded-lg border p-3"
-          >
-            <div>
-              <p className="text-sm font-medium">{r.name ?? r.email}</p>
-              <p className="text-xs text-muted-foreground">{r.email}</p>
+      {recipients.length === 0 ? (
+        <Card>
+          <CardContent>
+            <EmptyState
+              icon={Users}
+              title="No recipients yet"
+              description="Add your past clients above to start sending branded market reports. Or upload a CSV to import them all at once."
+            />
+          </CardContent>
+        </Card>
+      ) : (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Your client list</CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="divide-y">
+              {recipients.map((r) => (
+                <div
+                  key={r.id}
+                  className="flex items-center justify-between px-5 py-3 hover:bg-muted/40 transition-colors"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-xs font-bold text-white">
+                      {(r.name?.[0] ?? r.email[0]).toUpperCase()}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{r.name ?? r.email}</p>
+                      <p className="text-xs text-muted-foreground truncate flex items-center gap-1">
+                        <Mail className="h-3 w-3" />
+                        {r.email}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Badge variant={r.active ? "default" : "secondary"} className="text-xs">
+                      {r.active ? "Active" : "Paused"}
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeRecipient(r.id)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center gap-2">
-              <Badge variant={r.active ? "default" : "secondary"}>
-                {r.active ? "Active" : "Paused"}
-              </Badge>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => removeRecipient(r.id)}
-              >
-                <Trash2 className="h-4 w-4 text-destructive" />
-              </Button>
-            </div>
-          </div>
-        ))}
+          </CardContent>
+        </Card>
+      )}
       </div>
     </div>
   );
