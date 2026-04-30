@@ -1,13 +1,14 @@
 /**
- * Travel-poster style SVG artwork for featured cities.
+ * Travel-poster style artwork for featured cities.
  *
- * Design philosophy:
- * - ONE bold hero landmark per card (instantly recognizable at small sizes)
- * - Atmospheric gradient sky for depth
- * - 1-2 supporting context elements
- * - Refined per-city color palettes
- * - All original SVG, no licensing concerns, ~2KB each
+ * Two-tier system:
+ * 1. If an image exists at /public/markets/[slug].webp (or png/jpg),
+ *    that's used as the card background.
+ * 2. Otherwise, falls back to a hand-crafted SVG illustration.
+ *
+ * Drop AI-generated images into /public/markets/ to upgrade.
  */
+import { getCityImagePath } from "@/lib/city-images";
 
 interface CityArtworkProps {
   slug: string;
@@ -19,6 +20,23 @@ const SHARED_CLASS =
 
 export function CityArtwork({ slug, className = "" }: CityArtworkProps) {
   const fullClass = `${SHARED_CLASS} ${className}`;
+
+  // Use AI-generated image if it exists in /public/markets/
+  const imagePath = getCityImagePath(slug);
+  if (imagePath) {
+    return (
+      <div
+        className={fullClass}
+        style={{
+          backgroundImage: `url(${imagePath})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        aria-hidden="true"
+      />
+    );
+  }
 
   switch (slug) {
     // ============================================================
@@ -288,24 +306,27 @@ export function CityArtwork({ slug, className = "" }: CityArtworkProps) {
             <rect x="60" y="215" width="40" height="85" />
           </g>
 
-          {/* CHRYSLER BUILDING — distinctive stepped Art Deco crown */}
+          {/* CHRYSLER BUILDING — symmetric stepped Art Deco crown (center=130) */}
           <g fill="#0f172a" opacity="0.95">
-            <rect x="115" y="155" width="38" height="145" />
-            {/* Stepped crown - 3 tiers of arches */}
-            <path d="M 115 155 L 115 142 L 121 135 L 127 128 L 134 121 L 141 128 L 147 135 L 153 142 L 153 155 Z" />
-            <path d="M 121 135 L 121 122 L 127 113 L 134 104 L 141 113 L 147 122 L 147 135 Z" />
-            <path d="M 127 113 L 127 100 L 134 88 L 141 100 L 141 113 Z" />
-            {/* Spire */}
-            <line x1="134" y1="88" x2="134" y2="48" stroke="#0f172a" strokeWidth="3.5" />
-            <circle cx="134" cy="50" r="2" fill="#dc2626" className="animate-[pulse_2s_ease-in-out_infinite]" />
+            {/* Main shaft: x=110-150, w=40, center=130 */}
+            <rect x="110" y="155" width="40" height="145" />
+            {/* Crown tier 1 (widest) — symmetric around x=130 */}
+            <path d="M 110 155 L 110 140 L 116 132 L 124 124 L 130 118 L 136 124 L 144 132 L 150 140 L 150 155 Z" />
+            {/* Crown tier 2 — symmetric */}
+            <path d="M 116 132 L 116 118 L 122 110 L 130 102 L 138 110 L 144 118 L 144 132 Z" />
+            {/* Crown tier 3 (smallest) — symmetric */}
+            <path d="M 122 110 L 122 96 L 130 86 L 138 96 L 138 110 Z" />
+            {/* Spire — perfectly centered at 130 */}
+            <line x1="130" y1="86" x2="130" y2="50" stroke="#0f172a" strokeWidth="3" />
+            <circle cx="130" cy="52" r="2" fill="#dc2626" className="animate-[pulse_2s_ease-in-out_infinite]" />
           </g>
-          {/* Chrysler windows */}
+          {/* Chrysler windows — within new shaft x=110-150 */}
           <g fill="#fbbf24" opacity="0.85">
-            <rect x="120" y="170" width="2" height="2" />
-            <rect x="130" y="190" width="2" height="2" />
-            <rect x="140" y="210" width="2" height="2" />
-            <rect x="120" y="240" width="2" height="2" />
-            <rect x="145" y="260" width="2" height="2" />
+            <rect x="116" y="170" width="2" height="2" />
+            <rect x="128" y="190" width="2" height="2" />
+            <rect x="138" y="210" width="2" height="2" />
+            <rect x="118" y="240" width="2" height="2" />
+            <rect x="142" y="260" width="2" height="2" />
             <rect x="125" y="280" width="2" height="2" />
           </g>
 
@@ -399,18 +420,21 @@ export function CityArtwork({ slug, className = "" }: CityArtworkProps) {
             />
           </g>
 
-          {/* REUNION TOWER — much bigger now, the hero of the card */}
+          {/* REUNION TOWER — hero of the card. Center at x=150, ball at y=115 */}
           <g style={{ transformOrigin: "150px 200px" }}>
-            {/* Three triangular legs (the iconic shaft) */}
-            <path d="M 145 130 L 130 295 L 138 295 L 150 130 Z" fill="#0f172a" opacity="0.95" />
-            <path d="M 150 130 L 145 295 L 155 295 L 150 130 Z" fill="#1e293b" opacity="0.95" />
-            <path d="M 155 130 L 162 295 L 170 295 L 155 130 Z" fill="#0f172a" opacity="0.95" />
+            {/* Three legs splay symmetrically from ball (y=140) outward to base (y=295) */}
+            {/* Left leg: top at 145, base at 125 (splay 20 outward) */}
+            <path d="M 144 140 L 121 295 L 129 295 L 148 140 Z" fill="#0f172a" opacity="0.95" />
+            {/* Center leg: vertical from 150 to 150 */}
+            <path d="M 148 140 L 146 295 L 154 295 L 152 140 Z" fill="#1e293b" opacity="0.95" />
+            {/* Right leg: mirror of left */}
+            <path d="M 156 140 L 152 140 L 171 295 L 179 295 Z" fill="#0f172a" opacity="0.95" />
 
-            {/* Cross-bracing */}
-            <line x1="135" y1="280" x2="167" y2="280" stroke="#0f172a" strokeWidth="2" opacity="0.85" />
-            <line x1="138" y1="240" x2="163" y2="240" stroke="#0f172a" strokeWidth="2" opacity="0.7" />
-            <line x1="141" y1="200" x2="159" y2="200" stroke="#0f172a" strokeWidth="2" opacity="0.7" />
-            <line x1="144" y1="160" x2="156" y2="160" stroke="#0f172a" strokeWidth="2" opacity="0.7" />
+            {/* Cross-bracing - symmetric around x=150 */}
+            <line x1="124" y1="280" x2="176" y2="280" stroke="#0f172a" strokeWidth="2" opacity="0.85" />
+            <line x1="131" y1="240" x2="169" y2="240" stroke="#0f172a" strokeWidth="2" opacity="0.7" />
+            <line x1="138" y1="200" x2="162" y2="200" stroke="#0f172a" strokeWidth="2" opacity="0.7" />
+            <line x1="143" y1="170" x2="157" y2="170" stroke="#0f172a" strokeWidth="2" opacity="0.7" />
 
             {/* THE FAMOUS BALL — much bigger and more detailed */}
             <circle cx="150" cy="115" r="38" fill="#0f172a" opacity="0.97" />
@@ -511,70 +535,70 @@ export function CityArtwork({ slug, className = "" }: CityArtworkProps) {
           <circle cx="60" cy="80" r="28" fill="#fef3c7" opacity="0.95" className="animate-[pulse_4s_ease-in-out_infinite]" />
           <circle cx="60" cy="80" r="40" fill="#fbbf24" opacity="0.4" />
 
-          {/* TEXAS STATE CAPITOL — pink granite dome, MUCH bigger */}
+          {/* TEXAS STATE CAPITOL — perfectly symmetric around x=165 */}
           <g>
-            {/* Wide stately base */}
+            {/* Wide base centered: 80→250 (170w) → center=165 */}
             <rect x="80" y="240" width="170" height="60" fill="#fda4af" opacity="0.95" />
-            {/* Cornice */}
+            {/* Cornice centered: 75→255 (180w) → center=165 */}
             <rect x="75" y="232" width="180" height="10" fill="#fb7185" opacity="0.95" />
-            {/* Pediment / portico */}
+            {/* Pediment / portico centered: 100→230 (130w) → center=165 */}
             <rect x="100" y="210" width="130" height="22" fill="#fda4af" opacity="0.95" />
+            {/* Triangular pediment apex at center=165 */}
             <polygon points="100,210 165,180 230,210" fill="#fb7185" opacity="0.95" />
 
-            {/* Columns (more, taller) */}
+            {/* 7 columns symmetric around 165 — spaced 22px apart */}
+            {/* Column centers: 99, 121, 143, 165, 187, 209, 231 */}
             <g fill="#fda4af" opacity="0.98">
-              <rect x="105" y="218" width="6" height="72" />
-              <rect x="125" y="218" width="6" height="72" />
-              <rect x="145" y="218" width="6" height="72" />
-              <rect x="165" y="218" width="6" height="72" />
-              <rect x="185" y="218" width="6" height="72" />
-              <rect x="205" y="218" width="6" height="72" />
-              <rect x="225" y="218" width="6" height="72" />
+              <rect x="96" y="220" width="6" height="20" />
+              <rect x="118" y="220" width="6" height="20" />
+              <rect x="140" y="220" width="6" height="20" />
+              <rect x="162" y="220" width="6" height="20" />
+              <rect x="184" y="220" width="6" height="20" />
+              <rect x="206" y="220" width="6" height="20" />
+              <rect x="228" y="220" width="6" height="20" />
             </g>
             {/* Column capitals */}
             <g fill="#fb7185" opacity="0.95">
-              <rect x="103" y="216" width="10" height="3" />
-              <rect x="123" y="216" width="10" height="3" />
-              <rect x="143" y="216" width="10" height="3" />
-              <rect x="163" y="216" width="10" height="3" />
-              <rect x="183" y="216" width="10" height="3" />
-              <rect x="203" y="216" width="10" height="3" />
-              <rect x="223" y="216" width="10" height="3" />
+              <rect x="94" y="218" width="10" height="3" />
+              <rect x="116" y="218" width="10" height="3" />
+              <rect x="138" y="218" width="10" height="3" />
+              <rect x="160" y="218" width="10" height="3" />
+              <rect x="182" y="218" width="10" height="3" />
+              <rect x="204" y="218" width="10" height="3" />
+              <rect x="226" y="218" width="10" height="3" />
             </g>
 
-            {/* Drum (cylinder beneath dome) */}
+            {/* Drum (cylinder beneath dome) — centered: 125→205 (80w) → center=165 */}
             <rect x="125" y="160" width="80" height="22" fill="#fda4af" opacity="0.95" />
-            {/* Drum columns/windows */}
+            {/* Drum windows symmetric */}
             <g stroke="#9f1239" strokeWidth="0.8" opacity="0.6">
-              <line x1="135" y1="165" x2="135" y2="180" />
-              <line x1="148" y1="165" x2="148" y2="180" />
-              <line x1="161" y1="165" x2="161" y2="180" />
-              <line x1="174" y1="165" x2="174" y2="180" />
-              <line x1="187" y1="165" x2="187" y2="180" />
-              <line x1="200" y1="165" x2="200" y2="180" />
+              <line x1="138" y1="165" x2="138" y2="180" />
+              <line x1="151" y1="165" x2="151" y2="180" />
+              <line x1="165" y1="165" x2="165" y2="180" />
+              <line x1="179" y1="165" x2="179" y2="180" />
+              <line x1="192" y1="165" x2="192" y2="180" />
             </g>
 
-            {/* THE BIG DOME — pink granite */}
+            {/* THE BIG DOME — perfectly centered at 165 */}
             <ellipse cx="165" cy="160" rx="50" ry="40" fill="#fb7185" opacity="0.97" />
-            {/* Highlight */}
+            {/* Subtle highlight */}
             <ellipse cx="155" cy="148" rx="22" ry="16" fill="#fecaca" opacity="0.5" />
 
-            {/* Lantern on top of dome */}
+            {/* Lantern on dome, centered at 165 */}
             <rect x="158" y="110" width="14" height="16" fill="#fda4af" />
             <rect x="153" y="105" width="24" height="6" fill="#fb7185" />
-            {/* Mini-dome on lantern */}
             <ellipse cx="165" cy="105" rx="12" ry="6" fill="#fb7185" />
 
-            {/* Goddess of Liberty statue */}
+            {/* Goddess statue centered at 165 */}
             <line x1="165" y1="100" x2="165" y2="83" stroke="#fbbf24" strokeWidth="3" />
             <circle cx="165" cy="80" r="4" fill="#fbbf24" />
-            {/* Goddess holding the Lone Star aloft */}
-            <line x1="165" y1="78" x2="170" y2="65" stroke="#fbbf24" strokeWidth="1.5" />
+            {/* Star held aloft - arm raised */}
+            <line x1="165" y1="78" x2="172" y2="64" stroke="#fbbf24" strokeWidth="1.5" />
 
-            {/* THE LONE STAR — animated */}
-            <g style={{ transformOrigin: "172px 60px" }} className="animate-[pulse_2s_ease-in-out_infinite]">
+            {/* THE LONE STAR — animated, symmetric */}
+            <g style={{ transformOrigin: "175px 58px" }} className="animate-[pulse_2s_ease-in-out_infinite]">
               <polygon
-                points="172,48 176,58 187,58 178,65 181,76 172,69 163,76 166,65 157,58 168,58"
+                points="175,46 179,56 190,56 181,63 184,74 175,67 166,74 169,63 160,56 171,56"
                 fill="#fbbf24"
               />
             </g>
@@ -905,51 +929,51 @@ export function CityArtwork({ slug, className = "" }: CityArtworkProps) {
             <ellipse cx="362" cy="32" rx="7" ry="3" fill="#16a34a" opacity="0.9" transform="rotate(30 362 32)" />
           </g>
 
-          {/* BANK OF AMERICA PLAZA — MASSIVE dominant building */}
-          {/* The pyramid glow halo */}
-          <circle cx="180" cy="60" r="70" fill="url(#atlPyramidGlow)" />
+          {/* BANK OF AMERICA PLAZA — perfectly symmetric around x=180 */}
+          {/* Pyramid glow halo */}
+          <circle cx="180" cy="65" r="70" fill="url(#atlPyramidGlow)" />
 
           <g>
-            {/* Tall main shaft - much bigger */}
+            {/* Main shaft: x=155→205 (50w), center=180 */}
             <rect x="155" y="115" width="50" height="185" fill="#0f172a" opacity="0.97" />
 
-            {/* Tapered top section */}
-            <polygon points="155,115 162,98 198,98 205,115" fill="#0f172a" opacity="0.97" />
+            {/* Tapered top section — symmetric trapezoid centered at 180 */}
+            <polygon points="155,115 165,100 195,100 205,115" fill="#0f172a" opacity="0.97" />
 
-            {/* THE FAMOUS GOLD PYRAMID SPIRE — much more prominent */}
-            <polygon points="162,98 180,40 198,98" fill="#fbbf24" opacity="0.85" />
-            {/* Inner gold layers for depth */}
-            <polygon points="166,98 180,55 194,98" fill="#fde68a" opacity="0.65" />
-            <polygon points="170,98 180,70 190,98" fill="#fef3c7" opacity="0.55" />
+            {/* THE GOLD PYRAMID SPIRE — symmetric, base 165→195 (30w), tip at x=180 */}
+            <polygon points="165,100 180,42 195,100" fill="#fbbf24" opacity="0.85" />
+            {/* Inner gold layers for depth - all symmetric around 180 */}
+            <polygon points="170,100 180,58 190,100" fill="#fde68a" opacity="0.65" />
+            <polygon points="174,100 180,72 186,100" fill="#fef3c7" opacity="0.55" />
 
             {/* Gold edge highlights */}
-            <line x1="180" y1="40" x2="162" y2="98" stroke="#fbbf24" strokeWidth="3" opacity="0.95" />
-            <line x1="180" y1="40" x2="198" y2="98" stroke="#fbbf24" strokeWidth="3" opacity="0.95" />
+            <line x1="180" y1="42" x2="165" y2="100" stroke="#fbbf24" strokeWidth="3" opacity="0.95" />
+            <line x1="180" y1="42" x2="195" y2="100" stroke="#fbbf24" strokeWidth="3" opacity="0.95" />
 
-            {/* Pyramid tip beacon */}
-            <circle cx="180" cy="38" r="3.5" fill="#fef3c7" className="animate-[pulse_2s_ease-in-out_infinite]" />
-            <circle cx="180" cy="38" r="6" fill="#fbbf24" opacity="0.5" />
+            {/* Pyramid tip beacon at x=180 */}
+            <circle cx="180" cy="40" r="3.5" fill="#fef3c7" className="animate-[pulse_2s_ease-in-out_infinite]" />
+            <circle cx="180" cy="40" r="6" fill="#fbbf24" opacity="0.5" />
 
-            {/* Window light grid on building shaft */}
+            {/* Window grid — within shaft x=155-205 */}
             <g fill="#fbbf24" opacity="0.65">
-              <rect x="160" y="130" width="2" height="2" />
-              <rect x="170" y="130" width="2" height="2" />
+              <rect x="162" y="130" width="2" height="2" />
+              <rect x="172" y="130" width="2" height="2" />
               <rect x="180" y="130" width="2" height="2" />
-              <rect x="190" y="130" width="2" height="2" />
-              <rect x="200" y="130" width="2" height="2" />
-              <rect x="160" y="155" width="2" height="2" />
+              <rect x="188" y="130" width="2" height="2" />
+              <rect x="198" y="130" width="2" height="2" />
+              <rect x="162" y="155" width="2" height="2" />
               <rect x="180" y="155" width="2" height="2" />
-              <rect x="200" y="155" width="2" height="2" />
+              <rect x="198" y="155" width="2" height="2" />
               <rect x="170" y="180" width="2" height="2" />
               <rect x="190" y="180" width="2" height="2" />
-              <rect x="160" y="210" width="2" height="2" />
+              <rect x="162" y="210" width="2" height="2" />
               <rect x="180" y="210" width="2" height="2" />
-              <rect x="200" y="210" width="2" height="2" />
+              <rect x="198" y="210" width="2" height="2" />
               <rect x="170" y="240" width="2" height="2" />
               <rect x="190" y="240" width="2" height="2" />
-              <rect x="160" y="270" width="2" height="2" />
+              <rect x="162" y="270" width="2" height="2" />
               <rect x="180" y="270" width="2" height="2" />
-              <rect x="200" y="270" width="2" height="2" />
+              <rect x="198" y="270" width="2" height="2" />
             </g>
           </g>
 
