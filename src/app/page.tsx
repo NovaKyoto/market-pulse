@@ -86,6 +86,7 @@ export default function LandingPage() {
           <div className="hidden sm:flex items-center gap-1 text-sm">
             <Link href="/market" className="px-3 py-2 text-muted-foreground hover:text-foreground">Markets</Link>
             <Link href="/blog" className="px-3 py-2 text-muted-foreground hover:text-foreground">Blog</Link>
+            <Link href="/teams" className="px-3 py-2 text-muted-foreground hover:text-foreground">For Teams</Link>
             <Link href="/founding" className="px-3 py-2 text-amber-600 hover:text-amber-700 font-medium">Founding 5 →</Link>
           </div>
           <div className="flex items-center gap-2">
@@ -560,6 +561,7 @@ export default function LandingPage() {
               <p className="font-semibold text-sm mb-3">Product</p>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><Link href="/sign-up" className="hover:text-foreground">Start Free Trial</Link></li>
+                <li><Link href="/teams" className="hover:text-foreground">For Teams &amp; Brokerages</Link></li>
                 <li><Link href="/founding" className="hover:text-foreground">Founding 5</Link></li>
                 <li><Link href="/sign-in" className="hover:text-foreground">Sign In</Link></li>
               </ul>
