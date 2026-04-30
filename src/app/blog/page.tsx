@@ -82,17 +82,17 @@ export default function BlogIndexPage() {
           <div className="text-center">
             <Badge variant="secondary" className="mb-4 px-3 py-1.5 gap-1.5 bg-background/80 backdrop-blur border shadow-sm">
               <BookOpen className="h-3.5 w-3.5 text-primary" />
-              MarketPulse Journal
+              The MarketPulse Journal
             </Badge>
             <h1 className="text-5xl font-extrabold tracking-tighter sm:text-6xl lg:text-7xl leading-[1.05]">
-              Real estate marketing
+              Real Estate Marketing
               <span className="block mt-2 pb-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent">
-                that actually works
+                That Actually Works
               </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-              Practical guides, research, and honest comparisons for agents who want to keep past
-              clients and grow through referrals — not chase cold leads.
+              Practical guides, original research, and honest tool comparisons — for agents who
+              want to retain past clients and grow through referrals, not chase cold leads.
             </p>
 
             {/* CONTENT STATS — magazine-style metric strip */}
@@ -110,7 +110,7 @@ export default function BlogIndexPage() {
                   {totalReadTime}
                 </p>
                 <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-1">
-                  Min Reading
+                  Minutes of Reading
                 </p>
               </div>
               <div className="rounded-xl border bg-background/80 backdrop-blur-sm p-4 text-center">
@@ -126,28 +126,9 @@ export default function BlogIndexPage() {
                   {totalKeywords}
                 </p>
                 <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-1">
-                  Topics
+                  Tags Covered
                 </p>
               </div>
-            </div>
-
-            {/* Topic / category browser */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-              <span className="text-xs uppercase tracking-widest font-bold text-muted-foreground mr-2">
-                Browse:
-              </span>
-              {Object.entries(categoryCounts).map(([category, count]) => {
-                const accent = categoryColors[category] ?? "from-blue-500 to-indigo-600";
-                return (
-                  <span
-                    key={category}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${accent} shadow-sm`}
-                  >
-                    {category}
-                    <span className="font-mono opacity-80">{count}</span>
-                  </span>
-                );
-              })}
             </div>
           </div>
         </div>
@@ -157,20 +138,20 @@ export default function BlogIndexPage() {
       {featured && (
         <section className="py-10 sm:py-14">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="flex items-end justify-between mb-5">
+            <div className="flex items-end justify-between mb-6">
               <div>
                 <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold">
                   Editor&apos;s Pick
                 </p>
-                <p className="text-xs text-muted-foreground mt-1 italic">
-                  This week&apos;s most-read article
+                <p className="text-sm text-muted-foreground mt-1 italic">
+                  Hand-selected by the MarketPulse editorial team
                 </p>
               </div>
               <Link
                 href={`/blog/${featured.slug}`}
                 className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
               >
-                Read the full article
+                Read the Story
                 <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
@@ -249,15 +230,15 @@ export default function BlogIndexPage() {
       {rest.length > 0 && (
         <section className="border-t marketing-muted py-12 sm:py-16">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="mb-8 text-center">
-              <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-2">
+            <div className="mb-10 text-center">
+              <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
                 Browse the Library
               </p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tighter">
                 ALL ARTICLES
               </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Filter by topic or search by keyword
+              <p className="mt-3 text-sm text-muted-foreground">
+                Filter by topic or search by keyword.
               </p>
             </div>
 
@@ -282,10 +263,10 @@ export default function BlogIndexPage() {
                     Subscribe
                   </p>
                   <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tighter leading-tight">
-                    Get articles in your inbox
+                    New Articles in Your Inbox
                   </h3>
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                    A short, practical email when we publish. No spam, no fluff —
+                    A short, practical email each time we publish. No spam, no fluff —
                     just the articles. Unsubscribe anytime.
                   </p>
                 </div>
@@ -305,7 +286,7 @@ export default function BlogIndexPage() {
                     </div>
                   </Link>
                   <p className="mt-2 text-[10px] text-muted-foreground italic">
-                    Sign up creates a free trial account · You can opt out of newsletter anytime
+                    Subscribing creates a free trial account · Opt out of the newsletter anytime
                   </p>
                 </div>
               </div>

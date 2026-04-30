@@ -53,7 +53,7 @@ export function ArticleBrowser({ posts }: Props) {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
             type="text"
-            placeholder="Search articles..."
+            placeholder="Search articles by topic or keyword..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full h-10 pl-9 pr-3 rounded-lg border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
@@ -89,14 +89,14 @@ export function ArticleBrowser({ posts }: Props) {
 
       {/* Results count */}
       {(activeCategory !== "All" || searchQuery) && (
-        <p className="text-xs text-muted-foreground mb-4 font-medium">
+        <p className="text-xs text-muted-foreground mb-5 font-medium">
           {filteredPosts.length === 0
-            ? "No articles match your filters"
+            ? "No articles match your filters."
             : `Showing ${filteredPosts.length} ${filteredPosts.length === 1 ? "article" : "articles"}`}
           {activeCategory !== "All" && (
-            <span> · {activeCategory}</span>
+            <span> · in <strong className="text-foreground">{activeCategory}</strong></span>
           )}
-          {searchQuery && <span> · &ldquo;{searchQuery}&rdquo;</span>}
+          {searchQuery && <span> · matching <strong className="text-foreground">&ldquo;{searchQuery}&rdquo;</strong></span>}
         </p>
       )}
 
@@ -106,7 +106,7 @@ export function ArticleBrowser({ posts }: Props) {
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-muted/60 mb-3">
             <Search className="h-5 w-5 text-muted-foreground" />
           </div>
-          <p className="font-bold text-base">No articles found</p>
+          <p className="font-bold text-base">No Articles Found</p>
           <p className="text-sm text-muted-foreground mt-1">
             Try a different category or search term.
           </p>
@@ -117,7 +117,7 @@ export function ArticleBrowser({ posts }: Props) {
             }}
             className="mt-4 text-sm font-bold text-primary hover:underline"
           >
-            Clear filters
+            Clear all filters
           </button>
         </div>
       ) : (
