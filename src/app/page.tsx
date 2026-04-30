@@ -525,81 +525,163 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Pricing — friendly, risk-reversed framing */}
       <section className="border-t marketing-muted py-20 sm:py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          {/* Section header — leads with FREE, not the price */}
           <div className="text-center mb-12">
             <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
-              Pricing
+              Try It First
             </p>
             <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
-              SIMPLE. NO SURPRISES.
+              FREE FOR 14 DAYS
             </h2>
-            <p className="mt-4 text-muted-foreground">
-              One plan. Everything included. Cancel anytime.
+            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
+              Send unlimited reports, add unlimited clients, try every feature.
+              No credit card required to start. <strong className="text-foreground">If it doesn&apos;t work, you pay nothing.</strong>
             </p>
           </div>
+
+          {/* Risk-reversal trust strip */}
+          <div className="grid grid-cols-3 gap-3 max-w-2xl mx-auto mb-10">
+            <div className="text-center rounded-xl border bg-background/80 p-3 sm:p-4">
+              <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 mb-2">
+                <Check className="h-4 w-4 text-emerald-600" />
+              </div>
+              <p className="text-xs font-bold">No Credit Card</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5 leading-tight">to start trial</p>
+            </div>
+            <div className="text-center rounded-xl border bg-background/80 p-3 sm:p-4">
+              <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 mb-2">
+                <Shield className="h-4 w-4 text-blue-600" />
+              </div>
+              <p className="text-xs font-bold">Cancel Anytime</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5 leading-tight">one-click in dashboard</p>
+            </div>
+            <div className="text-center rounded-xl border bg-background/80 p-3 sm:p-4">
+              <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 mb-2">
+                <Sparkles className="h-4 w-4 text-amber-600" />
+              </div>
+              <p className="text-xs font-bold">No Lock-in</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5 leading-tight">no contracts ever</p>
+            </div>
+          </div>
+
+          {/* Pricing cards — softer, more reassuring */}
           <div className="mx-auto grid gap-6 max-w-3xl md:grid-cols-2">
             {/* Monthly */}
-            <Card className="border-2 relative overflow-hidden">
-              <CardContent className="p-8">
-                <Badge variant="secondary" className="mb-4">Monthly</Badge>
+            <Card className="border-2 relative overflow-hidden hover:border-primary/40 transition-colors">
+              <CardContent className="p-7 sm:p-8">
+                <div className="flex items-center justify-between mb-3">
+                  <Badge variant="secondary" className="text-xs">Monthly</Badge>
+                  <span className="text-[10px] text-muted-foreground italic">Flexible</span>
+                </div>
+                <p className="text-xs text-muted-foreground mb-1">After your free trial:</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-extrabold font-mono tracking-tighter">$49</span>
-                  <span className="text-lg text-muted-foreground">/mo</span>
+                  <span className="text-lg text-muted-foreground">/month</span>
                 </div>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  14-day free trial · Cancel anytime
+                <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-400 font-semibold">
+                  Just $1.63/day · Less than a coffee
                 </p>
-                <ul className="mt-6 space-y-2.5 text-left">
-                  {pricingFeatures.map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-sm">
-                      <Check className="h-4 w-4 shrink-0 text-emerald-600" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
+                <p className="mt-4 text-xs text-muted-foreground border-l-2 border-emerald-500/40 pl-3 italic">
+                  💡 One referred deal covers <strong className="text-foreground not-italic">12+ months</strong> of MarketPulse.
+                </p>
                 <Link href="/sign-up" className="mt-6 block">
-                  <Button className="w-full h-11" variant="outline" size="lg">
-                    Start Free Trial
+                  <Button className="w-full h-12" variant="outline" size="lg">
+                    Start Free — Pay Later
                   </Button>
                 </Link>
+                <p className="mt-3 text-[10px] text-center text-muted-foreground">
+                  No credit card needed today
+                </p>
               </CardContent>
             </Card>
 
             {/* Annual */}
             <Card className="border-2 border-primary shadow-xl relative overflow-hidden">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <Badge className="px-3 py-1 shadow-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-600 border-0">
-                  Save 20%
+                <Badge className="px-3 py-1 shadow-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-600 border-0 font-bold">
+                  Save $118 / year
                 </Badge>
               </div>
               <div className="absolute top-0 right-0 h-32 w-32 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-full" />
-              <CardContent className="p-8">
-                <Badge className="mb-4">Annual · Best Value</Badge>
+              <CardContent className="p-7 sm:p-8 pt-9">
+                <div className="flex items-center justify-between mb-3">
+                  <Badge className="text-xs">Annual</Badge>
+                  <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">Most Popular</span>
+                </div>
+                <p className="text-xs text-muted-foreground mb-1">After your free trial:</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-extrabold font-mono tracking-tighter">$39</span>
-                  <span className="text-lg text-muted-foreground">/mo</span>
+                  <span className="text-lg text-muted-foreground">/month</span>
                 </div>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  $470/year · save $118
+                <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-400 font-semibold">
+                  Just $1.30/day · Save 20%
                 </p>
-                <ul className="mt-6 space-y-2.5 text-left">
+                <p className="mt-4 text-xs text-muted-foreground border-l-2 border-emerald-500/40 pl-3 italic">
+                  💡 One referred deal covers <strong className="text-foreground not-italic">15+ months</strong> of MarketPulse.
+                </p>
+                <Link href="/sign-up" className="mt-6 block">
+                  <Button className="w-full h-12 gap-2 shadow-md" size="lg">
+                    Start Free — Pay Later
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <p className="mt-3 text-[10px] text-center text-muted-foreground">
+                  Choose annual when your trial ends
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Both plans include — single shared list */}
+          <div className="mx-auto mt-8 max-w-3xl">
+            <Card className="bg-gradient-to-br from-emerald-50/50 to-teal-50/30 dark:from-emerald-950/10 dark:to-teal-950/10 border-emerald-500/20">
+              <CardContent className="p-5 sm:p-6">
+                <p className="text-xs uppercase tracking-widest font-bold text-emerald-700 dark:text-emerald-400 mb-3 text-center">
+                  Every Plan Includes Everything
+                </p>
+                <ul className="grid gap-2 sm:grid-cols-2 sm:gap-x-6">
                   {pricingFeatures.map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-sm">
+                    <li key={f} className="flex items-center gap-2 text-sm">
                       <Check className="h-4 w-4 shrink-0 text-emerald-600" />
                       {f}
                     </li>
                   ))}
                 </ul>
-                <Link href="/sign-up" className="mt-6 block">
-                  <Button className="w-full h-11 gap-2" size="lg">
-                    Start Free Trial
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
               </CardContent>
             </Card>
+          </div>
+
+          {/* Comparison framing — makes $49 feel cheap */}
+          <div className="mt-8 max-w-3xl mx-auto">
+            <p className="text-xs uppercase tracking-widest font-bold text-muted-foreground mb-3 text-center">
+              How MarketPulse Compares
+            </p>
+            <div className="grid gap-2 sm:grid-cols-3">
+              <div className="rounded-xl border-2 border-red-500/20 bg-red-50/30 dark:bg-red-950/10 p-4 text-center">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
+                  Marketing Assistant
+                </p>
+                <p className="text-2xl font-black font-mono mt-1">$3,000<span className="text-xs text-muted-foreground">/mo</span></p>
+                <p className="text-[10px] text-muted-foreground mt-1 italic">Plus benefits and overhead</p>
+              </div>
+              <div className="rounded-xl border-2 border-amber-500/20 bg-amber-50/30 dark:bg-amber-950/10 p-4 text-center">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
+                  DIY Newsletters
+                </p>
+                <p className="text-2xl font-black font-mono mt-1">8 hrs<span className="text-xs text-muted-foreground">/wk</span></p>
+                <p className="text-[10px] text-muted-foreground mt-1 italic">Plus subscription costs</p>
+              </div>
+              <div className="rounded-xl border-2 border-emerald-500/40 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 p-4 text-center shadow-md">
+                <p className="text-[10px] uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-bold">
+                  MarketPulse
+                </p>
+                <p className="text-2xl font-black font-mono mt-1 text-emerald-700 dark:text-emerald-400">$49<span className="text-xs text-muted-foreground">/mo</span></p>
+                <p className="text-[10px] text-muted-foreground mt-1 italic">Zero hours of your time</p>
+              </div>
+            </div>
           </div>
 
           {/* Founding 5 callout */}
