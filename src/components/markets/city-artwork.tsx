@@ -342,153 +342,446 @@ export function CityArtwork({ slug, className = "" }: CityArtworkProps) {
       );
 
     // ============================================================
-    // PHOENIX — saguaro cactus + desert sun
+    // PHOENIX — Camelback Mountain (iconic camel-shaped) + saguaro forest
     // ============================================================
     case "phoenix-az":
       return (
         <svg viewBox="0 0 400 300" className={fullClass} preserveAspectRatio="xMidYMid slice">
           <defs>
+            <linearGradient id="phxSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#7c2d12" stopOpacity="0.7" />
+              <stop offset="40%" stopColor="#ea580c" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.5" />
+            </linearGradient>
             <radialGradient id="phxSun" cx="0.5" cy="0.4" r="0.6">
-              <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#dc2626" stopOpacity="0.1" />
+              <stop offset="0%" stopColor="#fef3c7" stopOpacity="1" />
+              <stop offset="50%" stopColor="#fbbf24" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#dc2626" stopOpacity="0" />
             </radialGradient>
           </defs>
-          {/* Hot desert sun */}
-          <circle cx="200" cy="100" r="80" fill="url(#phxSun)" className="animate-[pulse_4s_ease-in-out_infinite]" />
-          {/* Distant mountains */}
-          <path d="M 0 240 L 80 180 L 140 220 L 220 170 L 300 215 L 380 175 L 400 200 L 400 300 L 0 300 Z" fill="#7c2d12" opacity="0.5" />
-          {/* Saguaro cactus center */}
-          <g fill="#16a34a" opacity="0.7">
-            <rect x="190" y="160" width="20" height="140" rx="10" />
-            <rect x="160" y="200" width="35" height="12" rx="6" />
-            <rect x="160" y="200" width="12" height="50" rx="6" />
-            <rect x="205" y="180" width="35" height="12" rx="6" />
-            <rect x="228" y="160" width="12" height="50" rx="6" />
+
+          {/* Sonoran sunset sky */}
+          <rect x="0" y="0" width="400" height="220" fill="url(#phxSky)" opacity="0.7" />
+
+          {/* Big desert sun */}
+          <circle cx="200" cy="120" r="50" fill="url(#phxSun)" className="animate-[pulse_4s_ease-in-out_infinite]" />
+          <circle cx="200" cy="120" r="32" fill="#fef3c7" opacity="0.95" />
+
+          {/* CAMELBACK MOUNTAIN — distinctive camel-shaped silhouette */}
+          {/* The mountain literally looks like a kneeling camel */}
+          <path
+            d="M 50 220
+               Q 80 215 100 210
+               L 120 195
+               Q 140 175 160 185
+               L 175 200
+               Q 185 215 195 215
+               L 220 215
+               Q 240 195 260 175
+               Q 280 165 300 175
+               Q 330 200 360 215
+               L 400 220
+               L 400 300 L 0 300 Z"
+            fill="#7c2d12"
+            opacity="0.85"
+          />
+          {/* The "head" peak (left side - lower hump) */}
+          <path
+            d="M 100 210 L 120 195 Q 140 175 160 185 L 175 200 L 175 220 L 100 220 Z"
+            fill="#92400e"
+            opacity="0.7"
+          />
+          {/* The "hump" (right side - taller peak) */}
+          <path
+            d="M 220 215 Q 240 195 260 175 Q 280 165 300 175 L 320 215 Z"
+            fill="#92400e"
+            opacity="0.65"
+          />
+          {/* Subtle ridge highlights for dimension */}
+          <path d="M 140 180 L 160 188" stroke="#fbbf24" strokeWidth="0.8" opacity="0.5" />
+          <path d="M 270 168 L 290 175" stroke="#fbbf24" strokeWidth="0.8" opacity="0.5" />
+
+          {/* Foreground desert floor */}
+          <path d="M 0 270 Q 100 260 200 270 T 400 268 L 400 300 L 0 300 Z" fill="#fde68a" opacity="0.4" />
+
+          {/* Tall saguaro cactus center-foreground (3-arm) */}
+          <g fill="#16a34a" opacity="0.95">
+            {/* Trunk */}
+            <rect x="190" y="170" width="22" height="130" rx="11" />
+            {/* Subtle ribs (vertical lines) */}
+            <line x1="195" y1="180" x2="195" y2="290" stroke="#15803d" strokeWidth="0.6" opacity="0.6" />
+            <line x1="201" y1="180" x2="201" y2="290" stroke="#15803d" strokeWidth="0.6" opacity="0.6" />
+            <line x1="207" y1="180" x2="207" y2="290" stroke="#15803d" strokeWidth="0.6" opacity="0.6" />
+            {/* Left arm — bends up like classic saguaro */}
+            <rect x="155" y="210" width="38" height="13" rx="6.5" />
+            <rect x="155" y="210" width="13" height="55" rx="6.5" />
+            {/* Right arm */}
+            <rect x="207" y="190" width="38" height="13" rx="6.5" />
+            <rect x="232" y="170" width="13" height="40" rx="6.5" />
+            {/* Tiny third arm */}
+            <rect x="207" y="220" width="22" height="10" rx="5" />
+            <rect x="220" y="210" width="9" height="18" rx="4.5" />
+            {/* Cactus spines indicators (small marks) */}
+            <g stroke="#fef3c7" strokeWidth="0.4" opacity="0.4">
+              <line x1="190" y1="200" x2="186" y2="200" />
+              <line x1="212" y1="200" x2="216" y2="200" />
+              <line x1="190" y1="240" x2="186" y2="240" />
+              <line x1="212" y1="240" x2="216" y2="240" />
+              <line x1="190" y1="270" x2="186" y2="270" />
+              <line x1="212" y1="270" x2="216" y2="270" />
+            </g>
           </g>
-          {/* Smaller cactus left */}
-          <g fill="#15803d" opacity="0.6">
-            <rect x="60" y="220" width="14" height="80" rx="7" />
-            <rect x="40" y="240" width="25" height="9" rx="4.5" />
-            <rect x="40" y="240" width="9" height="30" rx="4.5" />
+
+          {/* Smaller saguaro left */}
+          <g fill="#15803d" opacity="0.85">
+            <rect x="55" y="225" width="18" height="75" rx="9" />
+            <rect x="35" y="245" width="25" height="11" rx="5.5" />
+            <rect x="35" y="245" width="11" height="32" rx="5.5" />
           </g>
-          {/* Smaller cactus right */}
-          <g fill="#15803d" opacity="0.6">
-            <rect x="320" y="230" width="14" height="70" rx="7" />
-            <rect x="335" y="245" width="20" height="9" rx="4.5" />
-            <rect x="346" y="235" width="9" height="25" rx="4.5" />
+
+          {/* Smaller saguaro right */}
+          <g fill="#15803d" opacity="0.85">
+            <rect x="320" y="240" width="16" height="60" rx="8" />
+            <rect x="335" y="255" width="22" height="10" rx="5" />
+            <rect x="348" y="245" width="9" height="22" rx="4.5" />
+          </g>
+
+          {/* Roadrunner silhouette running across (small detail) */}
+          <g fill="#1e293b" opacity="0.65" transform="translate(80, 285)">
+            <ellipse cx="0" cy="0" rx="9" ry="4" />
+            <path d="M -8 -1 L -14 -3 L -10 0 Z" />
+            <path d="M 7 -2 L 13 -1 L 7 1 Z" />
+            <line x1="-2" y1="3" x2="-3" y2="8" stroke="#1e293b" strokeWidth="1" />
+            <line x1="2" y1="3" x2="1" y2="8" stroke="#1e293b" strokeWidth="1" />
           </g>
         </svg>
       );
 
     // ============================================================
-    // HOUSTON — space/rocket + skyline
+    // HOUSTON — Saturn V rocket + Williams Tower obelisk + JPMorgan + space
     // ============================================================
     case "houston-tx":
       return (
         <svg viewBox="0 0 400 300" className={fullClass} preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="houstonSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#0c0a4d" stopOpacity="0.9" />
+              <stop offset="60%" stopColor="#1e1b4b" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#7c3aed" stopOpacity="0.5" />
+            </linearGradient>
+          </defs>
+
+          {/* Deep space sky */}
+          <rect x="0" y="0" width="400" height="220" fill="url(#houstonSky)" opacity="0.7" />
+
           {/* Stars */}
-          <g fill="#fef3c7" opacity="0.9">
-            <circle cx="50" cy="40" r="1.5" />
-            <circle cx="120" cy="30" r="1" />
-            <circle cx="280" cy="50" r="1.5" />
-            <circle cx="350" cy="35" r="1" />
-            <circle cx="180" cy="20" r="1" />
-            <circle cx="80" cy="80" r="1" />
-            <circle cx="320" cy="80" r="1" />
+          <g fill="#fef3c7">
+            <circle cx="50" cy="35" r="1.5" />
+            <circle cx="120" cy="25" r="1" />
+            <circle cx="280" cy="40" r="1.5" />
+            <circle cx="350" cy="30" r="1" />
+            <circle cx="180" cy="15" r="1" />
+            <circle cx="320" cy="70" r="1" />
+            <circle cx="100" cy="65" r="0.8" />
+            <circle cx="375" cy="55" r="1.2" />
+            <circle cx="220" cy="45" r="0.8" />
           </g>
-          {/* Rocket — Houston, we have a launch */}
-          <g style={{ transformOrigin: "200px 200px" }} className="animate-[float_6s_ease-in-out_infinite]">
-            <path d="M 200 60 L 215 140 L 215 200 L 185 200 L 185 140 Z" fill="#e2e8f0" />
-            <path d="M 200 60 L 215 140 L 185 140 Z" fill="#cbd5e1" />
+
+          {/* Earth/moon in distance */}
+          <circle cx="345" cy="80" r="14" fill="#3b82f6" opacity="0.6" />
+          <circle cx="342" cy="77" r="5" fill="#10b981" opacity="0.5" />
+
+          {/* SATURN V ROCKET — three-stage with American flag stripe */}
+          <g style={{ transformOrigin: "100px 230px" }} className="animate-[float_7s_ease-in-out_infinite]">
+            {/* Tip / nose cone */}
+            <path d="M 95 35 L 105 35 L 105 55 L 95 55 Z" fill="#f8fafc" />
+            <path d="M 95 35 L 100 20 L 105 35 Z" fill="#f8fafc" />
+            {/* Stage 3 (top) - thinner */}
+            <rect x="93" y="55" width="14" height="25" fill="#f8fafc" />
+            {/* Stage 2 (middle) - wider */}
+            <rect x="89" y="80" width="22" height="55" fill="#f8fafc" />
+            {/* "USA" American flag stripe */}
+            <rect x="89" y="100" width="22" height="3" fill="#dc2626" />
+            <rect x="89" y="106" width="22" height="3" fill="#dc2626" />
+            {/* Stage 1 (bottom) - widest */}
+            <rect x="84" y="135" width="32" height="65" fill="#f8fafc" />
+            {/* Black stripe pattern (Saturn V signature) */}
+            <rect x="84" y="155" width="32" height="6" fill="#0f172a" />
+            <rect x="84" y="180" width="32" height="6" fill="#0f172a" />
             {/* Window */}
-            <circle cx="200" cy="120" r="6" fill="#3b82f6" opacity="0.8" />
+            <circle cx="100" cy="92" r="3" fill="#3b82f6" opacity="0.9" />
             {/* Fins */}
-            <path d="M 185 175 L 165 210 L 185 200 Z" fill="#94a3b8" />
-            <path d="M 215 175 L 235 210 L 215 200 Z" fill="#94a3b8" />
-            {/* Flames */}
-            <path d="M 185 200 L 200 240 L 215 200 Z" fill="#f97316" className="animate-[flicker_0.5s_ease-in-out_infinite]" />
-            <path d="M 192 200 L 200 220 L 208 200 Z" fill="#fbbf24" />
+            <path d="M 84 185 L 70 215 L 84 205 Z" fill="#dc2626" />
+            <path d="M 116 185 L 130 215 L 116 205 Z" fill="#dc2626" />
+            {/* Engine bell at bottom */}
+            <path d="M 86 200 L 88 215 L 112 215 L 114 200 Z" fill="#475569" />
+            {/* Massive rocket flame */}
+            <g className="animate-[flicker_0.5s_ease-in-out_infinite]">
+              <path d="M 86 215 L 90 245 L 100 260 L 110 245 L 114 215 Z" fill="#f97316" />
+              <path d="M 90 215 L 95 235 L 100 250 L 105 235 L 110 215 Z" fill="#fbbf24" />
+              <path d="M 95 215 L 100 235 L 105 215 Z" fill="#fef3c7" />
+            </g>
+            {/* Smoke trail */}
+            <ellipse cx="100" cy="270" rx="20" ry="4" fill="#cbd5e1" opacity="0.6" />
+            <ellipse cx="100" cy="280" rx="30" ry="4" fill="#94a3b8" opacity="0.4" />
           </g>
-          {/* Houston skyline */}
-          <g fill="#1e293b" opacity="0.6">
-            <rect x="0" y="240" width="40" height="60" />
-            <rect x="40" y="220" width="30" height="80" />
-            <rect x="70" y="250" width="40" height="50" />
-            <rect x="270" y="240" width="35" height="60" />
-            <rect x="305" y="220" width="40" height="80" />
-            <rect x="345" y="245" width="55" height="55" />
+
+          {/* WILLIAMS TOWER — Houston's iconic 64-story granite obelisk */}
+          <g fill="#0f172a" opacity="0.92">
+            {/* Tall narrow obelisk with chamfered corners */}
+            <rect x="200" y="115" width="30" height="185" />
+            {/* Tapered top */}
+            <polygon points="200,115 215,90 230,115" />
+            {/* Pyramid cap */}
+            <polygon points="208,90 215,80 222,90" />
+          </g>
+          {/* Williams Tower lit windows (vertical strips) */}
+          <g fill="#fbbf24" opacity="0.7">
+            <rect x="205" y="130" width="2" height="160" />
+            <rect x="212" y="130" width="2" height="160" />
+            <rect x="219" y="130" width="2" height="160" />
+            <rect x="225" y="130" width="2" height="160" />
+          </g>
+          {/* Beacon at top (signature feature) */}
+          <circle cx="215" cy="83" r="2" fill="#dc2626" className="animate-[pulse_1.5s_ease-in-out_infinite]" />
+
+          {/* JPMORGAN CHASE TOWER — tallest in Texas, distinctive shape */}
+          <g fill="#1e293b" opacity="0.9">
+            <rect x="265" y="130" width="35" height="170" />
+            {/* Stepped roofline */}
+            <rect x="270" y="120" width="25" height="10" />
+            <rect x="276" y="113" width="13" height="7" />
+          </g>
+          <g fill="#fbbf24" opacity="0.65">
+            <rect x="270" y="150" width="2" height="2" />
+            <rect x="282" y="170" width="2" height="2" />
+            <rect x="290" y="200" width="2" height="2" />
+            <rect x="275" y="220" width="2" height="2" />
+            <rect x="290" y="240" width="2" height="2" />
+          </g>
+
+          {/* Other Houston skyline */}
+          <g fill="#1e293b" opacity="0.65">
+            <rect x="155" y="210" width="35" height="90" />
+            <rect x="305" y="180" width="30" height="120" />
+            <rect x="335" y="220" width="35" height="80" />
+            <rect x="370" y="200" width="30" height="100" />
           </g>
         </svg>
       );
 
     // ============================================================
-    // AUSTIN — guitar (live music capital) + bat (Congress bridge)
+    // AUSTIN — Texas State Capitol dome + Frost Bank "Owl" Tower + bats
     // ============================================================
     case "austin-tx":
       return (
         <svg viewBox="0 0 400 300" className={fullClass} preserveAspectRatio="xMidYMid slice">
-          {/* Sunset gradient bg accent */}
           <defs>
-            <linearGradient id="austinSunset" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#f97316" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#dc2626" stopOpacity="0" />
+            <linearGradient id="austinSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.7" />
+              <stop offset="50%" stopColor="#f97316" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.4" />
             </linearGradient>
           </defs>
-          <rect x="0" y="0" width="400" height="200" fill="url(#austinSunset)" />
-          {/* Guitar body */}
-          <g transform="translate(120, 180) rotate(-20)" style={{ transformOrigin: "0 0" }} className="animate-[float_8s_ease-in-out_infinite]">
-            <ellipse cx="0" cy="0" rx="50" ry="60" fill="#92400e" opacity="0.7" />
-            <ellipse cx="0" cy="0" rx="40" ry="48" fill="#7c2d12" opacity="0.7" />
-            <circle cx="0" cy="-10" r="14" fill="#1e293b" />
-            {/* Neck */}
-            <rect x="-6" y="-130" width="12" height="80" fill="#92400e" opacity="0.7" />
-            {/* Strings */}
-            <line x1="-2" y1="-130" x2="-2" y2="50" stroke="#fef3c7" strokeWidth="0.5" opacity="0.6" />
-            <line x1="0" y1="-130" x2="0" y2="50" stroke="#fef3c7" strokeWidth="0.5" opacity="0.6" />
-            <line x1="2" y1="-130" x2="2" y2="50" stroke="#fef3c7" strokeWidth="0.5" opacity="0.6" />
+
+          {/* Austin sunset sky */}
+          <rect x="0" y="0" width="400" height="220" fill="url(#austinSky)" opacity="0.65" />
+
+          {/* Big sun */}
+          <circle cx="320" cy="100" r="35" fill="#fef3c7" opacity="0.9" className="animate-[pulse_4s_ease-in-out_infinite]" />
+
+          {/* TEXAS STATE CAPITOL — pink granite dome (taller than US Capitol) */}
+          <g>
+            {/* Wide base */}
+            <rect x="50" y="240" width="100" height="60" fill="#fda4af" opacity="0.85" />
+            <rect x="60" y="225" width="80" height="15" fill="#fb7185" opacity="0.85" />
+            {/* Columns */}
+            <g fill="#fda4af" opacity="0.95">
+              <rect x="65" y="245" width="4" height="50" />
+              <rect x="80" y="245" width="4" height="50" />
+              <rect x="95" y="245" width="4" height="50" />
+              <rect x="110" y="245" width="4" height="50" />
+              <rect x="125" y="245" width="4" height="50" />
+              <rect x="140" y="245" width="4" height="50" />
+            </g>
+            {/* Drum (cylinder beneath dome) */}
+            <rect x="80" y="200" width="40" height="25" fill="#fda4af" opacity="0.9" />
+            <line x1="88" y1="208" x2="88" y2="222" stroke="#9f1239" strokeWidth="0.8" opacity="0.7" />
+            <line x1="100" y1="208" x2="100" y2="222" stroke="#9f1239" strokeWidth="0.8" opacity="0.7" />
+            <line x1="112" y1="208" x2="112" y2="222" stroke="#9f1239" strokeWidth="0.8" opacity="0.7" />
+            {/* The dome itself */}
+            <ellipse cx="100" cy="200" rx="30" ry="22" fill="#fb7185" opacity="0.92" />
+            <ellipse cx="100" cy="200" rx="22" ry="16" fill="#fda4af" opacity="0.7" />
+            {/* Lantern on top */}
+            <rect x="95" y="170" width="10" height="12" fill="#fda4af" />
+            <rect x="92" y="166" width="16" height="5" fill="#fb7185" />
+            {/* Goddess of Liberty statue (small figure) */}
+            <line x1="100" y1="166" x2="100" y2="155" stroke="#fbbf24" strokeWidth="2" />
+            <circle cx="100" cy="153" r="2" fill="#fbbf24" />
+            {/* Star above (Texas Lone Star) */}
+            <polygon
+              points="100,140 102,146 108,146 103,150 105,156 100,152 95,156 97,150 92,146 98,146"
+              fill="#fbbf24"
+              className="animate-[pulse_2s_ease-in-out_infinite]"
+            />
           </g>
-          {/* Bats flying (Congress Avenue bridge famous bat colony) */}
-          <g fill="#1e293b" opacity="0.7" className="animate-[float_4s_ease-in-out_infinite]">
-            <path d="M 280 80 Q 285 75 290 80 Q 295 75 300 80 L 295 85 Q 290 82 285 85 Z" />
-            <path d="M 320 50 Q 325 45 330 50 Q 335 45 340 50 L 335 55 Q 330 52 325 55 Z" />
-            <path d="M 350 90 Q 355 85 360 90 Q 365 85 370 90 L 365 95 Q 360 92 355 95 Z" />
+
+          {/* FROST BANK TOWER — "The Owl" with distinctive crown */}
+          <g fill="#0f172a" opacity="0.92">
+            {/* Main shaft - tapered top */}
+            <rect x="220" y="155" width="28" height="145" />
+            {/* The distinctive crown that resembles owl ears */}
+            <polygon points="215,155 234,130 253,155" />
+            {/* Two "owl ear" peaks */}
+            <polygon points="215,155 222,128 226,155" />
+            <polygon points="240,155 246,128 253,155" />
+          </g>
+          {/* Glass lights on Frost Bank */}
+          <g fill="#06b6d4" opacity="0.5">
+            <rect x="223" y="170" width="22" height="3" />
+            <rect x="225" y="190" width="18" height="3" />
+            <rect x="225" y="210" width="18" height="3" />
+            <rect x="225" y="230" width="18" height="3" />
+            <rect x="225" y="250" width="18" height="3" />
+          </g>
+
+          {/* Other Austin skyline */}
+          <g fill="#1e293b" opacity="0.65">
+            <rect x="170" y="220" width="35" height="80" />
+            <rect x="260" y="200" width="32" height="100" />
+            <rect x="295" y="225" width="28" height="75" />
+            <rect x="345" y="215" width="40" height="85" />
+          </g>
+
+          {/* Congress Avenue Bridge bats — flying silhouettes */}
+          <g fill="#1e293b" opacity="0.85" className="animate-[float_4s_ease-in-out_infinite]">
+            <path d="M 280 75 Q 286 70 290 75 Q 294 70 300 75 L 296 80 Q 293 78 290 80 Q 287 78 284 80 Z" />
+            <path d="M 320 55 Q 326 50 330 55 Q 334 50 340 55 L 336 60 Q 333 58 330 60 Q 327 58 324 60 Z" />
+            <path d="M 360 85 Q 366 80 370 85 Q 374 80 380 85 L 376 90 Q 373 88 370 90 Q 367 88 364 90 Z" />
+            <path d="M 250 60 Q 256 55 260 60 Q 264 55 270 60 L 266 65 Q 263 63 260 65 Q 257 63 254 65 Z" />
+          </g>
+
+          {/* "Keep Austin Weird" — tiny guitar in lower corner */}
+          <g transform="translate(15, 270) rotate(-15)" opacity="0.7">
+            <ellipse cx="0" cy="0" rx="14" ry="17" fill="#92400e" />
+            <circle cx="0" cy="-3" r="4" fill="#1e293b" />
+            <rect x="-1.5" y="-30" width="3" height="22" fill="#92400e" />
           </g>
         </svg>
       );
 
     // ============================================================
-    // ATLANTA — peach (Georgia state symbol) + skyline
+    // ATLANTA — Bank of America Plaza pyramid + Westin Peachtree + peach
     // ============================================================
     case "atlanta-ga":
       return (
         <svg viewBox="0 0 400 300" className={fullClass} preserveAspectRatio="xMidYMid slice">
-          {/* Soft sky gradient */}
           <defs>
+            <linearGradient id="atlSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#1e3a8a" stopOpacity="0.7" />
+              <stop offset="60%" stopColor="#7c3aed" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#fb923c" stopOpacity="0.5" />
+            </linearGradient>
             <radialGradient id="atlGlow" cx="0.5" cy="0.3" r="0.6">
-              <stop offset="0%" stopColor="#fb923c" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="#fb923c" stopOpacity="0.4" />
               <stop offset="100%" stopColor="#fb923c" stopOpacity="0" />
             </radialGradient>
           </defs>
+
+          {/* Atlanta dusk sky */}
+          <rect x="0" y="0" width="400" height="220" fill="url(#atlSky)" opacity="0.7" />
           <rect x="0" y="0" width="400" height="300" fill="url(#atlGlow)" />
-          {/* Big peach center-right */}
-          <g style={{ transformOrigin: "270px 130px" }} className="animate-[float_7s_ease-in-out_infinite]">
-            <ellipse cx="270" cy="130" rx="55" ry="60" fill="#fb923c" opacity="0.8" />
-            <ellipse cx="260" cy="125" rx="20" ry="22" fill="#fdba74" opacity="0.7" />
-            {/* Stem */}
-            <path d="M 270 70 Q 275 60 285 55" stroke="#15803d" strokeWidth="3" fill="none" strokeLinecap="round" />
-            {/* Leaf */}
-            <ellipse cx="290" cy="55" rx="12" ry="6" fill="#16a34a" opacity="0.8" transform="rotate(30 290 55)" />
+
+          {/* Stars/lights in sky */}
+          <g fill="#fef3c7" opacity="0.85">
+            <circle cx="80" cy="50" r="1" />
+            <circle cx="200" cy="35" r="1" />
+            <circle cx="320" cy="55" r="1.2" />
           </g>
-          {/* ATL skyline */}
-          <g fill="#1e293b" opacity="0.6">
-            <rect x="0" y="240" width="35" height="60" />
-            <rect x="35" y="220" width="40" height="80" />
-            <rect x="75" y="200" width="35" height="100" />
-            <rect x="110" y="230" width="30" height="70" />
-            <polygon points="140,180 155,180 160,210 145,210" />
-            <rect x="155" y="210" width="40" height="90" />
-            <rect x="195" y="225" width="35" height="75" />
-            <rect x="350" y="240" width="50" height="60" />
+
+          {/* Peach (Georgia state symbol) — floating in upper left */}
+          <g style={{ transformOrigin: "75px 90px" }} className="animate-[float_7s_ease-in-out_infinite]">
+            <ellipse cx="75" cy="95" rx="32" ry="35" fill="#fb923c" opacity="0.95" />
+            {/* Highlight */}
+            <ellipse cx="65" cy="85" rx="12" ry="14" fill="#fdba74" opacity="0.8" />
+            {/* The signature peach cleft (vertical line) */}
+            <path d="M 75 65 Q 73 95 75 125" stroke="#c2410c" strokeWidth="0.8" fill="none" opacity="0.5" />
+            {/* Stem */}
+            <path d="M 75 60 Q 80 50 88 47" stroke="#15803d" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            {/* Leaf */}
+            <ellipse cx="92" cy="48" rx="10" ry="5" fill="#16a34a" opacity="0.9" transform="rotate(30 92 48)" />
+            {/* Leaf vein */}
+            <line x1="84" y1="49" x2="100" y2="47" stroke="#15803d" strokeWidth="0.4" opacity="0.7" />
+          </g>
+
+          {/* BANK OF AMERICA PLAZA — distinctive pyramid spire on top */}
+          {/* The tallest building in Atlanta, immediately recognizable */}
+          <g fill="#0f172a" opacity="0.92">
+            {/* Tall main shaft */}
+            <rect x="180" y="120" width="40" height="180" />
+            {/* Tapered top section */}
+            <polygon points="180,120 185,105 215,105 220,120" />
+            {/* The famous pyramid spire (gold-lit at top) */}
+            <polygon points="185,105 200,75 215,105" />
+          </g>
+          {/* The gold pyramid lighting (a Atlanta nightly signature) */}
+          <polygon points="185,105 200,75 215,105" fill="#fbbf24" opacity="0.6" />
+          {/* Gold edge highlights */}
+          <line x1="200" y1="75" x2="185" y2="105" stroke="#fbbf24" strokeWidth="2" opacity="0.85" />
+          <line x1="200" y1="75" x2="215" y2="105" stroke="#fbbf24" strokeWidth="2" opacity="0.85" />
+          {/* Pyramid tip beacon */}
+          <circle cx="200" cy="73" r="2" fill="#fbbf24" className="animate-[pulse_2s_ease-in-out_infinite]" />
+          {/* BoA windows */}
+          <g fill="#fbbf24" opacity="0.55">
+            <rect x="186" y="140" width="2" height="2" />
+            <rect x="195" y="160" width="2" height="2" />
+            <rect x="205" y="180" width="2" height="2" />
+            <rect x="190" y="220" width="2" height="2" />
+            <rect x="210" y="240" width="2" height="2" />
+            <rect x="195" y="260" width="2" height="2" />
+          </g>
+
+          {/* WESTIN PEACHTREE PLAZA — cylindrical glass tower (very distinctive) */}
+          <g fill="#1e293b" opacity="0.88">
+            {/* Cylindrical body — render as ellipses + rect */}
+            <ellipse cx="270" cy="155" rx="18" ry="5" />
+            <rect x="252" y="155" width="36" height="145" />
+            <ellipse cx="270" cy="300" rx="18" ry="5" />
+          </g>
+          {/* Cylindrical reflective windows — subtle vertical bands */}
+          <g fill="#3b82f6" opacity="0.4">
+            <rect x="254" y="160" width="32" height="135" />
+          </g>
+          <g stroke="#06b6d4" strokeWidth="0.5" opacity="0.6">
+            <line x1="258" y1="165" x2="258" y2="295" />
+            <line x1="265" y1="165" x2="265" y2="295" />
+            <line x1="272" y1="165" x2="272" y2="295" />
+            <line x1="279" y1="165" x2="279" y2="295" />
+            <line x1="285" y1="165" x2="285" y2="295" />
+          </g>
+
+          {/* Other ATL skyline buildings */}
+          <g fill="#1e293b" opacity="0.65">
+            <rect x="125" y="200" width="30" height="100" />
+            <rect x="155" y="220" width="25" height="80" />
+            <rect x="225" y="195" width="25" height="105" />
+            <rect x="295" y="175" width="32" height="125" />
+            {/* SunTrust Plaza-style with crown */}
+            <polygon points="295,175 302,160 320,160 327,175" />
+            <rect x="330" y="210" width="30" height="90" />
+            <rect x="360" y="225" width="40" height="75" />
+          </g>
+
+          {/* Window lights scattered through skyline */}
+          <g fill="#fbbf24" opacity="0.7">
+            <rect x="135" y="220" width="2" height="2" />
+            <rect x="145" y="250" width="2" height="2" />
+            <rect x="232" y="220" width="2" height="2" />
+            <rect x="240" y="270" width="2" height="2" />
+            <rect x="305" y="200" width="2" height="2" />
+            <rect x="315" y="240" width="2" height="2" />
+            <rect x="340" y="240" width="2" height="2" />
+            <rect x="375" y="260" width="2" height="2" />
           </g>
         </svg>
       );
