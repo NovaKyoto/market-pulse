@@ -81,25 +81,55 @@ const benefits = [
   },
 ];
 
-const useCases = [
+type UseCaseItem = { icon: typeof Building2; text: string };
+type UseCase = {
+  role: string;
+  title: string;
+  description: string;
+  heroIcon: typeof Building2;
+  heroGradient: string;
+  bgGradient: string;
+  borderColor: string;
+  iconBg: string;
+  iconText: string;
+  items: UseCaseItem[];
+};
+
+const useCases: UseCase[] = [
   {
-    title: "For the broker / team lead",
+    role: "Broker / Team Lead",
+    title: "Total Visibility, Zero Hassle",
+    description: "Run your whole team's marketing from one dashboard.",
+    heroIcon: Building2,
+    heroGradient: "from-blue-500 to-indigo-600",
+    bgGradient: "from-blue-50/50 to-indigo-50/30 dark:from-blue-950/20 dark:to-indigo-950/10",
+    borderColor: "border-blue-500/30",
+    iconBg: "bg-blue-500/10",
+    iconText: "text-blue-600 dark:text-blue-400",
     items: [
-      "See which agents are sending reports consistently",
-      "Track engagement metrics across the whole team",
-      "Add or remove agents with a single click",
-      "Co-brand every report with your brokerage logo",
-      "One invoice — no chasing 50 agents for $49 each",
+      { icon: TrendingUp, text: "See which agents send reports consistently" },
+      { icon: Sparkles, text: "Track engagement metrics across the whole team" },
+      { icon: Users, text: "Add or remove agents with a single click" },
+      { icon: Palette, text: "Co-brand every report with your brokerage logo" },
+      { icon: Award, text: "One invoice — no chasing 50 agents for $49 each" },
     ],
   },
   {
-    title: "For your agents",
+    role: "Your Agents",
+    title: "Premium Marketing on Day One",
+    description: "Polished, branded reports without lifting a finger.",
+    heroIcon: Users,
+    heroGradient: "from-emerald-500 to-teal-600",
+    bgGradient: "from-emerald-50/50 to-teal-50/30 dark:from-emerald-950/20 dark:to-teal-950/10",
+    borderColor: "border-emerald-500/30",
+    iconBg: "bg-emerald-500/10",
+    iconText: "text-emerald-600 dark:text-emerald-400",
     items: [
-      "Free professional marketing they didn't have to set up",
-      "Branded reports go out automatically — they look polished",
-      "Each agent's clients get their own tailored emails",
-      "Engagement insights help them spot warm leads",
-      "Onboarding is 5 minutes, no training required",
+      { icon: Sparkles, text: "Free professional marketing they didn't set up" },
+      { icon: Palette, text: "Branded reports go out automatically — polished every time" },
+      { icon: Users, text: "Each agent's clients get their own tailored emails" },
+      { icon: Target, text: "Engagement insights surface warm leads automatically" },
+      { icon: Award, text: "Onboarding takes 5 minutes — no training required" },
     ],
   },
 ];
@@ -220,27 +250,70 @@ export default function TeamsPage() {
         </div>
       </section>
 
-      {/* Use cases */}
+      {/* Use cases — split design (broker vs agent perspectives) */}
       <section className="border-t marketing-muted py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="grid gap-8 md:grid-cols-2">
-            {useCases.map((uc) => (
-              <Card key={uc.title} className="border-2">
-                <CardContent className="p-7">
-                  <h3 className="text-xl font-bold tracking-tight mb-5">{uc.title}</h3>
-                  <ul className="space-y-3">
-                    {uc.items.map((item) => (
-                      <li key={item} className="flex items-start gap-3 text-sm">
-                        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 mt-0.5">
-                          <Check className="h-3 w-3 text-emerald-600" />
-                        </div>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="text-center mb-12">
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              Two Perspectives, One Product
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+              EVERYONE WINS
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+              Brokers get visibility and control. Agents get polished marketing they
+              didn&apos;t have to build. Same product, different wins.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {useCases.map((uc) => {
+              const HeroIcon = uc.heroIcon;
+              return (
+                <Card
+                  key={uc.title}
+                  className={`group relative overflow-hidden border-2 ${uc.borderColor} bg-gradient-to-br ${uc.bgGradient} hover:shadow-2xl transition-all hover:-translate-y-1`}
+                >
+                  {/* Decorative blob */}
+                  <div className={`absolute -top-16 -right-16 h-40 w-40 rounded-full bg-gradient-to-br ${uc.heroGradient} opacity-10 blur-3xl group-hover:opacity-20 transition-opacity`} />
+
+                  <CardContent className="relative p-6 sm:p-8">
+                    {/* Header with hero icon */}
+                    <div className="flex items-start gap-4 mb-6">
+                      <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${uc.heroGradient} shadow-lg ring-4 ring-white/30 shrink-0`}>
+                        <HeroIcon className="h-6 w-6 text-white" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-[10px] uppercase tracking-widest font-black ${uc.iconText} mb-1`}>
+                          For {uc.role}
+                        </p>
+                        <h3 className="text-xl sm:text-2xl font-extrabold tracking-tighter leading-tight">
+                          {uc.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mt-1">{uc.description}</p>
+                      </div>
+                    </div>
+
+                    {/* Items list with custom icons */}
+                    <ul className="space-y-3">
+                      {uc.items.map((item) => {
+                        const ItemIcon = item.icon;
+                        return (
+                          <li key={item.text} className="flex items-start gap-3">
+                            <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${uc.iconBg} mt-0.5`}>
+                              <ItemIcon className={`h-3.5 w-3.5 ${uc.iconText}`} />
+                            </div>
+                            <span className="text-sm leading-relaxed pt-0.5 font-medium">
+                              {item.text}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
