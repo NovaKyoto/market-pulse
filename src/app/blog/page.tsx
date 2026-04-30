@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, BookOpen, Clock, Zap, Sparkles, Calendar } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/blog-posts";
+import { ArticleBrowser } from "@/components/blog/article-browser";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
@@ -152,54 +153,91 @@ export default function BlogIndexPage() {
         </div>
       </section>
 
-      {/* Featured post */}
+      {/* MAGAZINE COVER — featured article as full-bleed editorial */}
       {featured && (
-        <section className="py-12 sm:py-16">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-5">
-              Featured
-            </p>
+        <section className="py-10 sm:py-14">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="flex items-end justify-between mb-5">
+              <div>
+                <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold">
+                  Editor&apos;s Pick
+                </p>
+                <p className="text-xs text-muted-foreground mt-1 italic">
+                  This week&apos;s most-read article
+                </p>
+              </div>
+              <Link
+                href={`/blog/${featured.slug}`}
+                className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
+              >
+                Read the full article
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+
             <Link href={`/blog/${featured.slug}`} className="group block">
-              <Card className="overflow-hidden hover:border-primary/50 transition-colors">
-                <div className="grid md:grid-cols-2 items-stretch">
-                  {/* Visual */}
-                  <div className={`relative overflow-hidden bg-gradient-to-br ${categoryColors[featured.category] ?? "from-blue-500 to-indigo-600"} p-8 sm:p-10 min-h-[280px] flex flex-col justify-end`}>
-                    <div className="absolute top-0 right-0 h-40 w-40 bg-white/10 rounded-full blur-3xl" />
-                    <div className="absolute bottom-0 left-0 h-40 w-40 bg-white/5 rounded-full blur-3xl" />
-                    <div className="relative">
-                      <Badge className="mb-3 bg-white/20 hover:bg-white/20 text-white border-white/30 backdrop-blur">
-                        <Sparkles className="mr-1 h-3 w-3" />
-                        {featured.category}
-                      </Badge>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tighter leading-tight">
-                        {featured.title}
-                      </h2>
-                    </div>
+              <Card className="overflow-hidden hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:-translate-y-1">
+                <div className={`relative overflow-hidden bg-gradient-to-br ${categoryColors[featured.category] ?? "from-blue-500 to-indigo-600"}`}>
+                  {/* Decorative blobs */}
+                  <div className="absolute top-0 right-0 h-72 w-72 bg-white/15 rounded-full blur-3xl" />
+                  <div className="absolute bottom-0 left-0 h-64 w-64 bg-white/10 rounded-full blur-3xl" />
+                  <div className="absolute top-1/3 left-1/2 h-48 w-48 bg-white/8 rounded-full blur-3xl" />
+
+                  {/* Issue number stamp (magazine-style) */}
+                  <div className="absolute top-6 right-6 hidden sm:block text-right">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-white/70 font-bold">
+                      Issue
+                    </p>
+                    <p className="text-3xl font-black font-mono text-white tracking-tighter">
+                      Nº 01
+                    </p>
                   </div>
-                  {/* Body */}
-                  <CardContent className="p-6 sm:p-8 flex flex-col justify-center">
-                    <div className="flex items-center gap-3 mb-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {featured.readTime} min read
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {new Date(featured.datePublished).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </span>
-                    </div>
-                    <p className="text-base text-muted-foreground leading-relaxed">
+
+                  <div className="relative px-6 sm:px-12 py-12 sm:py-16 md:py-20 max-w-3xl">
+                    <Badge className="mb-5 bg-white/25 hover:bg-white/25 text-white border-white/40 backdrop-blur font-bold uppercase tracking-wider">
+                      <Sparkles className="mr-1 h-3 w-3" />
+                      {featured.category}
+                    </Badge>
+
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tighter leading-[1.05]">
+                      {featured.title}
+                    </h2>
+
+                    <p className="mt-6 text-base sm:text-lg text-white/85 leading-relaxed max-w-2xl">
                       {featured.excerpt}
                     </p>
-                    <div className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                      Read article
-                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+
+                    <div className="mt-8 flex flex-wrap items-center gap-4">
+                      {/* Author byline (mock for now) */}
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/25 backdrop-blur text-white font-bold text-xs ring-2 ring-white/40">
+                          MP
+                        </div>
+                        <div className="text-white/90">
+                          <p className="text-xs font-bold">MarketPulse Editorial</p>
+                          <p className="text-[10px] text-white/70">
+                            {new Date(featured.datePublished).toLocaleDateString("en-US", {
+                              month: "long",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                          </p>
+                        </div>
+                      </div>
+                      {/* Stats */}
+                      <div className="flex items-center gap-3 text-xs text-white/80 ml-auto sm:ml-0">
+                        <span className="flex items-center gap-1 font-medium">
+                          <Clock className="h-3 w-3" />
+                          {featured.readTime} min read
+                        </span>
+                      </div>
+                      {/* CTA */}
+                      <div className="ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur border border-white/40 text-white text-sm font-bold group-hover:bg-white group-hover:text-foreground transition-colors">
+                        Read Story
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                      </div>
                     </div>
-                  </CardContent>
+                  </div>
                 </div>
               </Card>
             </Link>
@@ -207,54 +245,74 @@ export default function BlogIndexPage() {
         </section>
       )}
 
-      {/* Other posts grid */}
+      {/* INTERACTIVE BROWSER — search + topic filter + grid */}
       {rest.length > 0 && (
         <section className="border-t marketing-muted py-12 sm:py-16">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-5">
-              All articles
-            </p>
-            <div className="grid gap-5 md:grid-cols-2">
-              {rest.map((post) => {
-                const accent = categoryColors[post.category] ?? "from-blue-500 to-indigo-600";
-                return (
-                  <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
-                    <Card className="h-full overflow-hidden hover:border-primary/50 transition-colors">
-                      <div className={`h-2 bg-gradient-to-r ${accent}`} />
-                      <CardContent className="p-6">
-                        <div className="flex items-center gap-3 mb-3 text-xs">
-                          <Badge variant="secondary">{post.category}</Badge>
-                          <span className="flex items-center gap-1 text-muted-foreground">
-                            <Clock className="h-3 w-3" />
-                            {post.readTime} min read
-                          </span>
-                        </div>
-                        <h3 className="text-xl font-bold tracking-tight group-hover:text-primary transition-colors leading-snug">
-                          {post.title}
-                        </h3>
-                        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{post.excerpt}</p>
-                        <div className="mt-4 flex items-center justify-between text-xs">
-                          <span className="text-muted-foreground">
-                            {new Date(post.datePublished).toLocaleDateString("en-US", {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            })}
-                          </span>
-                          <span className="inline-flex items-center gap-1 font-medium text-primary">
-                            Read
-                            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                );
-              })}
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mb-8 text-center">
+              <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-2">
+                Browse the Library
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+                ALL ARTICLES
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Filter by topic or search by keyword
+              </p>
             </div>
+
+            <ArticleBrowser posts={rest} />
           </div>
         </section>
       )}
+
+      {/* NEWSLETTER SIGNUP — magazine-style middle break */}
+      <section className="py-12 sm:py-16">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <Card className="relative overflow-hidden border-2 border-primary/30 shadow-xl">
+            {/* Decorative gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30" />
+            <div className="absolute -top-16 -right-16 h-40 w-40 bg-blue-500/20 rounded-full blur-3xl" />
+            <div className="absolute -bottom-16 -left-16 h-40 w-40 bg-purple-500/20 rounded-full blur-3xl" />
+
+            <CardContent className="relative p-6 sm:p-10">
+              <div className="grid gap-6 md:grid-cols-2 items-center">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-2">
+                    Subscribe
+                  </p>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tighter leading-tight">
+                    Get articles in your inbox
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                    A short, practical email when we publish. No spam, no fluff —
+                    just the articles. Unsubscribe anytime.
+                  </p>
+                </div>
+                <div>
+                  <Link href="/sign-up" className="block">
+                    <div className="rounded-xl border-2 border-primary/40 bg-background p-3 hover:border-primary transition-colors flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="email"
+                        placeholder="you@example.com"
+                        className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground"
+                        readOnly
+                      />
+                      <Button size="sm" className="gap-1 shrink-0 shadow-sm">
+                        Subscribe
+                        <ArrowRight className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </Link>
+                  <p className="mt-2 text-[10px] text-muted-foreground italic">
+                    Sign up creates a free trial account · You can opt out of newsletter anytime
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
 
       {/* CTA */}
       <section className="relative overflow-hidden py-20">
