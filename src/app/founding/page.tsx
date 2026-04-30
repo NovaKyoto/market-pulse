@@ -80,9 +80,14 @@ export default function FoundingPage() {
       {/* The Deal */}
       <section className="py-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <h2 className="text-3xl font-bold tracking-tight text-center mb-12">
-            What you get
-          </h2>
+          <div className="text-center mb-12">
+            <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold mb-3">
+              The Offer
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+              WHAT YOU GET
+            </h2>
+          </div>
           <div className="grid gap-6 md:grid-cols-3">
             {/* Benefit 1 */}
             <Card className="relative overflow-hidden border-2 border-amber-500/20">
@@ -138,12 +143,17 @@ export default function FoundingPage() {
       {/* What You Commit */}
       <section className="border-t marketing-muted py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h2 className="text-3xl font-bold tracking-tight text-center mb-6">
-            What I ask in return
-          </h2>
-          <p className="text-center text-muted-foreground mb-10">
-            Honestly, not much. This is about getting product-market fit, not squeezing revenue.
-          </p>
+          <div className="text-center mb-10">
+            <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold mb-3">
+              In Exchange
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter mb-3">
+              WHAT I ASK IN RETURN
+            </h2>
+            <p className="text-muted-foreground">
+              Honestly, not much. This is about finding product-market fit, not squeezing revenue.
+            </p>
+          </div>
           <Card>
             <CardContent className="p-6 sm:p-8">
               <div className="space-y-5">
@@ -191,13 +201,18 @@ export default function FoundingPage() {
       {/* What MarketPulse Does */}
       <section className="py-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <h2 className="text-3xl font-bold tracking-tight text-center mb-4">
-            Quick refresher: what MarketPulse does
-          </h2>
-          <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Sends branded AI-written market reports to your past clients on autopilot. You stay
-            top-of-mind. They send you referrals.
-          </p>
+          <div className="text-center mb-10 max-w-2xl mx-auto">
+            <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold mb-3">
+              Quick Refresher
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter mb-4">
+              WHAT MARKETPULSE DOES
+            </h2>
+            <p className="text-muted-foreground">
+              Sends branded AI-written market reports to your past clients on autopilot. You stay
+              top-of-mind. They send you referrals.
+            </p>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2 max-w-2xl mx-auto">
             {[
               "Live Redfin + MLS market data for any US ZIP code",
@@ -233,7 +248,7 @@ export default function FoundingPage() {
                   Only 5 spots. Once they&apos;re gone, the price goes to $49/mo for everyone.
                 </span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight">Lock in your rate forever</h2>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">LOCK IN YOUR RATE FOREVER</h2>
               <p className="mt-3 text-muted-foreground max-w-lg mx-auto">
                 Start your 90-day free trial now. No credit card required. After you&apos;ve used
                 MarketPulse, I&apos;ll send you a quick survey link.

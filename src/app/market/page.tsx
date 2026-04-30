@@ -169,21 +169,21 @@ export default async function MarketIndexPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mb-8 flex items-end justify-between">
             <div>
-              <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-1">
-                Most popular
+              <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-2">
+                Most Popular
               </p>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-                Featured markets
+              <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+                FEATURED MARKETS
               </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Live data · Updated daily · Click to see the full report
+              <p className="mt-3 text-sm text-muted-foreground">
+                Live data · Updated daily · Click any card to see the full report
               </p>
             </div>
             <Link
-              href="/market"
-              className="hidden sm:inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline"
+              href="#all-markets"
+              className="hidden sm:inline-flex items-center gap-1 text-sm text-primary font-bold hover:underline"
             >
-              View all {CITIES.length}
+              View All {CITIES.length}
               <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
@@ -334,74 +334,106 @@ export default async function MarketIndexPage() {
         </div>
       </section>
 
-      {/* By State */}
-      <section className="border-t marketing-muted py-16">
+      {/* MARKETS BY STATE */}
+      <section id="all-markets" className="border-t marketing-muted py-20 scroll-mt-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="mb-10 flex items-end justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-1">
-                Browse all
-              </p>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-                Markets by state
-              </h2>
-              <p className="mt-2 text-muted-foreground">
-                {CITIES.length} cities across {byState.length} states
-              </p>
-            </div>
+          <div className="mb-12 text-center">
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              Browse All Markets
+            </p>
+            <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+              MARKETS BY STATE
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              <span className="font-mono font-bold text-foreground">{CITIES.length}</span> cities across{" "}
+              <span className="font-mono font-bold text-foreground">{byState.length}</span> states · click any to view its full report
+            </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {byState.map(([state, cities], idx) => {
               // Cycle through 6 accent palettes so neighboring cards differ
               const palettes = [
-                { gradient: "from-blue-500 to-indigo-600", soft: "from-blue-500/10 to-transparent", text: "text-blue-700 dark:text-blue-300", chip: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30" },
-                { gradient: "from-emerald-500 to-teal-600", soft: "from-emerald-500/10 to-transparent", text: "text-emerald-700 dark:text-emerald-300", chip: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30" },
-                { gradient: "from-amber-500 to-orange-600", soft: "from-amber-500/10 to-transparent", text: "text-amber-700 dark:text-amber-300", chip: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30" },
-                { gradient: "from-purple-500 to-pink-600", soft: "from-purple-500/10 to-transparent", text: "text-purple-700 dark:text-purple-300", chip: "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30" },
-                { gradient: "from-rose-500 to-red-600", soft: "from-rose-500/10 to-transparent", text: "text-rose-700 dark:text-rose-300", chip: "bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30" },
-                { gradient: "from-cyan-500 to-blue-600", soft: "from-cyan-500/10 to-transparent", text: "text-cyan-700 dark:text-cyan-300", chip: "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border-cyan-500/30" },
+                { gradient: "from-blue-500 to-indigo-600", soft: "from-blue-500/10", chip: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30 hover:bg-blue-500/20", text: "text-blue-600 dark:text-blue-400" },
+                { gradient: "from-emerald-500 to-teal-600", soft: "from-emerald-500/10", chip: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/20", text: "text-emerald-600 dark:text-emerald-400" },
+                { gradient: "from-amber-500 to-orange-600", soft: "from-amber-500/10", chip: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30 hover:bg-amber-500/20", text: "text-amber-600 dark:text-amber-400" },
+                { gradient: "from-purple-500 to-pink-600", soft: "from-purple-500/10", chip: "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30 hover:bg-purple-500/20", text: "text-purple-600 dark:text-purple-400" },
+                { gradient: "from-rose-500 to-red-600", soft: "from-rose-500/10", chip: "bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30 hover:bg-rose-500/20", text: "text-rose-600 dark:text-rose-400" },
+                { gradient: "from-cyan-500 to-blue-600", soft: "from-cyan-500/10", chip: "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border-cyan-500/30 hover:bg-cyan-500/20", text: "text-cyan-600 dark:text-cyan-400" },
               ];
               const palette = palettes[idx % palettes.length];
               const stateCode = cities[0]?.stateCode ?? "";
+              // Pick the first featured city in this state, or fall back to first city
+              const featuredCity =
+                cities.find((c) => FEATURED_SLUGS.includes(c.slug)) ?? cities[0];
+              const otherCities = cities.filter((c) => c.slug !== featuredCity?.slug);
 
               return (
                 <Card
                   key={state}
-                  className="group relative overflow-hidden hover:border-primary/40 transition-all hover:-translate-y-0.5 hover:shadow-xl"
+                  className="group relative overflow-hidden hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10"
                 >
-                  {/* Soft accent in top corner */}
-                  <div className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br ${palette.soft} blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  {/* Decorative gradient blob top-right */}
+                  <div className={`absolute -top-16 -right-16 h-40 w-40 rounded-full bg-gradient-to-br ${palette.soft} to-transparent blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-500`} />
 
-                  <CardContent className="relative p-5">
-                    {/* Header: State badge + count */}
-                    <div className="flex items-start justify-between mb-4">
+                  {/* Big watermark state code in background */}
+                  <div className={`absolute -bottom-8 -right-4 font-black text-[140px] leading-none tracking-tighter ${palette.text} opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-500 select-none pointer-events-none font-mono`}>
+                    {stateCode}
+                  </div>
+
+                  <CardContent className="relative p-6">
+                    {/* Header: BIG state badge + name */}
+                    <div className="flex items-start justify-between mb-5">
                       <div className="flex items-center gap-3">
-                        <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${palette.gradient} shadow-md font-bold text-white text-sm`}>
+                        <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${palette.gradient} shadow-lg font-black text-white text-lg tracking-tight ring-4 ring-white/20`}>
                           {stateCode}
                         </div>
                         <div>
-                          <h3 className="font-bold text-base leading-tight">{state}</h3>
-                          <p className="text-xs text-muted-foreground">
-                            <span className="font-mono font-semibold">{cities.length}</span>
-                            {" "}{cities.length === 1 ? "market" : "markets"}
+                          <h3 className="font-black text-lg leading-tight tracking-tight">
+                            {state.toUpperCase()}
+                          </h3>
+                          <p className="text-xs text-muted-foreground font-medium">
+                            <span className="font-mono font-bold text-foreground">{cities.length}</span>
+                            {" "}{cities.length === 1 ? "market tracked" : "markets tracked"}
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* City chips */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {cities.map((c) => (
-                        <Link
-                          key={c.slug}
-                          href={`/market/${c.slug}`}
-                          className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium transition-all hover:scale-105 hover:shadow-sm ${palette.chip} hover:border-current`}
-                        >
-                          <MapPin className="h-2.5 w-2.5" />
-                          {c.name}
-                        </Link>
-                      ))}
-                    </div>
+                    {/* Featured city — hero */}
+                    {featuredCity && (
+                      <Link
+                        href={`/market/${featuredCity.slug}`}
+                        className={`relative block rounded-xl border-2 p-3 mb-3 overflow-hidden transition-all hover:shadow-md ${palette.chip}`}
+                      >
+                        <div className="relative flex items-center justify-between gap-2">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-[9px] uppercase tracking-widest font-bold opacity-70">
+                              Top Market
+                            </p>
+                            <p className="font-extrabold text-base tracking-tight truncate">
+                              {featuredCity.name}
+                            </p>
+                          </div>
+                          <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                        </div>
+                      </Link>
+                    )}
+
+                    {/* Other cities as smaller chips */}
+                    {otherCities.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {otherCities.map((c) => (
+                          <Link
+                            key={c.slug}
+                            href={`/market/${c.slug}`}
+                            className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold transition-all hover:scale-105 hover:shadow-sm ${palette.chip}`}
+                          >
+                            {c.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               );
@@ -419,8 +451,8 @@ export default async function MarketIndexPage() {
         </div>
         <div className="relative mx-auto max-w-3xl px-4 text-center text-white">
           <Search className="mx-auto h-10 w-10 mb-4 opacity-80" />
-          <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
-            Don&apos;t see your market?
+          <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+            DON&apos;T SEE YOUR MARKET?
           </h2>
           <p className="mt-4 text-white/80 max-w-xl mx-auto text-lg">
             MarketPulse generates branded reports for any US ZIP code. Sign up and pick your own market.

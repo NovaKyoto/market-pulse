@@ -201,9 +201,9 @@ export default function BlogIndexPage() {
           <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-white/5 blur-[100px]" />
         </div>
         <div className="relative mx-auto max-w-3xl px-4 text-center text-white">
-          <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
-            Stop writing newsletters.
-            <span className="block mt-2">Start keeping clients.</span>
+          <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+            STOP WRITING NEWSLETTERS.
+            <span className="block mt-2">START KEEPING CLIENTS.</span>
           </h2>
           <p className="mt-6 text-white/80 max-w-xl mx-auto text-lg">
             14-day free trial. No credit card required. Send your first branded report

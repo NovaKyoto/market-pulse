@@ -239,8 +239,8 @@ export default function TeamsPage() {
             <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-2">
               What you get
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter">
-              Built for brokerages, agent-friendly
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+              BUILT FOR BROKERAGES, AGENT-FRIENDLY
             </h2>
             <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
               Every feature serves both the broker (visibility, control, revenue) and the
@@ -295,8 +295,8 @@ export default function TeamsPage() {
             <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-2">
               Simple team pricing
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter">
-              Pay once. Cover your whole team.
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+              PAY ONCE. COVER YOUR WHOLE TEAM.
             </h2>
             <p className="mt-3 text-muted-foreground">
               No per-seat surprises. No 12-month contracts. Cancel anytime.
@@ -387,8 +387,8 @@ export default function TeamsPage() {
       <section id="waitlist" className="border-t marketing-muted py-16 sm:py-20 scroll-mt-20">
         <div className="mx-auto max-w-2xl px-4 sm:px-6">
           <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter">
-              Join the Teams waitlist
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+              JOIN THE TEAMS WAITLIST
             </h2>
             <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
               Tell us about your brokerage. We&apos;ll reach out personally before launch with
@@ -407,8 +407,8 @@ export default function TeamsPage() {
           <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-white/5 blur-[100px]" />
         </div>
         <div className="relative mx-auto max-w-3xl px-4 text-center text-white">
-          <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
-            Solo agent? Don&apos;t wait.
+          <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+            SOLO AGENT? DON&apos;T WAIT.
           </h2>
           <p className="mt-6 text-white/80 max-w-xl mx-auto text-lg">
             Start sending branded reports today on the solo plan. Migrate to Teams when

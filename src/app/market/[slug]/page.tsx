@@ -366,8 +366,8 @@ export default async function CityMarketPage(props: {
             <Sparkles className="h-3.5 w-3.5" />
             AI Market Analysis
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter mb-6 leading-tight">
-            What&apos;s happening in {city.name} right now
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter mb-6 leading-tight">
+            WHAT&apos;S HAPPENING IN {city.name.toUpperCase()} RIGHT NOW
           </h2>
           <div className="space-y-5 text-[18px] leading-[1.7] text-foreground/90">
             <p>
@@ -465,8 +465,8 @@ export default async function CityMarketPage(props: {
       {/* FAQ */}
       <section className="border-t marketing-muted py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter text-center mb-3">
-            Common questions about {city.name}
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter text-center mb-3">
+            COMMON QUESTIONS ABOUT {city.name.toUpperCase()}
           </h2>
           <p className="text-center text-muted-foreground mb-10">
             Quick answers based on the latest market data.

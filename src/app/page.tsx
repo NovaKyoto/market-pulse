@@ -186,13 +186,12 @@ export default function LandingPage() {
       <section className="py-20 sm:py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <TrendingUp className="mr-1 h-3 w-3" />
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
               Return on Investment
-            </Badge>
-            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
-              One referral pays for
-              <span className="block mt-1 text-primary">3 years of MarketPulse</span>
+            </p>
+            <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+              ONE REFERRAL PAYS FOR
+              <span className="block mt-1 text-primary">3 YEARS OF MARKETPULSE</span>
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-3 max-w-3xl mx-auto">
@@ -230,11 +229,14 @@ export default function LandingPage() {
       <section className="border-t marketing-muted py-20 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
-              Everything you need to stay top-of-mind
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              Features
+            </p>
+            <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+              EVERYTHING YOU NEED TO STAY TOP-OF-MIND
             </h2>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              Stop paying for 5 different tools. MarketPulse handles the entire client retention
+              Stop paying for five different tools. MarketPulse handles the entire client retention
               workflow in one place.
             </p>
           </div>
@@ -341,8 +343,11 @@ export default function LandingPage() {
       <section className="py-20 sm:py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
-              Up and running in 5 minutes
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              How It Works
+            </p>
+            <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+              UP AND RUNNING IN 5 MINUTES
             </h2>
             <p className="mt-4 text-muted-foreground">
               Three steps. Then it runs on autopilot forever.
@@ -387,8 +392,11 @@ export default function LandingPage() {
       <section className="border-t marketing-muted py-20 sm:py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
-              Simple pricing. No surprises.
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              Pricing
+            </p>
+            <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+              SIMPLE. NO SURPRISES.
             </h2>
             <p className="mt-4 text-muted-foreground">
               One plan. Everything included. Cancel anytime.
@@ -486,8 +494,11 @@ export default function LandingPage() {
       <section className="py-20 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
-              Common questions
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              FAQ
+            </p>
+            <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+              COMMON QUESTIONS
             </h2>
             <p className="mt-4 text-muted-foreground">
               Everything agents ask before signing up.
@@ -518,9 +529,9 @@ export default function LandingPage() {
           <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-white/5 blur-[100px]" />
         </div>
         <div className="relative mx-auto max-w-3xl px-4 text-center text-white">
-          <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">
-            Stop writing newsletters.
-            <span className="block mt-2">Start keeping clients.</span>
+          <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+            STOP WRITING NEWSLETTERS.
+            <span className="block mt-2">START KEEPING CLIENTS.</span>
           </h2>
           <p className="mt-6 text-white/80 max-w-xl mx-auto text-lg">
             14-day free trial. No credit card required. Send your first branded report
