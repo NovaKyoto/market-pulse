@@ -22,6 +22,7 @@ import { CITIES, type City } from "@/lib/cities";
 import { fetchMarketData, formatCurrency } from "@/lib/market-data";
 import { CityArtwork } from "@/components/markets/city-artwork";
 import { LUXURY_MARKETS } from "@/lib/luxury-markets";
+import { CityPreview } from "@/components/landing/city-preview";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
@@ -83,6 +84,24 @@ export default async function MarketIndexPage() {
     }))
   );
 
+  // Aggregate stats across featured cities (for hero dashboard)
+  const totalListings = featured.reduce((sum, f) => sum + (f.data.active_listings ?? 0), 0);
+  const totalSold = featured.reduce((sum, f) => sum + (f.data.sold_last_30 ?? 0), 0);
+  const avgDaysOnMarket = Math.round(
+    featured.reduce((sum, f) => sum + (f.data.avg_days_on_market ?? 0), 0) / featured.length
+  );
+  // Median of medians (simple approximation)
+  const sortedMedians = [...featured.map((f) => f.data.median_price)].sort((a, b) => a - b);
+  const overallMedian =
+    sortedMedians.length > 0
+      ? sortedMedians[Math.floor(sortedMedians.length / 2)]
+      : 0;
+  const lastUpdated = new Date().toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <div className="flex flex-col min-h-screen marketing-bg">
       {/* Nav */}
@@ -114,13 +133,24 @@ export default async function MarketIndexPage() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative border-b">
-        <div className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
+      {/* Hero — live data dashboard feel */}
+      <section className="relative border-b overflow-hidden">
+        {/* Animated gradient blobs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-blue-500/20 blur-[120px]" />
+          <div className="absolute top-40 -left-40 h-[400px] w-[400px] rounded-full bg-indigo-500/15 blur-[120px]" />
+          <div className="absolute bottom-0 left-1/3 h-[300px] w-[300px] rounded-full bg-purple-500/10 blur-[120px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+          {/* Top centered hero text */}
           <div className="text-center">
-            <Badge variant="secondary" className="mb-4 px-3 py-1.5 gap-1.5 bg-background/80 backdrop-blur border shadow-sm">
-              <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-              {CITIES.length} markets · Updated daily
+            <Badge variant="secondary" className="mb-5 px-3 py-1.5 gap-1.5 bg-background/80 backdrop-blur border shadow-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-xs font-bold uppercase tracking-wider">Live Data · Updated {lastUpdated}</span>
             </Badge>
             <h1 className="text-5xl font-extrabold tracking-tighter sm:text-6xl lg:text-7xl leading-[1.05]">
               Live US Housing
@@ -129,26 +159,107 @@ export default async function MarketIndexPage() {
               </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-              Real-time market data and AI-powered insights for major US cities. Updated daily
-              with median prices, inventory, days on market, and trend analysis.
+              Real-time market data and AI-powered insights for major US cities — sourced from
+              Redfin&apos;s MLS feeds, refreshed daily.
             </p>
+          </div>
 
-            {/* Trust signals */}
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
+          {/* AGGREGATE LIVE STAT DASHBOARD — 4 hero stats */}
+          <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-4xl mx-auto">
+            <div className="relative overflow-hidden rounded-2xl border bg-background/80 backdrop-blur-sm p-4 hover:border-primary/40 transition-colors">
+              <div className="absolute -top-8 -right-8 h-20 w-20 rounded-full bg-blue-500/10 blur-2xl" />
+              <div className="relative">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">
+                  Cities Tracked
+                </p>
+                <p className="text-3xl sm:text-4xl font-black font-mono tracking-tighter bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  {CITIES.length}
+                </p>
+                <p className="text-[10px] text-muted-foreground mt-1 font-medium">
+                  Across {byState.length} states
+                </p>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden rounded-2xl border bg-background/80 backdrop-blur-sm p-4 hover:border-primary/40 transition-colors">
+              <div className="absolute -top-8 -right-8 h-20 w-20 rounded-full bg-emerald-500/10 blur-2xl" />
+              <div className="relative">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">
+                  Active Listings
+                </p>
+                <p className="text-3xl sm:text-4xl font-black font-mono tracking-tighter bg-gradient-to-br from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                  {totalListings.toLocaleString()}
+                </p>
+                <p className="text-[10px] text-muted-foreground mt-1 font-medium">
+                  In featured markets
+                </p>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden rounded-2xl border bg-background/80 backdrop-blur-sm p-4 hover:border-primary/40 transition-colors">
+              <div className="absolute -top-8 -right-8 h-20 w-20 rounded-full bg-amber-500/10 blur-2xl" />
+              <div className="relative">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">
+                  Median Price
+                </p>
+                <p className="text-3xl sm:text-4xl font-black font-mono tracking-tighter bg-gradient-to-br from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                  {formatCurrency(overallMedian).replace(/,\d{3}$/, "K")}
+                </p>
+                <p className="text-[10px] text-muted-foreground mt-1 font-medium">
+                  National median
+                </p>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden rounded-2xl border bg-background/80 backdrop-blur-sm p-4 hover:border-primary/40 transition-colors">
+              <div className="absolute -top-8 -right-8 h-20 w-20 rounded-full bg-purple-500/10 blur-2xl" />
+              <div className="relative">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">
+                  Avg Days on Market
+                </p>
+                <p className="text-3xl sm:text-4xl font-black font-mono tracking-tighter bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  {avgDaysOnMarket}
+                </p>
+                <p className="text-[10px] text-muted-foreground mt-1 font-medium">
+                  {totalSold.toLocaleString()} sold last 30d
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive ZIP preview widget */}
+          <div className="mt-12 max-w-3xl mx-auto">
+            <div className="text-center mb-4">
+              <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold">
+                Try Any US ZIP Code
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                See your market&apos;s report instantly · No signup required
+              </p>
+            </div>
+            <CityPreview />
+          </div>
+
+          {/* Trust signals + CTAs */}
+          <div className="mt-12 text-center">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground mb-6">
               <span className="flex items-center gap-1.5">
                 <Database className="h-3 w-3" />
                 Redfin-powered MLS data
               </span>
               <span className="flex items-center gap-1.5">
                 <Sparkles className="h-3 w-3" />
-                AI insights
+                AI-written insights
+              </span>
+              <span className="flex items-center gap-1.5">
+                <MapPin className="h-3 w-3" />
+                Any US ZIP code
               </span>
             </div>
-
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link href="/sign-up">
                 <Button size="lg" className="gap-2 px-8 h-12 text-base shadow-lg">
-                  Get branded reports for your market
+                  Get Branded Reports for Your Market
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
