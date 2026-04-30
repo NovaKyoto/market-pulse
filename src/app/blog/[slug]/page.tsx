@@ -11,6 +11,7 @@ import {
   getRelatedPosts,
   type BlogSection,
 } from "@/lib/blog-posts";
+import { ReadingProgress } from "@/components/blog/reading-progress";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
 
@@ -50,31 +51,38 @@ export async function generateMetadata(props: {
   };
 }
 
-function renderSection(section: BlogSection, i: number) {
+function renderSection(section: BlogSection, i: number, isFirstParagraph: boolean) {
   switch (section.type) {
     case "h2":
       return (
-        <h2 key={i} className="text-2xl sm:text-3xl font-bold tracking-tight mt-10 mb-4">
+        <h2 key={i} className="text-3xl sm:text-4xl font-bold tracking-tighter mt-12 mb-5 leading-tight">
           {section.text}
         </h2>
       );
     case "h3":
       return (
-        <h3 key={i} className="text-xl font-semibold tracking-tight mt-8 mb-3">
+        <h3 key={i} className="text-xl sm:text-2xl font-semibold tracking-tight mt-10 mb-3 leading-snug">
           {section.text}
         </h3>
       );
     case "p":
       return (
-        <p key={i} className="text-base leading-relaxed text-muted-foreground mb-5">
+        <p
+          key={i}
+          className={`text-[19px] leading-[1.75] text-foreground/90 mb-6 ${
+            isFirstParagraph
+              ? "first-letter:text-6xl first-letter:font-bold first-letter:text-primary first-letter:mr-2 first-letter:float-left first-letter:leading-[0.85] first-letter:mt-1"
+              : ""
+          }`}
+        >
           {section.text}
         </p>
       );
     case "ul":
       return (
-        <ul key={i} className="space-y-2 mb-6 pl-5 list-disc text-muted-foreground">
+        <ul key={i} className="space-y-3 mb-8 pl-5 list-disc text-[18px] text-foreground/90 marker:text-primary/60">
           {section.items.map((item, j) => (
-            <li key={j} className="leading-relaxed">
+            <li key={j} className="leading-[1.7]">
               {item}
             </li>
           ))}
@@ -82,9 +90,9 @@ function renderSection(section: BlogSection, i: number) {
       );
     case "ol":
       return (
-        <ol key={i} className="space-y-2 mb-6 pl-5 list-decimal text-muted-foreground">
+        <ol key={i} className="space-y-3 mb-8 pl-5 list-decimal text-[18px] text-foreground/90 marker:text-primary/80 marker:font-bold">
           {section.items.map((item, j) => (
-            <li key={j} className="leading-relaxed">
+            <li key={j} className="leading-[1.7] pl-2">
               {item}
             </li>
           ))}
@@ -167,6 +175,7 @@ export default async function BlogPostPage(props: {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
+      <ReadingProgress />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -224,7 +233,14 @@ export default async function BlogPostPage(props: {
         <p className="mt-4 text-lg text-muted-foreground leading-relaxed">{post.description}</p>
 
         <div className="mt-10 border-t pt-8">
-          {post.content.map((section, i) => renderSection(section, i))}
+          {(() => {
+            let firstParagraphSeen = false;
+            return post.content.map((section, i) => {
+              const isFirst = section.type === "p" && !firstParagraphSeen;
+              if (isFirst) firstParagraphSeen = true;
+              return renderSection(section, i, isFirst);
+            });
+          })()}
         </div>
 
         {/* Bottom CTA */}
