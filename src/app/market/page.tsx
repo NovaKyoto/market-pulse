@@ -218,16 +218,16 @@ export default async function MarketIndexPage() {
                   href={`/market/${city.slug}`}
                   className="group relative overflow-hidden rounded-2xl border bg-background hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10"
                 >
-                  {/* Sentiment gradient on bottom half — sets the mood color */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${sentimentGradient} opacity-100`}
-                  />
-
                   {/* City-specific SVG artwork (palms, skylines, cactus, etc.) */}
                   <CityArtwork slug={city.slug} />
 
-                  {/* Top white panel for data legibility — sharp cutoff to let artwork breathe */}
-                  <div className="absolute top-0 left-0 right-0 h-[55%] bg-gradient-to-b from-background via-background/95 to-transparent" />
+                  {/* Sentiment gradient — soft tint on top of artwork */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${sentimentGradient} opacity-30 mix-blend-soft-light pointer-events-none`}
+                  />
+
+                  {/* Top scrim for text legibility — strong at top, fades to transparent quickly */}
+                  <div className="absolute top-0 left-0 right-0 h-[42%] bg-gradient-to-b from-background via-background/92 via-50% to-transparent pointer-events-none" />
 
                   <div className="relative p-5">
                     {/* Top row: city + sentiment */}
