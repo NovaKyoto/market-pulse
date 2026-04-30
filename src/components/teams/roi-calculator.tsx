@@ -185,10 +185,10 @@ export function TeamsRoiCalculator() {
               </div>
               <div className="text-right">
                 <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
-                  Vs solo plans
+                  Versus Solo Plans
                 </p>
                 <p className="text-base font-bold text-emerald-600 mt-1">
-                  Save ${savedVsSolo.toLocaleString()}/yr
+                  Save ${savedVsSolo.toLocaleString()}/year
                 </p>
               </div>
             </div>

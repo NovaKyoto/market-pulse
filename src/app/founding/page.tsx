@@ -112,7 +112,7 @@ export default function FoundingPage() {
                   $1,470
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
-                  vs paying full <strong className="text-foreground">$49/mo</strong> · plus 90 days free
+                  Versus paying full <strong className="text-foreground">$49/mo</strong> · plus 90 days free
                 </p>
               </CardContent>
             </Card>

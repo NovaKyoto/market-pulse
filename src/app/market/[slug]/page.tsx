@@ -496,7 +496,7 @@ export default async function CityMarketPage(props: {
               <div className="flex items-center gap-2 mb-6">
                 <Building2 className="h-5 w-5 text-primary" />
                 <h2 className="text-xl font-bold tracking-tight">
-                  More markets in {city.state}
+                  More Markets in {city.state}
                 </h2>
               </div>
               <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -518,7 +518,7 @@ export default async function CityMarketPage(props: {
           <div>
             <div className="flex items-center gap-2 mb-6">
               <MapPin className="h-5 w-5 text-primary" />
-              <h2 className="text-xl font-bold tracking-tight">Other markets we track</h2>
+              <h2 className="text-xl font-bold tracking-tight">Other Markets We Track</h2>
             </div>
             <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
               {otherTopCities.map((c) => (

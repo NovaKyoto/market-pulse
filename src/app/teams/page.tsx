@@ -233,12 +233,31 @@ export default function TeamsPage() {
         </div>
       </section>
 
+      {/* ROI CALCULATOR — top-of-page hook so brokers see value immediately */}
+      <section className="border-y marketing-muted py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="text-center mb-10">
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              Interactive Calculator
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+              SEE THE MATH FOR YOUR BROKERAGE
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+              Adjust the sliders to match your brokerage. See how much extra revenue
+              MarketPulse generates and how much you save versus solo plans.
+            </p>
+          </div>
+          <TeamsRoiCalculator />
+        </div>
+      </section>
+
       {/* Benefits Bento */}
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="text-center mb-12">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-2">
-              What you get
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              What You Get
             </p>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
               BUILT FOR BROKERAGES, AGENT-FRIENDLY
@@ -286,25 +305,6 @@ export default function TeamsPage() {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ROI CALCULATOR — interactive brokerage math */}
-      <section className="py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="text-center mb-10">
-            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
-              Interactive Calculator
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
-              SEE THE MATH FOR YOUR BROKERAGE
-            </h2>
-            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-              Adjust the sliders to match your brokerage. See how much extra revenue
-              MarketPulse generates — and how much you save vs solo plans.
-            </p>
-          </div>
-          <TeamsRoiCalculator />
         </div>
       </section>
 

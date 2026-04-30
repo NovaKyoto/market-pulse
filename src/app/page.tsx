@@ -59,11 +59,11 @@ const faqs = [
   },
   {
     q: "How is this different from Mailchimp or my CRM?",
-    a: "Mailchimp and CRMs are empty tools — you still have to write every newsletter. MarketPulse automatically generates the content (market data + AI commentary) so you never write an email again. It's a report factory, not a send tool.",
+    a: "Mailchimp and CRMs are empty tools — you still have to write every newsletter yourself. MarketPulse automatically generates the content (market data + AI commentary), so you'll never write a market email again. Think of it as a report factory, not just a send tool.",
   },
   {
     q: "What does the ROI actually look like?",
-    a: "One referred listing typically generates $8-15K in commission. MarketPulse costs $49/mo ($588/year). You need just one referral every 2 years to 10x your investment. Most agents who use consistently see 3-8 referrals per year.",
+    a: "One referred listing typically generates $8-15K in commission. MarketPulse costs $49/mo ($588/year). You only need one referral every two years to 10x your investment. Most agents who use it consistently see 3-8 referrals per year.",
   },
   {
     q: "Can I cancel anytime?",
@@ -549,7 +549,7 @@ export default function LandingPage() {
                   <span className="text-lg text-muted-foreground">/mo</span>
                 </div>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  14-day free trial · cancel anytime
+                  14-day free trial · Cancel anytime
                 </p>
                 <ul className="mt-6 space-y-2.5 text-left">
                   {pricingFeatures.map((f) => (
