@@ -17,6 +17,8 @@ import {
   Target,
   Award,
   Layers,
+  Clock,
+  ShieldCheck,
 } from "lucide-react";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://marketpulse.now").trim();
@@ -413,19 +415,121 @@ export default function TeamsPage() {
         </div>
       </section>
 
-      {/* Waitlist Form */}
-      <section id="waitlist" className="border-t marketing-muted py-16 sm:py-20 scroll-mt-20">
-        <div className="mx-auto max-w-2xl px-4 sm:px-6">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+      {/* WAITLIST — split layout with form + what-to-expect */}
+      <section id="waitlist" className="relative overflow-hidden border-t marketing-muted py-16 sm:py-20 scroll-mt-20">
+        {/* Decorative accents */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-20 right-1/4 h-[400px] w-[400px] rounded-full bg-blue-500/10 blur-[120px]" />
+          <div className="absolute -bottom-20 left-1/4 h-[400px] w-[400px] rounded-full bg-indigo-500/10 blur-[120px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+          {/* Section header */}
+          <div className="text-center mb-12">
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              Join Early
+            </p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tighter">
               JOIN THE TEAMS WAITLIST
             </h2>
             <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-              Tell us about your brokerage. We&apos;ll reach out personally before launch with
-              a discounted founding-brokerage offer.
+              Tell us about your brokerage. We&apos;ll reach out personally before launch
+              with a founding-brokerage offer.
             </p>
           </div>
-          <TeamsWaitlistForm />
+
+          {/* Two-column layout: form + what-to-expect */}
+          <div className="grid gap-8 lg:grid-cols-5 items-start max-w-5xl mx-auto">
+            {/* Form takes 3 columns on desktop */}
+            <div className="lg:col-span-3">
+              <TeamsWaitlistForm />
+            </div>
+
+            {/* "What to expect" sidebar takes 2 columns */}
+            <div className="lg:col-span-2 space-y-4">
+              {/* Founding Brokerage progress card */}
+              <Card className="border-2 border-amber-500/40 bg-gradient-to-br from-amber-50 via-orange-50/50 to-amber-50 dark:from-amber-950/20 dark:via-orange-950/10 dark:to-amber-950/20 relative overflow-hidden">
+                <div className="absolute -top-12 -right-12 h-28 w-28 rounded-full bg-amber-500/20 blur-2xl" />
+                <CardContent className="relative p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </span>
+                    <p className="text-[10px] uppercase tracking-widest text-amber-700 dark:text-amber-400 font-black">
+                      Founding Brokerage Spots
+                    </p>
+                  </div>
+                  <p className="text-5xl font-black font-mono tracking-tighter bg-gradient-to-br from-amber-500 to-orange-600 bg-clip-text text-transparent mb-2">
+                    3/3
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    First 3 brokerages get <strong className="text-foreground">50% off forever</strong>.
+                    Once gone, this offer is gone for good.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* What Happens Next timeline */}
+              <Card className="border-2 shadow-sm">
+                <CardContent className="p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md">
+                      <Clock className="h-4 w-4 text-white" />
+                    </div>
+                    <p className="text-[10px] uppercase tracking-widest font-black text-foreground">
+                      What Happens Next
+                    </p>
+                  </div>
+
+                  <ol className="space-y-4">
+                    {[
+                      {
+                        step: "01",
+                        title: "We review your application",
+                        desc: "Within 24 hours, you'll get a confirmation email.",
+                      },
+                      {
+                        step: "02",
+                        title: "Personal outreach (optional call)",
+                        desc: "If you want to chat, we'll set up a 15-minute call to understand your team.",
+                      },
+                      {
+                        step: "03",
+                        title: "Early access at launch",
+                        desc: "When Teams launches, you're first in line — with founding pricing locked in.",
+                      },
+                    ].map((item) => (
+                      <li key={item.step} className="flex gap-3">
+                        <div className="font-mono font-black text-2xl text-primary/30 leading-none shrink-0">
+                          {item.step}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-sm leading-tight">{item.title}</p>
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                            {item.desc}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </CardContent>
+              </Card>
+
+              {/* Privacy / commitment note */}
+              <div className="flex items-start gap-3 rounded-xl border bg-background/60 backdrop-blur-sm p-4">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10">
+                  <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold mb-0.5">No spam, no pressure</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    We&apos;ll only email you about MarketPulse Teams. Unsubscribe anytime.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
