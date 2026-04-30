@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | MarketPulse",
   },
   description:
-    "AI generates branded weekly market reports and emails them to your client list. Real data, professional insights, zero effort. Trusted by 500+ agents.",
+    "AI generates branded weekly market reports and emails them to your client list. Real data, professional insights, zero ongoing work.",
   metadataBase: new URL(APP_URL),
   keywords: [
     "real estate market report",
@@ -62,7 +64,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   );
 }

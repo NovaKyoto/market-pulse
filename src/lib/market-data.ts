@@ -169,11 +169,53 @@ async function fetchFromRentCast(
  * Generates estimated market data based on known regional patterns.
  * Uses ZIP code prefix to determine region and applies realistic baselines.
  */
+// High-value / luxury ZIPs that need specific overrides
+// (the regional fallback would otherwise undershoot dramatically)
+const ZIP_OVERRIDES: Record<string, { city: string; state: string; basePrice: number; basePpsf: number }> = {
+  // California luxury
+  "90210": { city: "Beverly Hills", state: "CA", basePrice: 4500000, basePpsf: 1450 },
+  "90211": { city: "Beverly Hills", state: "CA", basePrice: 2100000, basePpsf: 1100 },
+  "90212": { city: "Beverly Hills", state: "CA", basePrice: 2350000, basePpsf: 1180 },
+  "90402": { city: "Santa Monica", state: "CA", basePrice: 3800000, basePpsf: 1400 },
+  "94027": { city: "Atherton", state: "CA", basePrice: 7500000, basePpsf: 1800 },
+  "94022": { city: "Los Altos", state: "CA", basePrice: 4200000, basePpsf: 1500 },
+  // NYC luxury
+  "10007": { city: "Tribeca", state: "NY", basePrice: 3500000, basePpsf: 1750 },
+  "10013": { city: "Tribeca/SoHo", state: "NY", basePrice: 2800000, basePpsf: 1650 },
+  "10014": { city: "West Village", state: "NY", basePrice: 2400000, basePpsf: 1500 },
+  "10021": { city: "Upper East Side", state: "NY", basePrice: 1800000, basePpsf: 1450 },
+  "10075": { city: "Upper East Side", state: "NY", basePrice: 1900000, basePpsf: 1480 },
+  "11201": { city: "Brooklyn Heights", state: "NY", basePrice: 1500000, basePpsf: 1200 },
+  // Florida luxury
+  "33109": { city: "Miami Beach (Fisher Island)", state: "FL", basePrice: 6500000, basePpsf: 2200 },
+  "33139": { city: "Miami Beach", state: "FL", basePrice: 850000, basePpsf: 600 },
+  "33480": { city: "Palm Beach", state: "FL", basePrice: 3200000, basePpsf: 1400 },
+  // Hamptons / Connecticut
+  "11932": { city: "Bridgehampton", state: "NY", basePrice: 4500000, basePpsf: 1500 },
+  "11962": { city: "Sagaponack", state: "NY", basePrice: 6000000, basePpsf: 1800 },
+  "06830": { city: "Greenwich", state: "CT", basePrice: 2400000, basePpsf: 850 },
+  // Aspen / Vail
+  "81611": { city: "Aspen", state: "CO", basePrice: 7500000, basePpsf: 2400 },
+  "81620": { city: "Avon", state: "CO", basePrice: 1800000, basePpsf: 850 },
+  // DC area
+  "20007": { city: "Georgetown (DC)", state: "DC", basePrice: 1900000, basePpsf: 1100 },
+  "22101": { city: "McLean", state: "VA", basePrice: 1700000, basePpsf: 600 },
+  // Boston area
+  "02108": { city: "Beacon Hill", state: "MA", basePrice: 1850000, basePpsf: 1300 },
+  "02116": { city: "Back Bay", state: "MA", basePrice: 1650000, basePpsf: 1250 },
+};
+
 function generateEstimatedData(
   zipCode: string,
   city?: string,
   state?: string
 ): MarketData {
+  // Check exact-ZIP overrides first (luxury / unique markets)
+  const override = ZIP_OVERRIDES[zipCode];
+  if (override) {
+    return finalizeMarketData(zipCode, override.city, override.state, override.basePrice, override.basePpsf);
+  }
+
   const prefix = zipCode.substring(0, 3);
   const prefixNum = parseInt(prefix);
 
@@ -225,8 +267,21 @@ function generateEstimatedData(
     if (!region.city) region = { city: "Dallas", state: "TX" };
   }
 
-  // Multi-dimensional variation based on different parts of the ZIP
-  // so each city looks distinctly different from its neighbors
+  return finalizeMarketData(zipCode, region.city, region.state, basePrice, basePpsf);
+}
+
+/**
+ * Applies ZIP-derived variation to baseline numbers and returns a complete
+ * MarketData record. Multi-dimensional variation so neighboring ZIPs look
+ * distinct.
+ */
+function finalizeMarketData(
+  zipCode: string,
+  city: string,
+  state: string,
+  basePrice: number,
+  basePpsf: number
+): MarketData {
   const zipSeed = parseInt(zipCode) || 12345;
   const v1 = ((zipSeed % 100) - 50) / 100; // -0.5 to +0.5  (price)
   const v2 = ((zipSeed % 73) - 36) / 36; // -1 to +1        (DOM)
@@ -238,21 +293,16 @@ function generateEstimatedData(
 
   return {
     median_price: Math.round(basePrice * priceVariation),
-    // YoY change: range -6% to +9% for realistic mix of up/down markets
     price_change_pct: Math.round((1.5 + v5 * 7.5) * 10) / 10,
-    // Days on market: 12 to 65 days (wider spread)
     avg_days_on_market: Math.max(8, Math.round(28 + v2 * 22)),
-    // Active listings: 45 to 280
     active_listings: Math.max(30, Math.round(150 + v3 * 130)),
-    // Sold in 30d: 15 to 95
     sold_last_30: Math.max(12, Math.round(50 + v3 * 40)),
     price_per_sqft: Math.round(basePpsf * priceVariation),
-    // Months of inventory: 1.2 to 7.5 (covers seller's, balanced, buyer's)
     inventory_months: Math.max(0.8, Math.round((3.5 + v4 * 3.2) * 10) / 10),
     median_rent: Math.round(basePrice * 0.005),
     zip_code: zipCode,
-    city: region.city,
-    state: region.state,
+    city,
+    state,
     fetched_at: new Date().toISOString(),
   };
 }
