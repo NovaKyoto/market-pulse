@@ -36,6 +36,14 @@ export default function BlogIndexPage() {
   );
   const [featured, ...rest] = posts;
 
+  // Aggregate content stats
+  const totalReadTime = posts.reduce((sum, p) => sum + p.readTime, 0);
+  const categoryCounts = posts.reduce((acc, p) => {
+    acc[p.category] = (acc[p.category] ?? 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  const totalKeywords = new Set(posts.flatMap((p) => p.keywords)).size;
+
   return (
     <div className="flex flex-col min-h-screen marketing-bg">
       {/* Nav */}
@@ -85,6 +93,61 @@ export default function BlogIndexPage() {
               Practical guides, research, and honest comparisons for agents who want to keep past
               clients and grow through referrals — not chase cold leads.
             </p>
+
+            {/* CONTENT STATS — magazine-style metric strip */}
+            <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
+              <div className="rounded-xl border bg-background/80 backdrop-blur-sm p-4 text-center">
+                <p className="text-3xl font-black font-mono tracking-tighter bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  {posts.length}
+                </p>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-1">
+                  Articles
+                </p>
+              </div>
+              <div className="rounded-xl border bg-background/80 backdrop-blur-sm p-4 text-center">
+                <p className="text-3xl font-black font-mono tracking-tighter bg-gradient-to-br from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                  {totalReadTime}
+                </p>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-1">
+                  Min Reading
+                </p>
+              </div>
+              <div className="rounded-xl border bg-background/80 backdrop-blur-sm p-4 text-center">
+                <p className="text-3xl font-black font-mono tracking-tighter bg-gradient-to-br from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                  {Object.keys(categoryCounts).length}
+                </p>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-1">
+                  Categories
+                </p>
+              </div>
+              <div className="rounded-xl border bg-background/80 backdrop-blur-sm p-4 text-center">
+                <p className="text-3xl font-black font-mono tracking-tighter bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  {totalKeywords}
+                </p>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-1">
+                  Topics
+                </p>
+              </div>
+            </div>
+
+            {/* Topic / category browser */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+              <span className="text-xs uppercase tracking-widest font-bold text-muted-foreground mr-2">
+                Browse:
+              </span>
+              {Object.entries(categoryCounts).map(([category, count]) => {
+                const accent = categoryColors[category] ?? "from-blue-500 to-indigo-600";
+                return (
+                  <span
+                    key={category}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${accent} shadow-sm`}
+                  >
+                    {category}
+                    <span className="font-mono opacity-80">{count}</span>
+                  </span>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

@@ -182,8 +182,145 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ROI framing */}
+      {/* WHAT YOUR CLIENTS SEE — product preview mockup */}
       <section className="py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              The Output
+            </p>
+            <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl">
+              WHAT YOUR CLIENTS RECEIVE
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+              Every Monday, your past clients open their inbox to a beautifully branded
+              market report — with your name, your logo, your colors.
+            </p>
+          </div>
+
+          {/* Mockup — laptop preview of email/report */}
+          <div className="relative max-w-4xl mx-auto">
+            {/* Browser window chrome */}
+            <div className="rounded-2xl border-2 shadow-2xl overflow-hidden bg-background">
+              {/* Browser bar */}
+              <div className="flex items-center gap-2 px-4 py-3 bg-muted/50 border-b">
+                <div className="flex gap-1.5">
+                  <div className="h-3 w-3 rounded-full bg-red-400" />
+                  <div className="h-3 w-3 rounded-full bg-amber-400" />
+                  <div className="h-3 w-3 rounded-full bg-emerald-400" />
+                </div>
+                <div className="flex-1 mx-4 px-3 py-1 rounded-md bg-background border text-xs text-muted-foreground font-mono truncate">
+                  📧 Houston Market Update · Smith Realty Group
+                </div>
+                <div className="hidden sm:block text-xs text-muted-foreground">
+                  Inbox
+                </div>
+              </div>
+
+              {/* Email content */}
+              <div className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 p-6 sm:p-10 text-white">
+                {/* Brokerage header */}
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm font-bold text-white">
+                    SR
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Smith Realty Group</p>
+                    <p className="text-xs text-white/70">Weekly Market Report · Apr 2026</p>
+                  </div>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tighter leading-tight">
+                  Houston Homes Selling in 18 Days
+                  <span className="block text-amber-300 mt-1">As Seller Advantage Holds Strong</span>
+                </h3>
+                <p className="mt-3 text-sm sm:text-base text-white/85 leading-relaxed max-w-2xl">
+                  In ZIP code 77007, Houston homes are flying off the market in just 18 days
+                  on average, with prices holding steady near $401,400 — a sign of a market
+                  that remains firmly in sellers&apos; favor.
+                </p>
+              </div>
+
+              {/* Stat grid below header */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 border-t">
+                {[
+                  { label: "Median Price", value: "$401,400", trend: "-0.4%", up: false },
+                  { label: "Days on Market", value: "18", trend: "Fast", up: true },
+                  { label: "Active Listings", value: "84", trend: "+3 wk", up: true },
+                  { label: "Sold (30d)", value: "34", trend: "+12%", up: true },
+                ].map((stat) => (
+                  <div key={stat.label} className="p-4 sm:p-5">
+                    <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
+                      {stat.label}
+                    </p>
+                    <p className="text-xl sm:text-2xl font-black font-mono tracking-tighter mt-1">
+                      {stat.value}
+                    </p>
+                    <p
+                      className={`text-xs font-bold mt-1 ${
+                        stat.up ? "text-emerald-600" : "text-red-500"
+                      }`}
+                    >
+                      {stat.trend}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Body text preview */}
+              <div className="p-6 sm:p-8 border-t">
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  <strong className="text-foreground">Right now, 77007 is a strong seller&apos;s market</strong>
+                  , and here&apos;s what that means in plain English: there simply aren&apos;t
+                  enough homes available to meet the number of people who want to buy. With only
+                  2.1 months of available inventory...
+                </p>
+                <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
+                  <Sparkles className="h-3 w-3 text-amber-500" />
+                  <span className="italic">Continue reading the full AI-written analysis</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating annotations */}
+            <div className="hidden lg:block">
+              <div className="absolute -left-32 top-32">
+                <div className="bg-amber-100 dark:bg-amber-950/40 border-2 border-amber-500 px-3 py-1.5 rounded-lg shadow-lg text-xs font-bold text-amber-900 dark:text-amber-200">
+                  Your branding
+                </div>
+                <svg className="ml-12 mt-1" width="80" height="20" viewBox="0 0 80 20">
+                  <path d="M 0 10 Q 40 5 75 10" stroke="currentColor" className="text-amber-500" strokeWidth="2" fill="none" />
+                  <path d="M 70 5 L 78 10 L 70 15" stroke="currentColor" className="text-amber-500" strokeWidth="2" fill="none" />
+                </svg>
+              </div>
+              <div className="absolute -right-36 top-1/2">
+                <div className="bg-emerald-100 dark:bg-emerald-950/40 border-2 border-emerald-500 px-3 py-1.5 rounded-lg shadow-lg text-xs font-bold text-emerald-900 dark:text-emerald-200">
+                  Real MLS data
+                </div>
+                <svg className="-ml-2 -mt-2" width="80" height="20" viewBox="0 0 80 20">
+                  <path d="M 75 10 Q 40 5 5 10" stroke="currentColor" className="text-emerald-500" strokeWidth="2" fill="none" />
+                  <path d="M 10 5 L 2 10 L 10 15" stroke="currentColor" className="text-emerald-500" strokeWidth="2" fill="none" />
+                </svg>
+              </div>
+              <div className="absolute -right-44 -bottom-4">
+                <svg className="ml-2" width="80" height="20" viewBox="0 0 80 20">
+                  <path d="M 75 10 Q 40 15 5 10" stroke="currentColor" className="text-purple-500" strokeWidth="2" fill="none" />
+                  <path d="M 10 5 L 2 10 L 10 15" stroke="currentColor" className="text-purple-500" strokeWidth="2" fill="none" />
+                </svg>
+                <div className="bg-purple-100 dark:bg-purple-950/40 border-2 border-purple-500 px-3 py-1.5 rounded-lg shadow-lg text-xs font-bold text-purple-900 dark:text-purple-200">
+                  AI-written insights
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-8 text-center text-xs text-muted-foreground">
+            Sample report · Your reports use your name, logo, and brand color
+          </p>
+        </div>
+      </section>
+
+      {/* ROI framing */}
+      <section className="py-20 sm:py-24 border-t">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="text-center mb-12">
             <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">

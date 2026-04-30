@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TeamsWaitlistForm } from "@/components/teams/waitlist-form";
+import { TeamsRoiCalculator } from "@/components/teams/roi-calculator";
 import {
   ArrowRight,
   Building2,
@@ -288,12 +289,31 @@ export default function TeamsPage() {
         </div>
       </section>
 
-      {/* Pricing preview */}
+      {/* ROI CALCULATOR — interactive brokerage math */}
       <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="text-center mb-10">
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              Interactive Calculator
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
+              SEE THE MATH FOR YOUR BROKERAGE
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+              Adjust the sliders to match your brokerage. See how much extra revenue
+              MarketPulse generates — and how much you save vs solo plans.
+            </p>
+          </div>
+          <TeamsRoiCalculator />
+        </div>
+      </section>
+
+      {/* Pricing preview */}
+      <section className="border-t py-16 sm:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="text-center mb-10">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-2">
-              Simple team pricing
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3">
+              Simple Pricing
             </p>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter">
               PAY ONCE. COVER YOUR WHOLE TEAM.

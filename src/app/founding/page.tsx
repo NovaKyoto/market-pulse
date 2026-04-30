@@ -77,6 +77,126 @@ export default function FoundingPage() {
         </div>
       </section>
 
+      {/* SCARCITY DASHBOARD — live indicators + savings calculator */}
+      <section className="border-y border-amber-500/20 bg-gradient-to-br from-amber-50/50 via-orange-50/30 to-yellow-50/40 dark:from-amber-950/10 dark:via-orange-950/10 dark:to-yellow-950/10 py-12">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="grid gap-4 md:grid-cols-3">
+            {/* Spots Remaining */}
+            <Card className="border-2 border-amber-500/30 shadow-lg">
+              <CardContent className="p-5 text-center">
+                <div className="inline-flex items-center gap-1.5 mb-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                  </span>
+                  <p className="text-[10px] uppercase tracking-widest text-amber-700 dark:text-amber-400 font-black">
+                    Spots Remaining
+                  </p>
+                </div>
+                <p className="text-5xl font-black font-mono tracking-tighter bg-gradient-to-br from-amber-500 to-orange-600 bg-clip-text text-transparent">
+                  5/5
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Once gone, price goes to <strong className="text-foreground">$49/mo</strong>
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Lifetime Savings */}
+            <Card className="border-2 border-emerald-500/30 shadow-lg">
+              <CardContent className="p-5 text-center">
+                <p className="text-[10px] uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-black mb-2">
+                  Lifetime Savings (5 Years)
+                </p>
+                <p className="text-5xl font-black font-mono tracking-tighter bg-gradient-to-br from-emerald-500 to-teal-600 bg-clip-text text-transparent">
+                  $1,470
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  vs paying full <strong className="text-foreground">$49/mo</strong> · plus 90 days free
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Total Investment */}
+            <Card className="border-2 border-blue-500/30 shadow-lg">
+              <CardContent className="p-5 text-center">
+                <p className="text-[10px] uppercase tracking-widest text-blue-700 dark:text-blue-400 font-black mb-2">
+                  Your First Year
+                </p>
+                <p className="text-5xl font-black font-mono tracking-tighter bg-gradient-to-br from-blue-500 to-indigo-600 bg-clip-text text-transparent">
+                  $220
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  90 days free + 9 months × $24.50
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Savings progress visualization */}
+          <Card className="mt-4 border-2 border-amber-500/20 overflow-hidden">
+            <CardContent className="p-5 sm:p-6">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
+                    Savings Over Time
+                  </p>
+                  <p className="text-sm font-semibold mt-0.5">
+                    Founding 5 vs Standard Pricing
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-2xl font-black font-mono text-emerald-600">
+                    -50%
+                  </p>
+                  <p className="text-[10px] text-muted-foreground font-medium">forever</p>
+                </div>
+              </div>
+
+              {/* Bar comparison */}
+              <div className="space-y-3 mt-5">
+                {[
+                  { label: "Year 1", standard: 588, founding: 220 },
+                  { label: "Year 2", standard: 1176, founding: 514 },
+                  { label: "Year 3", standard: 1764, founding: 808 },
+                  { label: "Year 5", standard: 2940, founding: 1396 },
+                ].map((row) => {
+                  const standardPct = (row.standard / 2940) * 100;
+                  const foundingPct = (row.founding / 2940) * 100;
+                  const savings = row.standard - row.founding;
+                  return (
+                    <div key={row.label} className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold w-12 shrink-0">{row.label}</span>
+                        <span className="font-mono font-bold text-emerald-600">
+                          Save ${savings.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="relative h-6 bg-muted rounded-md overflow-hidden flex items-center">
+                        {/* Standard bar (red) */}
+                        <div
+                          className="absolute left-0 top-0 h-full bg-gradient-to-r from-red-400/30 to-red-500/40 rounded-md"
+                          style={{ width: `${standardPct}%` }}
+                        />
+                        {/* Founding bar (green, on top) */}
+                        <div
+                          className="absolute left-0 top-0 h-full bg-gradient-to-r from-emerald-500 to-teal-600 rounded-md"
+                          style={{ width: `${foundingPct}%` }}
+                        />
+                        <div className="relative z-10 flex items-center justify-between w-full px-2 text-[10px] font-mono font-bold text-white drop-shadow">
+                          <span>${row.founding.toLocaleString()}</span>
+                          <span className="text-foreground/70">vs ${row.standard.toLocaleString()}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* The Deal */}
       <section className="py-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
